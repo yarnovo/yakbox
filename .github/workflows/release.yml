@@ -49,7 +49,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: 'npm'
           
       - name: Install dependencies
@@ -60,6 +60,9 @@ jobs:
         
       - name: Run Type Check
         run: npm run typecheck
+        
+      - name: Run Tests
+        run: npm test
         
       - name: Build
         run: npm run build
@@ -83,7 +86,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
           
@@ -125,7 +128,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: 'npm'
           
       - name: Install dependencies
@@ -137,97 +140,17 @@ jobs:
           name: dist
           path: dist/
           
-      - name: Create demo directory
+      - name: Prepare CDN deployment
         run: |
-          mkdir -p demo
-          cat > demo/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="zh">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Chat Window v${{ needs.validate-tag.outputs.version }}</title>
-            <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-            <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-            <script src="https://cdn.tailwindcss.com"></script>
-          </head>
-          <body>
-            <div class="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-              <div id="app"></div>
-            </div>
-            
-            <script src="./dist/chat-window.umd.js"></script>
-            <script>
-              const { ChatWindow } = window.ChatWindow;
-              const root = ReactDOM.createRoot(document.getElementById('app'));
-              
-              root.render(React.createElement(ChatWindow, {
-                title: 'Chat Window Demo v${{ needs.validate-tag.outputs.version }}',
-                placeholder: '输入消息...',
-                onSendMessage: (message) => {
-                  console.log('Message sent:', message);
-                }
-              }));
-            </script>
-          </body>
-          </html>
-          EOF
-          
-          # Copy dist files to demo
-          cp -r dist demo/
-          
-      - name: Build Storybook
-        run: npm run build-storybook
-        
-      - name: Prepare deployment directory
-        run: |
-          mkdir -p public
-          cp -r demo/* public/
-          cp -r storybook-static public/docs
+          mkdir -p cdn
           
           # Create version directory
-          mkdir -p public/v${{ needs.validate-tag.outputs.version }}
-          cp -r dist/* public/v${{ needs.validate-tag.outputs.version }}/
+          mkdir -p cdn/v${{ needs.validate-tag.outputs.version }}
+          cp dist/chat-window.umd.js cdn/v${{ needs.validate-tag.outputs.version }}/
           
           # Update latest
-          mkdir -p public/latest
-          cp -r dist/* public/latest/
-          
-          # Create index page
-          cat > public/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html>
-          <head>
-            <title>Chat Window CDN</title>
-            <script src="https://cdn.tailwindcss.com"></script>
-          </head>
-          <body class="bg-gray-100">
-            <div class="container mx-auto p-8">
-              <h1 class="text-3xl font-bold mb-8">Chat Window CDN</h1>
-              
-              <div class="bg-white rounded-lg shadow p-6 mb-6">
-                <h2 class="text-xl font-semibold mb-4">Latest Version: v${{ needs.validate-tag.outputs.version }}</h2>
-                
-                <h3 class="font-semibold mb-2">CDN URLs:</h3>
-                <ul class="list-disc ml-6 space-y-1">
-                  <li><code class="bg-gray-100 px-2 py-1 rounded">https://your-project.pages.dev/latest/chat-window.umd.js</code></li>
-                  <li><code class="bg-gray-100 px-2 py-1 rounded">https://your-project.pages.dev/v${{ needs.validate-tag.outputs.version }}/chat-window.umd.js</code></li>
-                </ul>
-              </div>
-              
-              <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="font-semibold mb-4">Links:</h3>
-                <ul class="space-y-2">
-                  <li><a href="/demo" class="text-blue-600 hover:underline">📱 Demo</a></li>
-                  <li><a href="/docs" class="text-blue-600 hover:underline">📚 Storybook Documentation</a></li>
-                  <li><a href="https://github.com/${{ github.repository }}" class="text-blue-600 hover:underline">💻 GitHub</a></li>
-                  <li><a href="https://www.npmjs.com/package/${{ github.event.repository.name }}" class="text-blue-600 hover:underline">📦 NPM</a></li>
-                </ul>
-              </div>
-            </div>
-          </body>
-          </html>
-          EOF
+          mkdir -p cdn/latest
+          cp dist/chat-window.umd.js cdn/latest/
           
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
@@ -235,7 +158,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: chat-window-cdn
-          directory: public
+          directory: cdn
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           
   create-release:
@@ -281,9 +204,9 @@ jobs:
           - ESM: ~8.1KB (gzipped: ~2.8KB)
           
           ### 🔗 Links
-          - [Demo](https://chat-window-cdn.pages.dev/demo)
-          - [Documentation](https://chat-window-cdn.pages.dev/docs)
           - [NPM Package](https://www.npmjs.com/package/chat-window)
+          - [CDN Latest](https://chat-window-cdn.pages.dev/latest/chat-window.umd.js)
+          - [CDN Versioned](https://chat-window-cdn.pages.dev/v${{ needs.validate-tag.outputs.version }}/chat-window.umd.js)
           
           ### 📄 Assets
           Download the build files below or use them via CDN.
@@ -305,7 +228,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Published to:" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ NPM: https://www.npmjs.com/package/${{ github.event.repository.name }}/v/${{ needs.validate-tag.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ Cloudflare Pages: https://chat-window-cdn.pages.dev" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Cloudflare CDN: https://chat-window-cdn.pages.dev/latest/chat-window.umd.js" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ GitHub Release: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### CDN URLs:" >> $GITHUB_STEP_SUMMARY
