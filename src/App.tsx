@@ -1,7 +1,8 @@
-import { ChatWindow } from './ChatWindow'
+import { ChatWindow } from './components/ChatWindow'
+import type { ChatMessage } from './components/MessageList'
 
 function App() {
-  const handleSendMessage = (message: string) => {
+  const handleSendMessage = (message: ChatMessage) => {
     console.log('Message sent:', message)
   }
 

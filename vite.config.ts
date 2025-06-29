@@ -2,30 +2,43 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'node:path';
-import { fileURLToPath, URL } from 'node:url';
+import { fileURLToPath } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'node:path';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
-const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
+import dts from 'vite-plugin-dts';
 
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(), 
+    tailwindcss(),
+    dts({
+      insertTypesEntry: true,
+      rollupTypes: true,
+      tsconfigPath: './tsconfig.app.json',
+      outDir: 'dist',
+      exclude: ['src/**/*.stories.tsx', 'src/**/*.test.tsx', 'src/main.tsx', 'src/App.tsx']
+    })
+  ],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: resolve(dirname, 'src/index.ts'),
       name: 'ChatWindow',
-      fileName: 'chat-window'
+      formats: ['es', 'umd'],
+      fileName: (format) => `chat-window.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: ['react', 'react-dom', '@virtuoso.dev/message-list', 'uuid'],
       output: {
         globals: {
           react: 'React',
-          'react-dom': 'ReactDOM'
+          'react-dom': 'ReactDOM',
+          '@virtuoso.dev/message-list': 'VirtuosoMessageList',
+          'uuid': 'uuid'
         }
       }
     }
