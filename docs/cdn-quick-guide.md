@@ -71,11 +71,11 @@ const props: ChatWindowProps = {
 
 ## 构建产物说明
 
-| 文件 | 用途 | 大小 |
-|------|------|------|
-| chat-window.umd.js | CDN/浏览器直接使用 | ~12KB |
-| chat-window.es.js | 现代构建工具使用 | ~17KB |
-| index.d.ts | TypeScript 类型定义 | ~2KB |
+| 文件 | 用途 | 大小 | Gzip |
+|------|------|------|------|
+| chat-window.umd.js | CDN/浏览器直接使用 | ~6.3KB | ~2.7KB |
+| chat-window.es.js | 现代构建工具使用 | ~8.1KB | ~2.8KB |
+| index.d.ts | TypeScript 类型定义 | ~1.7KB | - |
 
 ## 注意事项
 

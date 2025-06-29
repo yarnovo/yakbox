@@ -32,11 +32,12 @@ export default defineConfig({
       fileName: (format) => `chat-window.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom', '@virtuoso.dev/message-list', 'uuid'],
+      external: ['react', 'react-dom', 'react/jsx-runtime', '@virtuoso.dev/message-list', 'uuid'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'React',
           '@virtuoso.dev/message-list': 'VirtuosoMessageList',
           'uuid': 'uuid'
         }

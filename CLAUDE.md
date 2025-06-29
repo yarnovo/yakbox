@@ -60,7 +60,7 @@ npm run lint && npm run typecheck
 - **ESM 用途**：现代项目、Tree Shaking、更好性能
 - **CDN 友好**：配置了 unpkg 和 jsdelivr 字段
 - **构建产物**：
-  - `dist/chat-window.umd.js` - UMD 格式
-  - `dist/chat-window.es.js` - ESM 格式
-  - `dist/index.d.ts` - TypeScript 类型定义
+  - `dist/chat-window.umd.js` - UMD 格式 (~6.3KB, gzip ~2.7KB)
+  - `dist/chat-window.es.js` - ESM 格式 (~8.1KB, gzip ~2.8KB)
+  - `dist/index.d.ts` - TypeScript 类型定义 (~1.7KB)
 - 详见 `docs/umd-cdn-guide.md` 和 `docs/cdn-usage-examples.md`
