@@ -3,7 +3,7 @@
 ## 代码质量检查
 
 ### 例行检查（必须执行）
-每次代码改动后都必须执行以下两项检查：
+每次代码改动后都必须执行以下三项检查：
 
 1. **Lint 检查**
    - 执行 `npm run lint` 进行代码质量检查
@@ -12,6 +12,11 @@
 2. **类型检查**
    - 执行 `npm run typecheck` 进行 TypeScript 类型检查
    - 确保所有类型定义正确，没有类型错误
+
+3. **测试**
+   - 执行 `npm test` 运行所有测试用例
+   - 包括 Storybook 组件测试（使用 Vitest + Playwright）
+   - 确保所有测试通过
 
 ### 常用命令
 ```bash
@@ -24,8 +29,11 @@ npm run lint -- --fix
 # 执行类型检查
 npm run typecheck
 
-# 同时执行 lint 和类型检查（推荐）
-npm run lint && npm run typecheck
+# 执行测试
+npm test
+
+# 同时执行所有检查（推荐）
+npm run lint && npm run typecheck && npm test
 ```
 
 ## 项目结构
