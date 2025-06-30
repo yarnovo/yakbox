@@ -136,9 +136,9 @@ jobs:
           
       - name: Publish to NPM
         run: |
-          if [[ "${{ env.is_prerelease }}" == "true" ]]; then
-            echo "📦 Publishing pre-release version with ${{ env.prerelease_type }} tag"
-            npm publish --access public --tag ${{ env.prerelease_type }}
+          if [[ "${{ needs.validate-tag.outputs.is_prerelease }}" == "true" ]]; then
+            echo "📦 Publishing pre-release version with ${{ needs.validate-tag.outputs.prerelease_type }} tag"
+            npm publish --access public --tag ${{ needs.validate-tag.outputs.prerelease_type }}
           else
             echo "📦 Publishing production version"
             npm publish --access public

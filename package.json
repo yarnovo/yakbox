@@ -1,6 +1,5 @@
 {
   "name": "@course-gen/chat-window",
-  "private": true,
   "version": "0.0.1-alpha.2",
   "type": "module",
   "main": "./dist/chat-window.umd.js",
