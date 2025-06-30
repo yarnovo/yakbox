@@ -256,15 +256,17 @@ async function main() {
     '运行测试 (npm test)',
     '构建项目 (npm run build)',
     `更新版本号到 ${newVersion}`,
+    `提交版本更新 (commit message: "chore: release ${newVersion}")`,
     `创建 Git 标签 ${tagName}`,
-    '推送代码到远程仓库',
-    '推送标签到远程仓库',
-    '触发 GitHub Actions 自动发布流程'
+    '推送提交到远程仓库',
+    '推送标签到远程仓库'
   ];
 
   steps.forEach((step, index) => {
     console.log(`  ${index + 1}. ${step}`);
   });
+  
+  console.log(chalk.gray('\n  提交信息预览: "chore: release ' + newVersion + '"'));
 
   // 确认执行
   const { confirm } = await prompts({
@@ -321,8 +323,7 @@ async function main() {
     exec(`git push origin ${tagName}`);
 
     console.log(chalk.green.bold('\n✅ 发布成功！\n'));
-    console.log(chalk.white(`新版本 ${newVersion} 已发布`));
-    console.log(chalk.white(`GitHub Actions 将自动执行后续发布流程`));
+    console.log(chalk.white(`版本 ${newVersion} 已创建并推送到远程仓库`));
     
     // 显示如何安装新版本
     console.log(chalk.blue.bold('\n📦 安装方式:'));
