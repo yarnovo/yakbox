@@ -88,7 +88,7 @@ alpha → beta → rc → production
 6. **自动化流程**
    - GitHub Actions 自动执行
    - 发布到 NPM
-   - 部署到 Cloudflare CDN
+   - 自动同步到 jsDelivr CDN
    - 创建 GitHub Release
 
 ## 使用示例

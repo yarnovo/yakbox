@@ -12,9 +12,9 @@
 #### 1. UMD 格式 + CDN（传统方式）
 ```html
 <!-- 直接在 HTML 中使用 -->
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/your-chat-window@1.0.0/dist/chat-window.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/chat-window.umd.js"></script>
 
 <script>
   // 直接使用全局变量
@@ -38,7 +38,7 @@
 ```html
 <!-- 使用 ES Modules -->
 <script type="module">
-  import { ChatWindow } from 'https://unpkg.com/your-chat-window@1.0.0/dist/chat-window.esm.js';
+  import { ChatWindow } from 'https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/chat-window.es.js';
   // 使用现代 JavaScript
 </script>
 ```
@@ -79,7 +79,7 @@
 ### 场景二：在线演示/CodePen
 ```html
 <!-- 在 CodePen、JSFiddle 等在线编辑器中 -->
-<script src="https://unpkg.com/your-chat-window"></script>
+<script src="https://cdn.jsdelivr.net/npm/your-chat-window"></script>
 <script>
   // 立即可用，无需配置
 </script>
@@ -99,8 +99,7 @@ function add_chat_widget() {
 
 | CDN 服务 | ESM 支持 | UMD 支持 | 特点 |
 |----------|----------|----------|------|
-| unpkg | ✅ | ✅ | 自动从 npm 同步 |
-| jsDelivr | ✅ | ✅ | 全球 CDN，中国可访问 |
+| jsDelivr | ✅ | ✅ | 全球 CDN，中国可访问，自动从 npm 同步 |
 | cdnjs | ⚠️ | ✅ | 需要手动提交 |
 | ESM.sh | ✅ | ❌ | 专门的 ESM CDN |
 | Skypack | ✅ | ❌ | 优化的 ESM CDN |
@@ -133,7 +132,6 @@ build: {
       "require": "./dist/chat-window.umd.js"
     }
   },
-  "unpkg": "./dist/chat-window.umd.js",     // unpkg CDN
   "jsdelivr": "./dist/chat-window.umd.js"   // jsDelivr CDN
 }
 ```

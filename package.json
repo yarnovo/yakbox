@@ -13,7 +13,6 @@
       "require": "./dist/chat-window.umd.js"
     }
   },
-  "unpkg": "./dist/chat-window.umd.js",
   "jsdelivr": "./dist/chat-window.umd.js",
   "files": [
     "dist"

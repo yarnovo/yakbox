@@ -66,7 +66,7 @@ npm run lint && npm run typecheck && npm test
 - **类型文件**：使用 vite-plugin-dts 自动生成 TypeScript 类型定义
 - **UMD 用途**：CDN 使用、快速集成、在线演示
 - **ESM 用途**：现代项目、Tree Shaking、更好性能
-- **CDN 友好**：配置了 unpkg 和 jsdelivr 字段
+- **CDN 友好**：配置了 jsdelivr 字段，自动同步到 jsDelivr CDN
 - **构建产物**：
   - `dist/chat-window.umd.js` - UMD 格式 (~6.3KB, gzip ~2.7KB)
   - `dist/chat-window.es.js` - ESM 格式 (~8.1KB, gzip ~2.8KB)

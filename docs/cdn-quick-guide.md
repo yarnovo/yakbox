@@ -2,16 +2,7 @@
 
 ## 发布到 npm 后自动可用的 CDN
 
-### 1. unpkg
-```html
-<!-- 自动获取 package.json 中 unpkg 字段指定的文件 -->
-<script src="https://unpkg.com/@course-gen/chat-window"></script>
-
-<!-- 指定版本 -->
-<script src="https://unpkg.com/@course-gen/chat-window@1.0.0"></script>
-```
-
-### 2. jsDelivr
+### jsDelivr（推荐）
 ```html
 <!-- 自动获取 package.json 中 jsdelivr 字段指定的文件 -->
 <script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window"></script>
@@ -32,7 +23,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- Chat Window 组件 -->
-  <script src="https://unpkg.com/@course-gen/chat-window"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window"></script>
 </head>
 <body>
   <div id="app"></div>
@@ -81,4 +72,5 @@ const props: ChatWindowProps = {
 
 1. CDN 版本需要先引入 React 和 ReactDOM
 2. 组件使用 Tailwind CSS 样式，需要引入 Tailwind
-3. 首次发布到 npm 后，CDN 同步需要 5-10 分钟
+3. 首次发布到 npm 后，jsDelivr 会在几分钟内自动同步
+4. jsDelivr 提供全球 CDN 加速，包括中国大陆

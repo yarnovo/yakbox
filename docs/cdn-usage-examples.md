@@ -12,14 +12,14 @@
   <title>Chat Window CDN 示例</title>
   
   <!-- 引入依赖 -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
   
   <!-- 引入 Tailwind CSS (组件样式依赖) -->
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- 引入 Chat Window 组件 -->
-  <script src="https://unpkg.com/chat-window@latest/dist/chat-window.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@latest/dist/chat-window.umd.js"></script>
 </head>
 <body>
   <div id="app"></div>
@@ -54,13 +54,13 @@
 <html>
 <head>
   <!-- 引入 Babel 用于解析 JSX -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
   
   <!-- 其他依赖同上 -->
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/chat-window@latest/dist/chat-window.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chat-window@latest/dist/chat-window.umd.js"></script>
 </head>
 <body>
   <div id="app"></div>
@@ -153,15 +153,15 @@ ReactDOM.render(<App />, document.getElementById('root'));
 function add_chat_widget() {
     // 依赖
     wp_enqueue_script('react', 
-        'https://unpkg.com/react@18/umd/react.production.min.js'
+        'https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js'
     );
     wp_enqueue_script('react-dom', 
-        'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js'
+        'https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js'
     );
     
     // Chat Window
     wp_enqueue_script('chat-window', 
-        'https://unpkg.com/chat-window/dist/chat-window.umd.js',
+        'https://cdn.jsdelivr.net/npm/chat-window/dist/chat-window.umd.js',
         array('react', 'react-dom')
     );
     
@@ -184,17 +184,14 @@ add_action('wp_enqueue_scripts', 'add_chat_widget');
 
 ## CDN 选择建议
 
-1. **unpkg**: `https://unpkg.com/chat-window@latest/dist/chat-window.umd.js`
-   - 自动从 npm 同步
-   - 支持版本锁定
-   - 全球 CDN
-
-2. **jsDelivr**: `https://cdn.jsdelivr.net/npm/chat-window@latest/dist/chat-window.umd.js`
+1. **jsDelivr** (推荐): `https://cdn.jsdelivr.net/npm/chat-window@latest/dist/chat-window.umd.js`
    - 中国可访问
    - 更快的全球 CDN
    - 自动压缩
+   - 自动从 npm 同步
+   - 支持版本锁定
 
-3. **自托管**: 下载文件到自己的服务器
+2. **自托管**: 下载文件到自己的服务器
    - 完全控制
    - 无外部依赖
    - 适合内网环境

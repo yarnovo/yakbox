@@ -16,25 +16,6 @@
   3. 生成 "Automation" 类型的 token
   4. 复制 token 值
 
-### 2. CLOUDFLARE_API_TOKEN
-
-- **用途**: 用于部署静态文件到 Cloudflare Pages CDN
-- **使用位置**: `.github/workflows/release.yml` - 第 235 行
-- **获取方法**:
-  1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
-  2. 进入 My Profile → API Tokens
-  3. 创建自定义 token，权限需要：
-     - Account → Cloudflare Pages:Edit
-     - Zone → Zone:Read
-     - Zone → DNS:Read
-
-### 3. CLOUDFLARE_ACCOUNT_ID
-
-- **用途**: 标识 Cloudflare 账户
-- **使用位置**: `.github/workflows/release.yml` - 第 236 行
-- **获取方法**:
-  1. 在 Cloudflare Dashboard 右侧栏查看
-  2. 直接复制 "Account ID" 值
 
 ## 自动提供的 Secrets
 
@@ -44,7 +25,6 @@
 
 - **用途**: 创建 GitHub Release、上传构建产物
 - **使用位置**: 
-  - `.github/workflows/release.yml` - 第 239 行（Cloudflare 部署）
   - `.github/workflows/release.yml` - 第 300 行（创建 Release）
 - **说明**: GitHub Actions 运行时自动注入
 
@@ -71,10 +51,8 @@
 1. 进入仓库的 Settings 页面
 2. 在左侧菜单选择 "Secrets and variables" → "Actions"
 3. 点击 "New repository secret"
-4. 分别添加上述三个必需的 Secrets：
+4. 添加必需的 Secret：
    - Name: `NPM_TOKEN`
-   - Name: `CLOUDFLARE_API_TOKEN`
-   - Name: `CLOUDFLARE_ACCOUNT_ID`
 
 ### 验证配置
 
@@ -96,13 +74,9 @@ git push origin v0.0.1-test
    - 定期轮换 token
    - 限制 token 权限到最小必需
 
-2. **Cloudflare Pages 项目名**:
-   - 工作流中使用的项目名是 `chat-window-cdn`
-   - 如果使用不同名称，需要修改 `.github/workflows/release.yml` 第 237 行
-
-3. **NPM 包名**:
-   - 确保包名 `chat-window` 未被占用
-   - 如果需要发布到组织，修改 package.json 中的 name 字段
+2. **NPM 包名**:
+   - 确保包名 `@course-gen/chat-window` 未被占用
+   - 包名已配置为组织范围内的包
 
 ## 故障排查
 
@@ -120,9 +94,3 @@ npm ERR! 403 Forbidden
 ```
 解决：确认 NPM_TOKEN 是 "Automation" 类型
 
-### Cloudflare API 权限错误
-
-```
-Error: Unauthorized
-```
-解决：检查 API Token 权限是否包含 Cloudflare Pages:Edit

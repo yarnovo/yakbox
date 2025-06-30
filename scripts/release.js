@@ -333,6 +333,7 @@ async function main() {
     console.log(chalk.blue.bold('\n🔗 相关链接:'));
     console.log(chalk.white('  GitHub Actions: https://github.com/course-gen/chat-window/actions'));
     console.log(chalk.white('  NPM Package: https://www.npmjs.com/package/@course-gen/chat-window'));
+    console.log(chalk.white('  jsDelivr CDN: https://www.jsdelivr.com/package/npm/@course-gen/chat-window'));
 
   } catch (error) {
     console.error(chalk.red('\n❌ 发布过程中出现错误'));
