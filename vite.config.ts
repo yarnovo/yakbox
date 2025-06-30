@@ -23,7 +23,7 @@ const external = [
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react(), 
+    react(),
     tailwindcss(),
     dts({
       insertTypesEntry: true,
@@ -41,9 +41,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(dirname, 'src/index.ts'),
-      name: 'ChatWindow',
       formats: ['es'],
-      fileName: (format) => `chat-window.${format}.js`
+      fileName: 'index',
     },
     rollupOptions: {
       external
@@ -53,11 +52,11 @@ export default defineConfig({
     projects: [{
       extends: true,
       plugins: [
-      // The plugin will run tests for the stories defined in your Storybook config
-      // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
-      storybookTest({
-        configDir: path.join(dirname, '.storybook')
-      })],
+        // The plugin will run tests for the stories defined in your Storybook config
+        // See options at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon#storybooktest
+        storybookTest({
+          configDir: path.join(dirname, '.storybook')
+        })],
       test: {
         name: 'storybook',
         browser: {

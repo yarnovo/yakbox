@@ -2,13 +2,13 @@
   "name": "@course-gen/chat-window",
   "version": "0.0.1-alpha.3",
   "type": "module",
-  "main": "./dist/chat-window.es.js",
-  "module": "./dist/chat-window.es.js",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/chat-window.es.js"
+      "import": "./dist/index.js"
     }
   },
   "files": [

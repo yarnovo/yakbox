@@ -40,8 +40,7 @@ jobs:
         run: |
           echo "Checking build output..."
           ls -la dist/
-          test -f dist/chat-window.umd.js || exit 1
-          test -f dist/chat-window.es.js || exit 1
+          test -f dist/index.js || exit 1
           test -f dist/index.d.ts || exit 1
           echo "✅ All build files present"
           

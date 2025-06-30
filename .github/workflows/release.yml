@@ -90,6 +90,14 @@ jobs:
       - name: Build
         run: npm run build
         
+      - name: Check build output
+        run: |
+          echo "Checking build output..."
+          ls -la dist/
+          test -f dist/index.js || exit 1
+          test -f dist/index.d.ts || exit 1
+          echo "✅ All build files present"
+          
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -195,17 +203,13 @@ jobs:
           
           **CDN (jsDelivr):**
           ```html
-          <!-- UMD -->
-          <script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@${{ needs.validate-tag.outputs.version }}/dist/chat-window.umd.js"></script>
-          
           <!-- ESM -->
           <script type="module">
-            import { ChatWindow } from 'https://cdn.jsdelivr.net/npm/@course-gen/chat-window@${{ needs.validate-tag.outputs.version }}/dist/chat-window.es.js';
+            import { ChatWindow } from 'https://cdn.jsdelivr.net/npm/@course-gen/chat-window@${{ needs.validate-tag.outputs.version }}/dist/index.js';
           </script>
           ```
           
           ### 📊 Bundle Size
-          - UMD: ~6.3KB (gzipped: ~2.7KB)
           - ESM: ~8.1KB (gzipped: ~2.8KB)
           
           ### 🔗 Links
@@ -222,8 +226,7 @@ jobs:
           body_path: release-notes.md
           prerelease: ${{ needs.validate-tag.outputs.is_prerelease == 'true' }}
           files: |
-            dist/chat-window.umd.js
-            dist/chat-window.es.js
+            dist/index.js
             dist/index.d.ts
           token: ${{ secrets.GITHUB_TOKEN }}
           
