@@ -127,6 +127,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const OwnMessage: Story = {
+  name: '自己的消息',
   args: {
     message: '你好，这是我发送的消息',
     isOwn: true,
@@ -136,6 +137,7 @@ export const OwnMessage: Story = {
 };
 
 export const OtherMessage: Story = {
+  name: '他人的消息',
   args: {
     message: '你好，这是别人发送的消息',
     isOwn: false,
@@ -146,6 +148,7 @@ export const OtherMessage: Story = {
 };
 
 export const LongMessage: Story = {
+  name: '长消息',
   args: {
     message: '这是一条非常长的消息，用于测试消息气泡的换行效果。当消息内容超过一定长度时，应该能够自动换行，并且保持良好的可读性。消息气泡的最大宽度应该被限制在容器的70%以内。',
     isOwn: true,
@@ -155,6 +158,7 @@ export const LongMessage: Story = {
 };
 
 export const FailedMessage: Story = {
+  name: '失败的消息',
   args: {
     message: '这条消息发送失败了',
     isOwn: true,
@@ -165,6 +169,7 @@ export const FailedMessage: Story = {
 };
 
 export const NoAvatar: Story = {
+  name: '无头像',
   args: {
     message: '这条消息没有头像',
     isOwn: false,
@@ -173,6 +178,7 @@ export const NoAvatar: Story = {
 };
 
 export const NoTimestamp: Story = {
+  name: '无时间戳',
   args: {
     message: '这条消息没有时间戳',
     isOwn: true,
@@ -181,6 +187,7 @@ export const NoTimestamp: Story = {
 };
 
 export const MessageGroup: Story = {
+  name: '消息组',
   args: {
     message: '示例消息',
     isOwn: true,

@@ -11,15 +11,18 @@ export interface ChatWindowProps {
   licenseKey?: string;
 }
 
-export const ChatWindow: React.FC<ChatWindowProps> = ({
+export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(({
   title = 'Chat Window',
   placeholder = 'Type a message...',
   onSendMessage,
   currentUserId = 'user-1',
   licenseKey = ''
-}) => {
+}, ref) => {
   const [inputValue, setInputValue] = useState('');
   const messageListRef = useRef<MessageListMethods>(null);
+  
+  // 将内部的 messageListRef 暴露给外部
+  React.useImperativeHandle(ref, () => messageListRef.current!, []);
 
   const handleSend = useCallback(() => {
     if (inputValue.trim() && messageListRef.current) {
@@ -113,4 +116,6 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
       </div>
     </div>
   );
-};
+});
+
+ChatWindow.displayName = 'ChatWindow';

@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
+import { fn, userEvent, within, expect } from 'storybook/test';
+import { useRef, useState } from 'react';
 import { ChatWindow } from '../components/ChatWindow';
+import type { MessageListMethods } from '../components/MessageList';
 
 const meta = {
   title: 'Components/ChatWindow',
@@ -167,13 +169,40 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  name: '默认样式',
   args: {
     title: '聊天窗口',
     placeholder: '输入消息...',
   },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    
+    // 等待组件渲染
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // 查找输入框和发送按钮
+    const input = canvas.getByPlaceholderText('输入消息...');
+    const sendButton = canvas.getByRole('button');
+    
+    // 测试输入和发送消息
+    await userEvent.type(input, '你好，这是一条测试消息');
+    await userEvent.click(sendButton);
+    
+    // 验证输入框已清空
+    expect(input).toHaveValue('');
+    
+    // 验证 onSendMessage 被调用
+    expect(args.onSendMessage).toHaveBeenCalled();
+    
+    // 等待消息出现在列表中
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const message = await canvas.findByText('你好，这是一条测试消息');
+    expect(message).toBeInTheDocument();
+  },
 };
 
 export const CustomTitle: Story = {
+  name: '自定义标题',
   args: {
     title: '客服支持',
     placeholder: '请描述您的问题...',
@@ -181,14 +210,41 @@ export const CustomTitle: Story = {
 };
 
 export const EnglishVersion: Story = {
+  name: '英文版本',
   args: {
     title: 'Chat Support',
     placeholder: 'Type your message here...',
     currentUserId: 'user-en',
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // 等待组件渲染
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // 测试使用 Enter 键发送消息
+    const input = canvas.getByPlaceholderText('Type your message here...');
+    
+    await userEvent.type(input, 'Hello, I need help!');
+    await userEvent.keyboard('{Enter}');
+    
+    // 验证输入框已清空
+    expect(input).toHaveValue('');
+    
+    // 验证消息出现
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const message = await canvas.findByText('Hello, I need help!');
+    expect(message).toBeInTheDocument();
+    
+    // 等待模拟回复
+    await new Promise(resolve => setTimeout(resolve, 1600));
+    const reply = await canvas.findByText(/收到消息.*Hello, I need help!/);
+    expect(reply).toBeInTheDocument();
+  },
 };
 
 export const WithLongTitle: Story = {
+  name: '长标题',
   args: {
     title: '这是一个非常长的标题用于测试标题栏的显示效果',
     placeholder: '输入消息...',
@@ -209,5 +265,182 @@ const InteractiveChatWindow = () => {
 };
 
 export const Interactive: Story = {
+  name: '交互式窗口',
   render: () => <InteractiveChatWindow />,
+};
+
+const AdvancedChatWindow = () => {
+  const messageListRef = useRef<MessageListMethods>(null);
+  const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
+
+  const handleReceiveAndUpdate = () => {
+    if (!messageListRef.current) return;
+
+    // 接收一条消息并获取其 ID
+    const messageId = messageListRef.current.receive({
+      user: {
+        id: 'assistant-1',
+        name: 'AI Assistant',
+        avatar: 'https://i.pravatar.cc/30?u=assistant',
+      },
+      message: '正在处理您的请求...'
+    });
+
+    // 保存消息 ID
+    setReceivedMessages(prev => [...prev, messageId]);
+
+    // 2秒后更新消息内容
+    setTimeout(() => {
+      messageListRef.current?.update(messageId, {
+        message: '✅ 请求已处理完成！这是更新后的消息。'
+      });
+    }, 2000);
+
+    // 4秒后再次更新，展示更复杂的状态
+    setTimeout(() => {
+      messageListRef.current?.update(messageId, {
+        message: '✅ 请求已处理完成！这是更新后的消息。\n\n📊 处理结果：成功\n⏱️ 耗时：3.5秒'
+      });
+    }, 4000);
+  };
+
+  const handleSimulateTyping = () => {
+    if (!messageListRef.current) return;
+
+    // 接收"正在输入"消息
+    const typingMessageId = messageListRef.current.receive({
+      user: {
+        id: 'assistant-2',
+        name: 'Support Agent',
+        avatar: 'https://i.pravatar.cc/30?u=support',
+      },
+      message: '正在输入...'
+    });
+
+    // 模拟逐字输入效果
+    const fullMessage = '您好！我是客服代表，很高兴为您服务。请问有什么可以帮助您的吗？';
+    let currentText = '';
+    let index = 0;
+
+    const typeInterval = setInterval(() => {
+      if (index < fullMessage.length) {
+        currentText += fullMessage[index];
+        messageListRef.current?.update(typingMessageId, {
+          message: currentText + '▊'
+        });
+        index++;
+      } else {
+        // 输入完成，移除光标
+        messageListRef.current?.update(typingMessageId, {
+          message: currentText
+        });
+        clearInterval(typeInterval);
+      }
+    }, 50);
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-2">
+        <button
+          onClick={handleReceiveAndUpdate}
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          接收并更新消息
+        </button>
+        <button
+          onClick={handleSimulateTyping}
+          className="px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
+        >
+          模拟打字效果
+        </button>
+      </div>
+      <ChatWindow
+        ref={messageListRef}
+        title="高级聊天功能演示"
+        placeholder="试试发送消息或点击上方按钮..."
+        onSendMessage={(message) => {
+          console.log('发送的消息:', message);
+        }}
+      />
+      {receivedMessages.length > 0 && (
+        <div className="text-sm text-gray-600">
+          已接收的消息 ID: {receivedMessages.join(', ')}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const AdvancedFeatures: Story = {
+  name: '高级功能',
+  render: () => <AdvancedChatWindow />,
+  parameters: {
+    docs: {
+      description: {
+        story: `
+这个示例展示了如何使用 receive 方法的返回值来更新消息：
+
+1. **接收并更新消息**：点击按钮接收一条消息，然后使用返回的 ID 多次更新消息内容
+2. **模拟打字效果**：展示如何创建逐字显示的打字动画效果
+
+关键代码：
+\`\`\`tsx
+// 接收消息并获取 ID
+const messageId = messageListRef.current.receive({
+  user: { id: 'bot', name: 'Bot' },
+  message: '初始消息'
+});
+
+// 使用 ID 更新消息
+messageListRef.current.update(messageId, {
+  message: '更新后的消息'
+});
+\`\`\`
+        `,
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // 等待组件渲染
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // 点击"接收并更新消息"按钮
+    const receiveUpdateButton = canvas.getByText('接收并更新消息');
+    await userEvent.click(receiveUpdateButton);
+    
+    // 验证初始消息出现
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const initialMessage = await canvas.findByText('正在处理您的请求...');
+    expect(initialMessage).toBeInTheDocument();
+    
+    // 等待第一次更新
+    await new Promise(resolve => setTimeout(resolve, 2100));
+    const updatedMessage = await canvas.findByText('✅ 请求已处理完成！这是更新后的消息。');
+    expect(updatedMessage).toBeInTheDocument();
+    
+    // 等待第二次更新
+    await new Promise(resolve => setTimeout(resolve, 2100));
+    const finalMessage = await canvas.findByText(/处理结果：成功/);
+    expect(finalMessage).toBeInTheDocument();
+    
+    // 测试打字效果
+    const typingButton = canvas.getByText('模拟打字效果');
+    await userEvent.click(typingButton);
+    
+    // 验证打字开始 - 检查是否有带光标的文本
+    await new Promise(resolve => setTimeout(resolve, 500));
+    // 查找包含光标符号的元素
+    const typingMessage = await canvas.findByText((content) => {
+      return content.includes('▊');
+    });
+    expect(typingMessage).toBeInTheDocument();
+    
+    // 等待打字完成
+    await new Promise(resolve => setTimeout(resolve, 4000));
+    const completedMessage = await canvas.findByText('您好！我是客服代表，很高兴为您服务。请问有什么可以帮助您的吗？');
+    expect(completedMessage).toBeInTheDocument();
+  },
 };
