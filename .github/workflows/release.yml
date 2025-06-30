@@ -116,10 +116,17 @@ jobs:
           name: dist
           path: dist/
           
-      - name: Update package version
+      - name: Verify package version matches tag
         run: |
-          npm version ${{ needs.validate-tag.outputs.version }} --no-git-tag-version
-          echo "📦 Updated package.json version to ${{ needs.validate-tag.outputs.version }}"
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          TAG_VERSION="${{ needs.validate-tag.outputs.version }}"
+          if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
+            echo "❌ Error: package.json version ($PACKAGE_VERSION) doesn't match tag version ($TAG_VERSION)"
+            echo "📝 Please update package.json version before creating the tag"
+            echo "   Run: npm version $TAG_VERSION"
+            exit 1
+          fi
+          echo "✅ Version verified: $PACKAGE_VERSION"
           
       - name: Publish to NPM
         run: |
