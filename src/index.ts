@@ -12,4 +12,4 @@ export type {
 export { default as MessageBubble } from './components/MessageBubble';
 export type { MessageBubbleProps } from './components/MessageBubble';
 
-export { AlertTriangleIcon, SendIcon, RefreshIcon } from './components/icons';
+// Icons are now provided by lucide-react

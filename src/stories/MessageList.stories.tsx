@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within, expect } from 'storybook/test';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import MessageList from '../components/MessageList';
-import type { MessageListMethods } from '../components/MessageList';
+import type { MessageListMethods, ChatMessage } from '../components/MessageList';
 
 const meta = {
   title: 'Components/MessageList',
@@ -156,18 +156,23 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // 用于测试的 MessageList 包装组件
-interface TestMessageListProps extends React.ComponentProps<typeof MessageList> {
-  onSend?: typeof fn;
-  onRetry?: typeof fn;
+interface TestMessageListProps {
+  currentUserId: string;
+  licenseKey?: string;
+  onSend?: (message: ChatMessage) => void;
+  onRetry?: (messageId: string) => void;
+  exposeRef?: (ref: React.RefObject<MessageListMethods | null>) => void;
 }
 
-const TestMessageList = ({ onSend = fn(), onRetry = fn(), ...props }: TestMessageListProps) => {
+const TestMessageList = ({ onSend = fn(), onRetry = fn(), exposeRef, ...props }: TestMessageListProps) => {
   const messageListRef = useRef<MessageListMethods>(null);
   
-  // 将 ref 暴露到 window 对象上，以便测试访问
-  if (typeof window !== 'undefined') {
-    (window as Record<string, unknown>).messageListRef = messageListRef;
-  }
+  // 通过 prop 回调暴露 ref，而不是挂载到 window
+  useEffect(() => {
+    if (exposeRef) {
+      exposeRef(messageListRef);
+    }
+  }, [exposeRef]);
   
   return (
     <MessageList
@@ -178,6 +183,9 @@ const TestMessageList = ({ onSend = fn(), onRetry = fn(), ...props }: TestMessag
     />
   );
 };
+
+// 创建一个用于存储 ref 的容器
+let testMessageListRef: React.RefObject<MessageListMethods | null> | null = null;
 
 export const Default: Story = {
   name: '默认样式',
@@ -191,19 +199,27 @@ export const Interactive: Story = {
   args: {
     currentUserId: 'user-1',
   },
-  render: (args) => <TestMessageList {...args} />,
+  render: (args) => (
+    <TestMessageList 
+      {...args} 
+      exposeRef={(ref) => { testMessageListRef = ref; }}
+    />
+  ),
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     
-    // 等待组件渲染
+    // 等待组件渲染和 ref 设置
     await new Promise(resolve => setTimeout(resolve, 100));
     
-    // 获取 messageListRef
-    const messageListRef = (window as Record<string, unknown>).messageListRef as React.RefObject<MessageListMethods>;
+    // 使用闭包中的 ref
+    const messageListRef = testMessageListRef;
+    if (!messageListRef?.current) {
+      throw new Error('MessageList ref not available');
+    }
     
     // 接收第一条消息
     await new Promise(resolve => setTimeout(resolve, 500));
-    messageListRef.current?.receive({
+    messageListRef.current.receive({
       user: {
         id: 'assistant-1',
         name: 'Assistant',
@@ -218,7 +234,7 @@ export const Interactive: Story = {
     
     // 发送一条消息
     await new Promise(resolve => setTimeout(resolve, 1000));
-    messageListRef.current?.send('谢谢！这个组件看起来很不错。');
+    messageListRef.current.send('谢谢！这个组件看起来很不错。');
     
     // 验证发送的消息出现
     const sentMessage = await canvas.findByText('谢谢！这个组件看起来很不错。');
@@ -229,7 +245,7 @@ export const Interactive: Story = {
     
     // 接收回复消息
     await new Promise(resolve => setTimeout(resolve, 1000));
-    messageListRef.current?.receive({
+    messageListRef.current.receive({
       user: {
         id: 'assistant-1',
         name: 'Assistant',
@@ -244,11 +260,11 @@ export const Interactive: Story = {
     
     // 发送一条会失败的消息
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const id4 = messageListRef.current?.send('这条消息会发送失败');
+    const id4 = messageListRef.current.send('这条消息会发送失败');
     
     // 标记消息为失败
     await new Promise(resolve => setTimeout(resolve, 1000));
-    messageListRef.current?.update(id4, { failed: true });
+    messageListRef.current.update(id4, { failed: true });
     
     // 验证失败消息显示重试按钮
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -262,7 +278,12 @@ export const WithDifferentUser: Story = {
   args: {
     currentUserId: 'user-2',
   },
-  render: (args) => <TestMessageList {...args} />,
+  render: (args) => (
+    <TestMessageList 
+      {...args} 
+      exposeRef={(ref) => { testMessageListRef = ref; }}
+    />
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     
@@ -270,11 +291,14 @@ export const WithDifferentUser: Story = {
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // 获取 messageListRef
-    const messageListRef = (window as Record<string, unknown>).messageListRef as React.RefObject<MessageListMethods>;
+    const messageListRef = testMessageListRef;
+    if (!messageListRef?.current) {
+      throw new Error('MessageList ref not available');
+    }
     
     // 从 user-2 视角接收消息
     await new Promise(resolve => setTimeout(resolve, 500));
-    messageListRef.current?.receive({
+    messageListRef.current.receive({
       user: {
         id: 'assistant-1',
         name: 'Assistant',
@@ -285,11 +309,11 @@ export const WithDifferentUser: Story = {
     
     // 从 user-2 视角发送消息（应该显示在右侧）
     await new Promise(resolve => setTimeout(resolve, 1000));
-    messageListRef.current?.send('谢谢！这个组件看起来很不错。');
+    messageListRef.current.send('谢谢！这个组件看起来很不错。');
     
     // 从其他用户接收消息（应该显示在左侧）
     await new Promise(resolve => setTimeout(resolve, 1000));
-    messageListRef.current?.receive({
+    messageListRef.current.receive({
       user: {
         id: 'user-1',
         name: 'User 1',
@@ -315,7 +339,12 @@ export const WithFailedMessages: Story = {
   args: {
     currentUserId: 'user-1',
   },
-  render: (args) => <TestMessageList {...args} />,
+  render: (args) => (
+    <TestMessageList 
+      {...args} 
+      exposeRef={(ref) => { testMessageListRef = ref; }}
+    />
+  ),
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     
@@ -323,10 +352,13 @@ export const WithFailedMessages: Story = {
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // 获取 messageListRef
-    const messageListRef = (window as Record<string, unknown>).messageListRef as React.RefObject<MessageListMethods>;
+    const messageListRef = testMessageListRef;
+    if (!messageListRef?.current) {
+      throw new Error('MessageList ref not available');
+    }
     
     // 添加一些成功的消息
-    messageListRef.current?.receive({
+    messageListRef.current.receive({
       user: {
         id: 'user-2',
         name: 'John',
@@ -337,15 +369,15 @@ export const WithFailedMessages: Story = {
     
     // 添加一条失败的消息
     await new Promise(resolve => setTimeout(resolve, 500));
-    const failedId = messageListRef.current?.send('这条消息发送失败了');
+    const failedId = messageListRef.current.send('这条消息发送失败了');
     
     // 标记为失败
     await new Promise(resolve => setTimeout(resolve, 100));
-    messageListRef.current?.update(failedId, { failed: true });
+    messageListRef.current.update(failedId, { failed: true });
     
     // 再添加一条正常消息
     await new Promise(resolve => setTimeout(resolve, 500));
-    messageListRef.current?.receive({
+    messageListRef.current.receive({
       user: {
         id: 'user-2',
         name: 'John',
@@ -366,7 +398,7 @@ export const WithFailedMessages: Story = {
     
     // 模拟重试成功
     await new Promise(resolve => setTimeout(resolve, 500));
-    messageListRef.current?.update(failedId, { failed: false });
+    messageListRef.current.update(failedId, { failed: false });
     
     // 验证重试按钮消失
     await new Promise(resolve => setTimeout(resolve, 500));
