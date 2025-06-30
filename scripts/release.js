@@ -258,8 +258,7 @@ async function main() {
     `更新版本号到 ${newVersion}`,
     `提交版本更新 (commit message: "chore: release ${newVersion}")`,
     `创建 Git 标签 ${tagName}`,
-    '推送提交到远程仓库',
-    '推送标签到远程仓库'
+    '推送提交和标签到远程仓库 (git push --follow-tags)'
   ];
 
   steps.forEach((step, index) => {
@@ -314,13 +313,9 @@ async function main() {
     console.log(chalk.cyan(`\n🏷️  创建标签 ${tagName}...`));
     exec(`git tag -a ${tagName} -m "Release ${newVersion}"`);
 
-    // 8. 推送代码
-    console.log(chalk.cyan('\n📤 推送代码到远程仓库...'));
-    exec('git push origin ' + currentBranch);
-
-    // 9. 推送标签
-    console.log(chalk.cyan('\n📤 推送标签到远程仓库...'));
-    exec(`git push origin ${tagName}`);
+    // 8. 推送提交和标签
+    console.log(chalk.cyan('\n📤 推送提交和标签到远程仓库...'));
+    exec('git push --follow-tags');
 
     console.log(chalk.green.bold('\n✅ 发布成功！\n'));
     console.log(chalk.white(`版本 ${newVersion} 已创建并推送到远程仓库`));
