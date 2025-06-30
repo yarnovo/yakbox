@@ -1,17 +1,17 @@
 # @course-gen/chat-window
 
-一个现代化、高性能的 React 聊天窗口组件，基于虚拟滚动技术，提供流畅的聊天体验。
+一个现代化、高性能的 React 聊天窗口组件，基于虚拟滚动技术和 shadcn/ui 设计系统，提供流畅的聊天体验。
 
 ## 🌟 特性
 
 - 🚀 **高性能虚拟滚动** - 基于 @virtuoso.dev/message-list，可处理海量消息
 - 📱 **响应式设计** - 自适应各种屏幕尺寸
-- 🎨 **现代化 UI** - 基于 Tailwind CSS，界面美观大方
+- 🎨 **现代化 UI** - 基于 shadcn/ui 设计系统，支持主题定制
 - 💬 **消息状态管理** - 支持发送、接收、重试等多种状态
 - 🔄 **实时更新** - 消息状态实时同步，体验流畅
-- 📦 **多格式导出** - 同时提供 UMD 和 ESM 格式，支持 CDN 和 npm 使用
+- 📦 **ESM 格式** - 原生 ES 模块，更好的 Tree Shaking
 - 🛡️ **TypeScript 支持** - 完整的类型定义，开发体验极佳
-- ⚡ **轻量级** - 打包体积小（UMD ~6.3KB gzipped）
+- 🎯 **图标系统** - 使用 lucide-react，丰富的图标选择
 
 ## 📦 安装
 
@@ -28,27 +28,10 @@ yarn add @course-gen/chat-window
 pnpm add @course-gen/chat-window
 ```
 
-### 使用 CDN
-
-您可以通过 CDN 直接在 HTML 中使用：
-
-```html
-<!-- React 和 ReactDOM（必需） -->
-<script crossorigin src="https://unpkg.com/react@19/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@19/umd/react-dom.production.min.js"></script>
-
-<!-- ChatWindow 组件 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window/dist/chat-window.umd.js"></script>
-
-<!-- 样式 -->
-<style>
-  /* 包含必要的 Tailwind CSS 样式 */
-</style>
-```
 
 ## 🚀 快速开始
 
-### ESM 方式使用
+### 基本使用
 
 ```tsx
 import { ChatWindow } from '@course-gen/chat-window';
@@ -71,27 +54,6 @@ function App() {
 }
 ```
 
-### UMD 方式使用
-
-```html
-<div id="chat-root"></div>
-
-<script>
-  const { ChatWindow } = window.ChatWindow;
-  const root = ReactDOM.createRoot(document.getElementById('chat-root'));
-  
-  root.render(
-    React.createElement(ChatWindow, {
-      title: "客服聊天",
-      placeholder: "请输入消息...",
-      currentUserId: "user-123",
-      onSendMessage: (message) => {
-        console.log('发送消息:', message);
-      }
-    })
-  );
-</script>
-```
 
 ## 📖 API 文档
 
@@ -174,25 +136,36 @@ function AdvancedChat() {
 }
 ```
 
-## 🎨 自定义样式
+## 🎨 主题定制
 
-组件使用 Tailwind CSS 构建，您可以通过以下方式自定义样式：
+组件基于 shadcn/ui 设计系统，支持完整的主题定制：
 
-1. **覆盖 CSS 变量**
+### CSS 变量
+组件使用 CSS 变量来控制颜色，你可以通过覆盖这些变量来自定义主题：
+
 ```css
 :root {
-  --chat-primary-color: #3b82f6;
-  --chat-bg-color: #f9fafb;
-  /* 更多自定义变量... */
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --primary: 222.2 47.4% 11.2%;
+  --primary-foreground: 210 40% 98%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --destructive: 0 84.2% 60.2%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  /* ... 更多暗色主题变量 */
 }
 ```
 
-2. **使用自定义 className**
-```tsx
-<div className="custom-chat-wrapper">
-  <ChatWindow />
-</div>
-```
+### 样式组件
+所有组件都遵循 shadcn/ui 的设计规范，确保视觉一致性。
 
 ## 🛠️ 开发
 

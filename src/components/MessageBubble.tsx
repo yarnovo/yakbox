@@ -1,5 +1,7 @@
 import React from 'react';
-import { AlertTriangleIcon } from './icons';
+import { AlertTriangle } from 'lucide-react';
+import { Button } from './ui/button';
+import { cn } from '@/lib/utils';
 
 export interface MessageBubbleProps {
   message: string;
@@ -21,39 +23,42 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onRetry,
 }) => {
   return (
-    <div className={`flex gap-3 pb-3 ${isOwn ? 'flex-row-reverse' : ''}`}>
+    <div className={cn("flex gap-3 pb-3", isOwn && "flex-row-reverse")}>
       {userAvatar && (
         <img 
           src={userAvatar} 
           alt={userName || 'User'}
-          className="rounded-full w-8 h-8 border border-gray-300 flex-shrink-0"
+          className="rounded-full w-8 h-8 border flex-shrink-0"
         />
       )}
-      <div className={`flex flex-col gap-1 max-w-[70%] ${isOwn ? 'items-end' : 'items-start'}`}>
+      <div className={cn("flex flex-col gap-1 max-w-[70%]", isOwn ? 'items-end' : 'items-start')}>
         <div
-          className={`px-4 py-2 rounded-lg relative ${
+          className={cn(
+            "px-4 py-2 rounded-lg relative",
             isOwn 
               ? failed 
-                ? 'bg-red-500 text-white rounded-br-none' 
-                : 'bg-blue-500 text-white rounded-br-none'
-              : 'bg-gray-100 text-gray-900 rounded-bl-none'
-          }`}
+                ? 'bg-destructive text-destructive-foreground rounded-br-none' 
+                : 'bg-primary text-primary-foreground rounded-br-none'
+              : 'bg-muted rounded-bl-none'
+          )}
         >
           {failed && (
-            <div className="absolute -left-8 top-1/2 -translate-y-1/2">
-              <button
+            <div className="absolute -left-10 top-1/2 -translate-y-1/2">
+              <Button
                 onClick={onRetry}
-                className="text-red-500 hover:text-red-600 transition-colors"
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8 text-destructive hover:text-destructive/80"
                 title="重新发送"
               >
-                <AlertTriangleIcon className="w-5 h-5" />
-              </button>
+                <AlertTriangle className="h-4 w-4" />
+              </Button>
             </div>
           )}
           <p className="text-sm break-words">{message}</p>
         </div>
         {timestamp && (
-          <span className={`text-xs ${isOwn ? 'text-gray-500' : 'text-gray-400'}`}>
+          <span className="text-xs text-muted-foreground">
             {new Date(timestamp).toLocaleTimeString([], { 
               hour: '2-digit', 
               minute: '2-digit' 
@@ -61,7 +66,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           </span>
         )}
         {failed && (
-          <span className="text-xs text-red-500">发送失败</span>
+          <span className="text-xs text-destructive">发送失败</span>
         )}
       </div>
     </div>

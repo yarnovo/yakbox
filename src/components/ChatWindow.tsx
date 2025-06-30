@@ -1,7 +1,9 @@
 import React, { useRef, useCallback, useState } from 'react';
 import MessageList from './MessageList';
 import type { MessageListMethods, ChatMessage } from './MessageList';
-import { SendIcon } from './icons';
+import { Send } from 'lucide-react';
+import { Button } from './ui/button';
+import { cn } from '@/lib/utils';
 
 export interface ChatWindowProps {
   title?: string;
@@ -77,14 +79,14 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
   }, []);
 
   return (
-    <div className="flex flex-col h-[600px] w-full max-w-2xl bg-white rounded-lg shadow-lg overflow-hidden">
+    <div className="flex flex-col h-[600px] w-full max-w-2xl bg-background rounded-lg border shadow-sm overflow-hidden">
       {/* Header */}
-      <div className="px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+      <div className="px-6 py-4 border-b bg-muted/50">
         <h3 className="text-lg font-semibold">{title}</h3>
       </div>
       
       {/* Messages Container */}
-      <div className="flex-1 overflow-hidden bg-gray-50">
+      <div className="flex-1 overflow-hidden bg-background">
         <MessageList
           ref={messageListRef}
           currentUserId={currentUserId}
@@ -95,23 +97,29 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
       </div>
       
       {/* Input Container */}
-      <div className="border-t border-gray-200 px-4 py-4 bg-white">
-        <div className="flex space-x-2">
+      <div className="border-t px-4 py-4">
+        <div className="flex items-center gap-2">
           <input
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder={placeholder}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+            className={cn(
+              "flex-1 px-4 py-2 text-sm rounded-lg border bg-background",
+              "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+              "placeholder:text-muted-foreground",
+              "disabled:cursor-not-allowed disabled:opacity-50"
+            )}
           />
-          <button
+          <Button
             onClick={handleSend}
             disabled={!inputValue.trim()}
-            className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200"
+            size="icon"
+            className="rounded-lg"
           >
-            <SendIcon className="w-5 h-5" />
-          </button>
+            <Send className="h-4 w-4" />
+          </Button>
         </div>
       </div>
     </div>

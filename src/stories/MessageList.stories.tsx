@@ -156,12 +156,17 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // 用于测试的 MessageList 包装组件
-const TestMessageList = ({ onSend = fn(), onRetry = fn(), ...props }: any) => {
+interface TestMessageListProps extends React.ComponentProps<typeof MessageList> {
+  onSend?: typeof fn;
+  onRetry?: typeof fn;
+}
+
+const TestMessageList = ({ onSend = fn(), onRetry = fn(), ...props }: TestMessageListProps) => {
   const messageListRef = useRef<MessageListMethods>(null);
   
   // 将 ref 暴露到 window 对象上，以便测试访问
   if (typeof window !== 'undefined') {
-    (window as any).messageListRef = messageListRef;
+    (window as Record<string, unknown>).messageListRef = messageListRef;
   }
   
   return (
@@ -194,11 +199,11 @@ export const Interactive: Story = {
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // 获取 messageListRef
-    const messageListRef = (window as any).messageListRef;
+    const messageListRef = (window as Record<string, unknown>).messageListRef as React.RefObject<MessageListMethods>;
     
     // 接收第一条消息
     await new Promise(resolve => setTimeout(resolve, 500));
-    const id1 = messageListRef.current?.receive({
+    messageListRef.current?.receive({
       user: {
         id: 'assistant-1',
         name: 'Assistant',
@@ -213,7 +218,7 @@ export const Interactive: Story = {
     
     // 发送一条消息
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const id2 = messageListRef.current?.send('谢谢！这个组件看起来很不错。');
+    messageListRef.current?.send('谢谢！这个组件看起来很不错。');
     
     // 验证发送的消息出现
     const sentMessage = await canvas.findByText('谢谢！这个组件看起来很不错。');
@@ -224,7 +229,7 @@ export const Interactive: Story = {
     
     // 接收回复消息
     await new Promise(resolve => setTimeout(resolve, 1000));
-    const id3 = messageListRef.current?.receive({
+    messageListRef.current?.receive({
       user: {
         id: 'assistant-1',
         name: 'Assistant',
@@ -265,7 +270,7 @@ export const WithDifferentUser: Story = {
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // 获取 messageListRef
-    const messageListRef = (window as any).messageListRef;
+    const messageListRef = (window as Record<string, unknown>).messageListRef as React.RefObject<MessageListMethods>;
     
     // 从 user-2 视角接收消息
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -318,7 +323,7 @@ export const WithFailedMessages: Story = {
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // 获取 messageListRef
-    const messageListRef = (window as any).messageListRef;
+    const messageListRef = (window as Record<string, unknown>).messageListRef as React.RefObject<MessageListMethods>;
     
     // 添加一些成功的消息
     messageListRef.current?.receive({
