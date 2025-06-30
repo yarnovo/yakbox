@@ -193,14 +193,30 @@ async function main() {
     }
   } else if (isPrerelease || releaseTypeChoice === 'production') {
     // 需要选择版本递增类型
+    const [major, minor, patch] = currentVersion.split('.').map(Number);
+    
+    const prereleaseSuffix = isPrerelease ? `-${prereleaseType}.0` : '';
+    
     const { selectedVersionBump } = await prompts({
       type: 'select',
       name: 'selectedVersionBump',
       message: '选择版本号迭代类型',
       choices: [
-        { title: 'Patch (修订号)', value: 'patch', description: '错误修复 (1.0.0 → 1.0.1)' },
-        { title: 'Minor (次版本号)', value: 'minor', description: '新功能，向后兼容 (1.0.0 → 1.1.0)' },
-        { title: 'Major (主版本号)', value: 'major', description: '重大更新，可能不兼容 (1.0.0 → 2.0.0)' }
+        { 
+          title: 'Patch (修订号)', 
+          value: 'patch', 
+          description: `错误修复 (${currentVersion} → ${major}.${minor}.${patch + 1}${prereleaseSuffix})` 
+        },
+        { 
+          title: 'Minor (次版本号)', 
+          value: 'minor', 
+          description: `新功能，向后兼容 (${currentVersion} → ${major}.${minor + 1}.0${prereleaseSuffix})` 
+        },
+        { 
+          title: 'Major (主版本号)', 
+          value: 'major', 
+          description: `重大更新，可能不兼容 (${currentVersion} → ${major + 1}.0.0${prereleaseSuffix})` 
+        }
       ],
       initial: 0
     });
