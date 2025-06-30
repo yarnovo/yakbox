@@ -36,9 +36,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
           className={cn(
             "px-4 py-2 rounded-lg relative",
             isOwn 
-              ? failed 
-                ? 'bg-destructive text-destructive-foreground rounded-br-none' 
-                : 'bg-primary text-primary-foreground rounded-br-none'
+              ? 'bg-primary text-primary-foreground rounded-br-none'
               : 'bg-muted rounded-bl-none'
           )}
         >
