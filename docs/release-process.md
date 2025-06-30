@@ -174,18 +174,28 @@ $ npm run release
 
 ### 安装最新正式版
 ```bash
-npm install chat-window
+npm install @course-gen/chat-window
+```
+
+### 安装最新 Alpha 版
+```bash
+npm install @course-gen/chat-window@alpha
 ```
 
 ### 安装最新 Beta 版
 ```bash
-npm install chat-window@beta
+npm install @course-gen/chat-window@beta
+```
+
+### 安装最新 RC 版
+```bash
+npm install @course-gen/chat-window@rc
 ```
 
 ### 安装特定版本
 ```bash
-npm install chat-window@1.0.0
-npm install chat-window@1.1.0-beta.0
+npm install @course-gen/chat-window@1.0.0
+npm install @course-gen/chat-window@1.1.0-beta.0
 ```
 
 ## 注意事项

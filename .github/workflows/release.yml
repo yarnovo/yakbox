@@ -218,17 +218,17 @@ jobs:
           
           **NPM:**
           ```bash
-          npm install chat-window@${{ needs.validate-tag.outputs.version }}
+          npm install @course-gen/chat-window@${{ needs.validate-tag.outputs.version }}
           ```
           
           **CDN:**
           ```html
           <!-- UMD -->
-          <script src="https://unpkg.com/chat-window@${{ needs.validate-tag.outputs.version }}/dist/chat-window.umd.js"></script>
+          <script src="https://unpkg.com/@course-gen/chat-window@${{ needs.validate-tag.outputs.version }}/dist/chat-window.umd.js"></script>
           
           <!-- ESM -->
           <script type="module">
-            import { ChatWindow } from 'https://unpkg.com/chat-window@${{ needs.validate-tag.outputs.version }}/dist/chat-window.es.js';
+            import { ChatWindow } from 'https://unpkg.com/@course-gen/chat-window@${{ needs.validate-tag.outputs.version }}/dist/chat-window.es.js';
           </script>
           ```
           
@@ -237,7 +237,7 @@ jobs:
           - ESM: ~8.1KB (gzipped: ~2.8KB)
           
           ### 🔗 Links
-          - [NPM Package](https://www.npmjs.com/package/chat-window)
+          - [NPM Package](https://www.npmjs.com/package/@course-gen/chat-window)
           - [CDN Latest](https://chat-window-cdn.pages.dev/latest/chat-window.umd.js)
           - [CDN Versioned](https://chat-window-cdn.pages.dev/v${{ needs.validate-tag.outputs.version }}/chat-window.umd.js)
           
@@ -261,10 +261,10 @@ jobs:
           echo "## 🎉 Release v${{ needs.validate-tag.outputs.version }} Complete!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Published to:" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ NPM: https://www.npmjs.com/package/${{ github.event.repository.name }}/v/${{ needs.validate-tag.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ NPM: https://www.npmjs.com/package/@course-gen/chat-window/v/${{ needs.validate-tag.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ Cloudflare CDN: https://chat-window-cdn.pages.dev/latest/chat-window.umd.js" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ GitHub Release: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### CDN URLs:" >> $GITHUB_STEP_SUMMARY
-          echo "- unpkg: https://unpkg.com/${{ github.event.repository.name }}@${{ needs.validate-tag.outputs.version }}" >> $GITHUB_STEP_SUMMARY
-          echo "- jsDelivr: https://cdn.jsdelivr.net/npm/${{ github.event.repository.name }}@${{ needs.validate-tag.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- unpkg: https://unpkg.com/@course-gen/chat-window@${{ needs.validate-tag.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- jsDelivr: https://cdn.jsdelivr.net/npm/@course-gen/chat-window@${{ needs.validate-tag.outputs.version }}" >> $GITHUB_STEP_SUMMARY

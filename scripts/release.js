@@ -323,16 +323,16 @@ async function main() {
     // 显示如何安装新版本
     console.log(chalk.blue.bold('\n📦 安装方式:'));
     if (isPrerelease) {
-      console.log(chalk.white(`  npm install chat-window@${prereleaseType}`));
-      console.log(chalk.white(`  npm install chat-window@${newVersion}`));
+      console.log(chalk.white(`  npm install @course-gen/chat-window@${prereleaseType}`));
+      console.log(chalk.white(`  npm install @course-gen/chat-window@${newVersion}`));
     } else {
-      console.log(chalk.white(`  npm install chat-window`));
-      console.log(chalk.white(`  npm install chat-window@${newVersion}`));
+      console.log(chalk.white(`  npm install @course-gen/chat-window`));
+      console.log(chalk.white(`  npm install @course-gen/chat-window@${newVersion}`));
     }
     
     console.log(chalk.blue.bold('\n🔗 相关链接:'));
-    console.log(chalk.white('  GitHub Actions: https://github.com/[your-repo]/actions'));
-    console.log(chalk.white('  NPM Package: https://www.npmjs.com/package/chat-window'));
+    console.log(chalk.white('  GitHub Actions: https://github.com/course-gen/chat-window/actions'));
+    console.log(chalk.white('  NPM Package: https://www.npmjs.com/package/@course-gen/chat-window'));
 
   } catch (error) {
     console.error(chalk.red('\n❌ 发布过程中出现错误'));

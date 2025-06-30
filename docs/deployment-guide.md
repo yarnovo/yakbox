@@ -102,7 +102,7 @@ git push origin --tags
 
 1. 在 GitHub 仓库的 "Actions" 页面查看工作流运行状态
 2. 成功后可以访问：
-   - NPM: `https://www.npmjs.com/package/chat-window`
+   - NPM: `https://www.npmjs.com/package/@course-gen/chat-window`
    - CDN Latest: `https://chat-window-cdn.pages.dev/latest/chat-window.umd.js`
    - CDN Version: `https://chat-window-cdn.pages.dev/v1.0.0/chat-window.umd.js`
 
@@ -114,10 +114,10 @@ git push origin --tags
 
 ```html
 <!-- unpkg -->
-<script src="https://unpkg.com/chat-window@1.0.0/dist/chat-window.umd.js"></script>
+<script src="https://unpkg.com/@course-gen/chat-window@1.0.0/dist/chat-window.umd.js"></script>
 
 <!-- jsDelivr -->
-<script src="https://cdn.jsdelivr.net/npm/chat-window@1.0.0/dist/chat-window.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/chat-window.umd.js"></script>
 ```
 
 ### Cloudflare Pages CDN

@@ -48,19 +48,19 @@ npm run release
    - 内部测试版本
    - 版本格式：`1.0.0-alpha.0`
    - NPM 标签：`alpha`
-   - 安装：`npm install chat-window@alpha`
+   - 安装：`npm install @course-gen/chat-window@alpha`
 
 3. **Beta 版本**
    - 公开测试版本
    - 版本格式：`1.0.0-beta.0`
    - NPM 标签：`beta`
-   - 安装：`npm install chat-window@beta`
+   - 安装：`npm install @course-gen/chat-window@beta`
 
 4. **RC 版本 (Release Candidate)**
    - 候选发布版本
    - 版本格式：`1.0.0-rc.0`
    - NPM 标签：`rc`
-   - 安装：`npm install chat-window@rc`
+   - 安装：`npm install @course-gen/chat-window@rc`
 
 ### 版本升级路径
 

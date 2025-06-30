@@ -5,19 +5,19 @@
 ### 1. unpkg
 ```html
 <!-- 自动获取 package.json 中 unpkg 字段指定的文件 -->
-<script src="https://unpkg.com/chat-window"></script>
+<script src="https://unpkg.com/@course-gen/chat-window"></script>
 
 <!-- 指定版本 -->
-<script src="https://unpkg.com/chat-window@1.0.0"></script>
+<script src="https://unpkg.com/@course-gen/chat-window@1.0.0"></script>
 ```
 
 ### 2. jsDelivr
 ```html
 <!-- 自动获取 package.json 中 jsdelivr 字段指定的文件 -->
-<script src="https://cdn.jsdelivr.net/npm/chat-window"></script>
+<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window"></script>
 
 <!-- 指定版本 -->
-<script src="https://cdn.jsdelivr.net/npm/chat-window@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0"></script>
 ```
 
 ## 完整使用示例
@@ -32,7 +32,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   
   <!-- Chat Window 组件 -->
-  <script src="https://unpkg.com/chat-window"></script>
+  <script src="https://unpkg.com/@course-gen/chat-window"></script>
 </head>
 <body>
   <div id="app"></div>
@@ -53,12 +53,12 @@
 ## TypeScript 项目使用
 
 ```bash
-npm install chat-window
+npm install @course-gen/chat-window
 ```
 
 ```typescript
-import { ChatWindow } from 'chat-window';
-import type { ChatMessage, ChatWindowProps } from 'chat-window';
+import { ChatWindow } from '@course-gen/chat-window';
+import type { ChatMessage, ChatWindowProps } from '@course-gen/chat-window';
 
 // TypeScript 类型自动可用
 const props: ChatWindowProps = {
