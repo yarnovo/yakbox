@@ -3,7 +3,10 @@ name: Release
 on:
   push:
     tags:
-      - 'v*.*.*'  # 匹配 v1.0.0, v2.1.3 等格式
+      - 'v*.*.*'         # 匹配正式版本 v1.0.0, v2.1.3 等格式
+      - 'v*.*.*-alpha.*' # 匹配 Alpha 版本 v1.0.0-alpha.0 等格式
+      - 'v*.*.*-beta.*'  # 匹配 Beta 版本 v1.0.0-beta.0 等格式
+      - 'v*.*.*-rc.*'    # 匹配 RC 版本 v1.0.0-rc.0 等格式
 
 permissions:
   contents: write
@@ -23,11 +26,22 @@ jobs:
         
       - name: Validate tag format
         run: |
-          if ! [[ "${{ github.ref_name }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "❌ Tag must be in format v*.*.* (e.g., v1.0.0)"
+          if ! [[ "${{ github.ref_name }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-((alpha|beta|rc)\.[0-9]+))?$ ]]; then
+            echo "❌ Tag must be in format v*.*.* or v*.*.*-{alpha|beta|rc}.* (e.g., v1.0.0, v1.0.0-alpha.0, v1.0.0-beta.1, v1.0.0-rc.2)"
             exit 1
           fi
           echo "✅ Tag format is valid"
+          
+          # Check if this is a pre-release and get the type
+          if [[ "${{ github.ref_name }}" =~ -(alpha|beta|rc)\. ]]; then
+            PRERELEASE_TYPE="${BASH_REMATCH[1]}"
+            echo "📦 This is a pre-release version: $PRERELEASE_TYPE"
+            echo "is_prerelease=true" >> $GITHUB_ENV
+            echo "prerelease_type=$PRERELEASE_TYPE" >> $GITHUB_ENV
+          else
+            echo "📦 This is a production release"
+            echo "is_prerelease=false" >> $GITHUB_ENV
+          fi
           
       - name: Get version
         id: get_version
@@ -108,7 +122,14 @@ jobs:
           echo "📦 Updated package.json version to ${{ needs.validate-tag.outputs.version }}"
           
       - name: Publish to NPM
-        run: npm publish --access public
+        run: |
+          if [[ "${{ env.is_prerelease }}" == "true" ]]; then
+            echo "📦 Publishing pre-release version with ${{ env.prerelease_type }} tag"
+            npm publish --access public --tag ${{ env.prerelease_type }}
+          else
+            echo "📦 Publishing production version"
+            npm publish --access public
+          fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           
@@ -181,8 +202,17 @@ jobs:
           
       - name: Create Release Notes
         run: |
-          cat > release-notes.md << 'EOF'
-          ## Chat Window v${{ needs.validate-tag.outputs.version }}
+          PRERELEASE_LABEL=""
+          if [[ "${{ env.is_prerelease }}" == "true" ]]; then
+            case "${{ env.prerelease_type }}" in
+              alpha) PRERELEASE_LABEL=" (Alpha)" ;;
+              beta) PRERELEASE_LABEL=" (Beta)" ;;
+              rc) PRERELEASE_LABEL=" (Release Candidate)" ;;
+            esac
+          fi
+          
+          cat > release-notes.md << EOF
+          ## Chat Window v${{ needs.validate-tag.outputs.version }}${PRERELEASE_LABEL}
           
           ### 📦 Installation
           
@@ -219,6 +249,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           body_path: release-notes.md
+          prerelease: ${{ env.is_prerelease == 'true' }}
           files: |
             dist/chat-window.umd.js
             dist/chat-window.es.js
