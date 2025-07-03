@@ -23,19 +23,19 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onRetry,
 }) => {
   return (
-    <div className={cn("flex gap-3 pb-3", isOwn && "flex-row-reverse")}>
+    <div className={cn('flex gap-3 pb-3', isOwn && 'flex-row-reverse')}>
       {userAvatar && (
-        <img 
-          src={userAvatar} 
+        <img
+          src={userAvatar}
           alt={userName || 'User'}
           className="rounded-full w-8 h-8 border flex-shrink-0"
         />
       )}
-      <div className={cn("flex flex-col gap-1 max-w-[70%]", isOwn ? 'items-end' : 'items-start')}>
+      <div className={cn('flex flex-col gap-1 max-w-[70%]', isOwn ? 'items-end' : 'items-start')}>
         <div
           className={cn(
-            "px-4 py-2 rounded-lg relative",
-            isOwn 
+            'px-4 py-2 rounded-lg relative',
+            isOwn
               ? 'bg-primary text-primary-foreground rounded-br-none'
               : 'bg-muted rounded-bl-none'
           )}
@@ -57,15 +57,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
         </div>
         {timestamp && (
           <span className="text-xs text-muted-foreground">
-            {new Date(timestamp).toLocaleTimeString([], { 
-              hour: '2-digit', 
-              minute: '2-digit' 
+            {new Date(timestamp).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
             })}
           </span>
         )}
-        {failed && (
-          <span className="text-xs text-destructive">发送失败</span>
-        )}
+        {failed && <span className="text-xs text-destructive">发送失败</span>}
       </div>
     </div>
   );

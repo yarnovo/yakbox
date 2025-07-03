@@ -24,7 +24,6 @@
    - Name: `NPM_TOKEN`
    - Value: 复制的 token
 
-
 ## 发布流程
 
 ### 1. 首次发布
@@ -84,7 +83,6 @@ git push origin --tags
 1. 检查 NPM_TOKEN 是否正确配置
 2. 确认 token 类型为 "Automation"
 3. 检查包名是否已被占用
-
 
 ### 版本标签格式错误
 

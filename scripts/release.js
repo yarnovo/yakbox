@@ -62,12 +62,16 @@ function getNextVersion(currentVersion, releaseType, isPrerelease, prereleaseTyp
         const prereleaseOrder = ['alpha', 'beta', 'rc'];
         const currentIndex = prereleaseOrder.indexOf(currentPrereleaseType);
         const newIndex = prereleaseOrder.indexOf(prereleaseType);
-        
+
         if (newIndex > currentIndex) {
           // 升级预发布类型 (alpha -> beta -> rc)
           newVersion = `${major}.${minor}.${patch}-${prereleaseType}.0`;
         } else {
-          console.log(chalk.yellow(`\n⚠️  警告: 从 ${currentPrereleaseType} 切换到 ${prereleaseType} 是降级操作`));
+          console.log(
+            chalk.yellow(
+              `\n⚠️  警告: 从 ${currentPrereleaseType} 切换到 ${prereleaseType} 是降级操作`
+            )
+          );
           newVersion = `${major}.${minor}.${patch}-${prereleaseType}.0`;
         }
       }
@@ -107,7 +111,7 @@ async function main() {
   // 检查当前状态
   const currentVersion = getCurrentVersion();
   const currentBranch = getCurrentBranch();
-  
+
   console.log(chalk.cyan(`📦 当前版本: ${currentVersion}`));
   console.log(chalk.cyan(`🌿 当前分支: ${currentBranch}`));
   console.log();
@@ -119,9 +123,9 @@ async function main() {
       type: 'confirm',
       name: 'proceed',
       message: '工作区有未提交的更改，是否继续？',
-      initial: false
+      initial: false,
     });
-    
+
     if (!proceed) {
       console.log(chalk.red('✖ 发布已取消'));
       process.exit(0);
@@ -134,30 +138,42 @@ async function main() {
 
   // 构建发布类型选项
   const releaseTypeChoices = [
-    { title: '正式版本 (Production)', value: 'production', description: '稳定版本，供生产环境使用' }
+    {
+      title: '正式版本 (Production)',
+      value: 'production',
+      description: '稳定版本，供生产环境使用',
+    },
   ];
 
   if (!currentPrereleaseType || currentPrereleaseType === 'alpha') {
-    releaseTypeChoices.push({ 
-      title: 'Alpha 版本', 
-      value: 'alpha', 
-      description: '内部测试版本，功能可能不完整' 
+    releaseTypeChoices.push({
+      title: 'Alpha 版本',
+      value: 'alpha',
+      description: '内部测试版本，功能可能不完整',
     });
   }
-  
-  if (!currentPrereleaseType || currentPrereleaseType === 'alpha' || currentPrereleaseType === 'beta') {
-    releaseTypeChoices.push({ 
-      title: 'Beta 版本', 
-      value: 'beta', 
-      description: '公开测试版本，功能基本完整' 
+
+  if (
+    !currentPrereleaseType ||
+    currentPrereleaseType === 'alpha' ||
+    currentPrereleaseType === 'beta'
+  ) {
+    releaseTypeChoices.push({
+      title: 'Beta 版本',
+      value: 'beta',
+      description: '公开测试版本，功能基本完整',
     });
   }
-  
-  if (!currentPrereleaseType || currentPrereleaseType === 'beta' || currentPrereleaseType === 'rc') {
-    releaseTypeChoices.push({ 
-      title: 'RC 版本', 
-      value: 'rc', 
-      description: '候选发布版本，即将成为正式版' 
+
+  if (
+    !currentPrereleaseType ||
+    currentPrereleaseType === 'beta' ||
+    currentPrereleaseType === 'rc'
+  ) {
+    releaseTypeChoices.push({
+      title: 'RC 版本',
+      value: 'rc',
+      description: '候选发布版本，即将成为正式版',
     });
   }
 
@@ -167,7 +183,7 @@ async function main() {
     name: 'releaseTypeChoice',
     message: '选择发布类型',
     choices: releaseTypeChoices,
-    initial: 0
+    initial: 0,
   });
 
   if (!releaseTypeChoice) {
@@ -180,45 +196,49 @@ async function main() {
 
   // 选择版本号类型
   let versionBump = 'patch';
-  
+
   if (currentPrereleaseType) {
     // 当前是预发布版本
     if (isPrerelease && prereleaseType === currentPrereleaseType) {
       console.log(chalk.yellow(`\n当前是 ${currentPrereleaseType} 版本，将自动递增版本号`));
     } else if (isPrerelease) {
       const prereleaseNames = { alpha: 'Alpha', beta: 'Beta', rc: 'RC' };
-      console.log(chalk.yellow(`\n当前是 ${prereleaseNames[currentPrereleaseType]} 版本，将切换到 ${prereleaseNames[prereleaseType]} 版本`));
+      console.log(
+        chalk.yellow(
+          `\n当前是 ${prereleaseNames[currentPrereleaseType]} 版本，将切换到 ${prereleaseNames[prereleaseType]} 版本`
+        )
+      );
     } else {
       console.log(chalk.yellow(`\n当前是 ${currentPrereleaseType} 版本，将发布为正式版本`));
     }
   } else if (isPrerelease || releaseTypeChoice === 'production') {
     // 需要选择版本递增类型
     const [major, minor, patch] = currentVersion.split('.').map(Number);
-    
+
     const prereleaseSuffix = isPrerelease ? `-${prereleaseType}.0` : '';
-    
+
     const { selectedVersionBump } = await prompts({
       type: 'select',
       name: 'selectedVersionBump',
       message: '选择版本号迭代类型',
       choices: [
-        { 
-          title: 'Patch (修订号)', 
-          value: 'patch', 
-          description: `错误修复 (${currentVersion} → ${major}.${minor}.${patch + 1}${prereleaseSuffix})` 
+        {
+          title: 'Patch (修订号)',
+          value: 'patch',
+          description: `错误修复 (${currentVersion} → ${major}.${minor}.${patch + 1}${prereleaseSuffix})`,
         },
-        { 
-          title: 'Minor (次版本号)', 
-          value: 'minor', 
-          description: `新功能，向后兼容 (${currentVersion} → ${major}.${minor + 1}.0${prereleaseSuffix})` 
+        {
+          title: 'Minor (次版本号)',
+          value: 'minor',
+          description: `新功能，向后兼容 (${currentVersion} → ${major}.${minor + 1}.0${prereleaseSuffix})`,
         },
-        { 
-          title: 'Major (主版本号)', 
-          value: 'major', 
-          description: `重大更新，可能不兼容 (${currentVersion} → ${major + 1}.0.0${prereleaseSuffix})` 
-        }
+        {
+          title: 'Major (主版本号)',
+          value: 'major',
+          description: `重大更新，可能不兼容 (${currentVersion} → ${major + 1}.0.0${prereleaseSuffix})`,
+        },
       ],
-      initial: 0
+      initial: 0,
     });
 
     if (!selectedVersionBump) {
@@ -237,18 +257,18 @@ async function main() {
   console.log(chalk.blue.bold('\n📋 执行计划:\n'));
   console.log(chalk.white(`  当前版本: ${currentVersion} → 新版本: ${newVersion}`));
   console.log(chalk.white(`  标签名称: ${tagName}`));
-  
+
   let releaseTypeName = '正式版本';
   if (isPrerelease) {
-    const prereleaseNames = { 
-      alpha: 'Alpha (内部测试)', 
-      beta: 'Beta (公开测试)', 
-      rc: 'RC (候选发布)' 
+    const prereleaseNames = {
+      alpha: 'Alpha (内部测试)',
+      beta: 'Beta (公开测试)',
+      rc: 'RC (候选发布)',
     };
     releaseTypeName = prereleaseNames[prereleaseType];
   }
   console.log(chalk.white(`  发布类型: ${releaseTypeName}`));
-  
+
   console.log(chalk.blue.bold('\n📝 执行步骤:\n'));
   const steps = [
     '运行 lint 检查 (npm run lint)',
@@ -258,13 +278,13 @@ async function main() {
     `更新版本号到 ${newVersion}`,
     `提交版本更新 (commit message: "chore: release ${newVersion}")`,
     `创建 Git 标签 ${tagName}`,
-    '推送提交和标签到远程仓库 (git push --follow-tags)'
+    '推送提交和标签到远程仓库 (git push --follow-tags)',
   ];
 
   steps.forEach((step, index) => {
     console.log(`  ${index + 1}. ${step}`);
   });
-  
+
   console.log(chalk.gray('\n  提交信息预览: "chore: release ' + newVersion + '"'));
 
   // 确认执行
@@ -272,7 +292,7 @@ async function main() {
     type: 'confirm',
     name: 'confirm',
     message: '确认执行以上步骤？',
-    initial: true
+    initial: true,
   });
 
   if (!confirm) {
@@ -319,7 +339,7 @@ async function main() {
 
     console.log(chalk.green.bold('\n✅ 发布成功！\n'));
     console.log(chalk.white(`版本 ${newVersion} 已创建并推送到远程仓库`));
-    
+
     // 显示如何安装新版本
     console.log(chalk.blue.bold('\n📦 安装方式:'));
     if (isPrerelease) {
@@ -329,12 +349,15 @@ async function main() {
       console.log(chalk.white(`  npm install @course-gen/chat-window`));
       console.log(chalk.white(`  npm install @course-gen/chat-window@${newVersion}`));
     }
-    
+
     console.log(chalk.blue.bold('\n🔗 相关链接:'));
     console.log(chalk.white('  GitHub Actions: https://github.com/course-gen/chat-window/actions'));
-    console.log(chalk.white('  NPM Package: https://www.npmjs.com/package/@course-gen/chat-window'));
-    console.log(chalk.white('  jsDelivr CDN: https://www.jsdelivr.com/package/npm/@course-gen/chat-window'));
-
+    console.log(
+      chalk.white('  NPM Package: https://www.npmjs.com/package/@course-gen/chat-window')
+    );
+    console.log(
+      chalk.white('  jsDelivr CDN: https://www.jsdelivr.com/package/npm/@course-gen/chat-window')
+    );
   } catch (error) {
     console.error(chalk.red('\n❌ 发布过程中出现错误'));
     console.error(error);

@@ -13,6 +13,7 @@
 ## 字段说明
 
 ### jsdelivr 字段
+
 - **作用**：告诉 jsDelivr CDN 服务默认提供哪个文件
 - **访问方式**：`https://cdn.jsdelivr.net/npm/@course-gen/chat-window`
 - **特点**：
@@ -24,6 +25,7 @@
 ## 为什么都指向 UMD 文件？
 
 因为 CDN 使用场景通常是：
+
 - 通过 `<script>` 标签直接引入
 - 无需构建工具
 - 需要立即可用
@@ -33,6 +35,7 @@ UMD 格式正好满足这些需求。
 ## 使用示例
 
 ### jsDelivr
+
 ```html
 <!-- 最新版本 -->
 <script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window"></script>

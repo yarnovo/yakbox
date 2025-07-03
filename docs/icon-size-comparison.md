@@ -3,6 +3,7 @@
 ## lucide-react 作为外部依赖的问题
 
 ### 1. 整体包体积
+
 - **完整 lucide-react**: 约 7+ MB（未压缩）
 - **包含 1400+ 个图标**
 - 即使使用 tree-shaking，用户也需要：
@@ -11,6 +12,7 @@
   - 正确地按需导入
 
 ### 2. 使用风险
+
 ```javascript
 // ❌ 错误使用 - 导入整个库（7+ MB）
 import * as icons from 'lucide-react';
@@ -24,6 +26,7 @@ import { AlertCircle, Send } from 'lucide-react';
 ## 体积对比
 
 ### 方案一：内联 SVG（当前方案）✅
+
 ```typescript
 // 每个 SVG 图标约 200-500 字节
 const AlertIcon = () => (
@@ -36,9 +39,10 @@ const AlertIcon = () => (
 ```
 
 ### 方案二：lucide-react 外部依赖 ❌
+
 ```typescript
 // vite.config.ts
-external: ['lucide-react']
+external: ['lucide-react'];
 
 // 用户需要：
 // 1. npm install lucide-react (下载 7+ MB)
@@ -47,6 +51,7 @@ external: ['lucide-react']
 ```
 
 ### 方案三：只打包需要的图标 ⚠️
+
 ```typescript
 // 在组件库中直接导入需要的图标
 import { AlertCircle, Send } from 'lucide-react';
@@ -56,11 +61,11 @@ import { AlertCircle, Send } from 'lucide-react';
 
 ## 实际测试数据
 
-| 方案 | 组件库体积增加 | 用户端体积增加 | 配置复杂度 |
-|------|----------------|----------------|------------|
-| 内联 SVG | +1KB | 0 | 低 |
-| 外部依赖 | 0 | +10KB~7MB | 高 |
-| 打包图标 | +10KB | 0 | 中 |
+| 方案     | 组件库体积增加 | 用户端体积增加 | 配置复杂度 |
+| -------- | -------------- | -------------- | ---------- |
+| 内联 SVG | +1KB           | 0              | 低         |
+| 外部依赖 | 0              | +10KB~7MB      | 高         |
+| 打包图标 | +10KB          | 0              | 中         |
 
 ## 结论和建议
 
@@ -76,15 +81,15 @@ import { AlertCircle, Send } from 'lucide-react';
 ```typescript
 // src/components/icons/index.tsx
 export const AlertIcon = ({ className }: { className?: string }) => (
-  <svg 
-    className={className} 
-    width="24" 
-    height="24" 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
+  <svg
+    className={className}
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
     strokeWidth="2"
-    strokeLinecap="round" 
+    strokeLinecap="round"
     strokeLinejoin="round"
   >
     <circle cx="12" cy="12" r="10" />
@@ -94,12 +99,12 @@ export const AlertIcon = ({ className }: { className?: string }) => (
 );
 
 export const SendIcon = ({ className }: { className?: string }) => (
-  <svg 
+  <svg
     className={className}
-    width="24" 
-    height="24" 
-    viewBox="0 0 24 24" 
-    fill="none" 
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
     stroke="currentColor"
     strokeWidth="2"
     strokeLinecap="round"
@@ -116,17 +121,19 @@ export const SendIcon = ({ className }: { className?: string }) => (
 如果组件库需要 20+ 个图标，可以考虑：
 
 1. **创建独立图标包**
+
 ```json
 {
   "name": "@your-org/chat-window",
   "dependencies": {},
   "peerDependencies": {
-    "@your-org/chat-window-icons": "^1.0.0"  // 可选依赖
+    "@your-org/chat-window-icons": "^1.0.0" // 可选依赖
   }
 }
 ```
 
 2. **提供图标 props**
+
 ```typescript
 interface ChatWindowProps {
   icons?: {
@@ -137,6 +144,7 @@ interface ChatWindowProps {
 ```
 
 3. **使用 CDN 的内联 SVG**
+
 ```typescript
 // 从 CDN 加载 SVG sprite
 <svg className="hidden">

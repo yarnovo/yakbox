@@ -176,26 +176,26 @@ export const Default: Story = {
   },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    
+
     // 等待组件渲染
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     // 查找输入框和发送按钮
     const input = canvas.getByPlaceholderText('输入消息...');
     const sendButton = canvas.getByRole('button');
-    
+
     // 测试输入和发送消息
     await userEvent.type(input, '你好，这是一条测试消息');
     await userEvent.click(sendButton);
-    
+
     // 验证输入框已清空
     expect(input).toHaveValue('');
-    
+
     // 验证 onSendMessage 被调用
     expect(args.onSendMessage).toHaveBeenCalled();
-    
+
     // 等待消息出现在列表中
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const message = await canvas.findByText('你好，这是一条测试消息');
     expect(message).toBeInTheDocument();
   },
@@ -218,26 +218,26 @@ export const EnglishVersion: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // 等待组件渲染
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     // 测试使用 Enter 键发送消息
     const input = canvas.getByPlaceholderText('Type your message here...');
-    
+
     await userEvent.type(input, 'Hello, I need help!');
     await userEvent.keyboard('{Enter}');
-    
+
     // 验证输入框已清空
     expect(input).toHaveValue('');
-    
+
     // 验证消息出现
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const message = await canvas.findByText('Hello, I need help!');
     expect(message).toBeInTheDocument();
-    
+
     // 等待模拟回复
-    await new Promise(resolve => setTimeout(resolve, 1600));
+    await new Promise((resolve) => setTimeout(resolve, 1600));
     const reply = await canvas.findByText(/收到消息.*Hello, I need help!/);
     expect(reply).toBeInTheDocument();
   },
@@ -283,23 +283,23 @@ const AdvancedChatWindow = () => {
         name: 'AI Assistant',
         avatar: 'https://i.pravatar.cc/30?u=assistant',
       },
-      message: '正在处理您的请求...'
+      message: '正在处理您的请求...',
     });
 
     // 保存消息 ID
-    setReceivedMessages(prev => [...prev, messageId]);
+    setReceivedMessages((prev) => [...prev, messageId]);
 
     // 2秒后更新消息内容
     setTimeout(() => {
       messageListRef.current?.update(messageId, {
-        message: '✅ 请求已处理完成！这是更新后的消息。'
+        message: '✅ 请求已处理完成！这是更新后的消息。',
       });
     }, 2000);
 
     // 4秒后再次更新，展示更复杂的状态
     setTimeout(() => {
       messageListRef.current?.update(messageId, {
-        message: '✅ 请求已处理完成！这是更新后的消息。\n\n📊 处理结果：成功\n⏱️ 耗时：3.5秒'
+        message: '✅ 请求已处理完成！这是更新后的消息。\n\n📊 处理结果：成功\n⏱️ 耗时：3.5秒',
       });
     }, 4000);
   };
@@ -314,7 +314,7 @@ const AdvancedChatWindow = () => {
         name: 'Support Agent',
         avatar: 'https://i.pravatar.cc/30?u=support',
       },
-      message: '正在输入...'
+      message: '正在输入...',
     });
 
     // 模拟逐字输入效果
@@ -326,13 +326,13 @@ const AdvancedChatWindow = () => {
       if (index < fullMessage.length) {
         currentText += fullMessage[index];
         messageListRef.current?.update(typingMessageId, {
-          message: currentText + '▊'
+          message: currentText + '▊',
         });
         index++;
       } else {
         // 输入完成，移除光标
         messageListRef.current?.update(typingMessageId, {
-          message: currentText
+          message: currentText,
         });
         clearInterval(typeInterval);
       }
@@ -364,9 +364,7 @@ const AdvancedChatWindow = () => {
         }}
       />
       {receivedMessages.length > 0 && (
-        <div className="text-sm text-gray-600">
-          已接收的消息 ID: {receivedMessages.join(', ')}
-        </div>
+        <div className="text-sm text-gray-600">已接收的消息 ID: {receivedMessages.join(', ')}</div>
       )}
     </div>
   );
@@ -403,44 +401,46 @@ messageListRef.current.update(messageId, {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // 等待组件渲染
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     // 点击"接收并更新消息"按钮
     const receiveUpdateButton = canvas.getByText('接收并更新消息');
     await userEvent.click(receiveUpdateButton);
-    
+
     // 验证初始消息出现
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const initialMessage = await canvas.findByText('正在处理您的请求...');
     expect(initialMessage).toBeInTheDocument();
-    
+
     // 等待第一次更新
-    await new Promise(resolve => setTimeout(resolve, 2100));
+    await new Promise((resolve) => setTimeout(resolve, 2100));
     const updatedMessage = await canvas.findByText('✅ 请求已处理完成！这是更新后的消息。');
     expect(updatedMessage).toBeInTheDocument();
-    
+
     // 等待第二次更新
-    await new Promise(resolve => setTimeout(resolve, 2100));
+    await new Promise((resolve) => setTimeout(resolve, 2100));
     const finalMessage = await canvas.findByText(/处理结果：成功/);
     expect(finalMessage).toBeInTheDocument();
-    
+
     // 测试打字效果
     const typingButton = canvas.getByText('模拟打字效果');
     await userEvent.click(typingButton);
-    
+
     // 验证打字开始 - 检查是否有带光标的文本
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     // 查找包含光标符号的元素
     const typingMessage = await canvas.findByText((content) => {
       return content.includes('▊');
     });
     expect(typingMessage).toBeInTheDocument();
-    
+
     // 等待打字完成
-    await new Promise(resolve => setTimeout(resolve, 4000));
-    const completedMessage = await canvas.findByText('您好！我是客服代表，很高兴为您服务。请问有什么可以帮助您的吗？');
+    await new Promise((resolve) => setTimeout(resolve, 4000));
+    const completedMessage = await canvas.findByText(
+      '您好！我是客服代表，很高兴为您服务。请问有什么可以帮助您的吗？'
+    );
     expect(completedMessage).toBeInTheDocument();
   },
 };

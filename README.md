@@ -28,7 +28,6 @@ yarn add @course-gen/chat-window
 pnpm add @course-gen/chat-window
 ```
 
-
 ## 🚀 快速开始
 
 ### 基本使用
@@ -54,18 +53,17 @@ function App() {
 }
 ```
 
-
 ## 📖 API 文档
 
 ### ChatWindow Props
 
-| 属性 | 类型 | 默认值 | 描述 |
-|------|------|--------|------|
-| `title` | `string` | `"Chat Window"` | 聊天窗口标题 |
-| `placeholder` | `string` | `"Type a message..."` | 输入框占位符文本 |
-| `currentUserId` | `string` | `"user-1"` | 当前用户 ID，用于区分消息发送方 |
-| `licenseKey` | `string` | `""` | @virtuoso.dev/message-list 许可证密钥（可选） |
-| `onSendMessage` | `(message: ChatMessage) => void` | - | 消息发送回调函数 |
+| 属性            | 类型                             | 默认值                | 描述                                          |
+| --------------- | -------------------------------- | --------------------- | --------------------------------------------- |
+| `title`         | `string`                         | `"Chat Window"`       | 聊天窗口标题                                  |
+| `placeholder`   | `string`                         | `"Type a message..."` | 输入框占位符文本                              |
+| `currentUserId` | `string`                         | `"user-1"`            | 当前用户 ID，用于区分消息发送方               |
+| `licenseKey`    | `string`                         | `""`                  | @virtuoso.dev/message-list 许可证密钥（可选） |
+| `onSendMessage` | `(message: ChatMessage) => void` | -                     | 消息发送回调函数                              |
 
 ### ChatMessage 类型
 
@@ -89,7 +87,7 @@ interface ChatMessage {
 
 ```typescript
 interface MessageListMethods {
-  send: (message: string) => string;      // 发送消息，返回消息 ID
+  send: (message: string) => string; // 发送消息，返回消息 ID
   receive: (data: ReceiveData) => string; // 接收消息，返回消息 ID
   update: (id: string, data: UpdateData) => void; // 更新消息状态
 }
@@ -107,32 +105,32 @@ function AdvancedChat() {
   const handleCustomAction = () => {
     // 手动发送消息
     const messageId = messageListRef.current?.send('Hello!');
-    
+
     // 模拟接收消息
     const receivedMessageId = messageListRef.current?.receive({
       user: {
         id: 'bot-1',
         name: 'AI Assistant',
-        avatar: 'https://example.com/bot-avatar.png'
+        avatar: 'https://example.com/bot-avatar.png',
       },
-      message: '你好！有什么可以帮助您的吗？'
+      message: '你好！有什么可以帮助您的吗？',
     });
-    
+
     // 更新消息状态
     if (messageId) {
       messageListRef.current?.update(messageId, { failed: false });
     }
-    
+
     // 也可以更新接收到的消息
     if (receivedMessageId) {
       // 例如：标记消息已读、添加反应等
-      messageListRef.current?.update(receivedMessageId, { /* 更新内容 */ });
+      messageListRef.current?.update(receivedMessageId, {
+        /* 更新内容 */
+      });
     }
   };
 
-  return (
-    <ChatWindow ref={messageListRef} />
-  );
+  return <ChatWindow ref={messageListRef} />;
 }
 ```
 
@@ -141,6 +139,7 @@ function AdvancedChat() {
 组件基于 shadcn/ui 设计系统，支持完整的主题定制：
 
 ### CSS 变量
+
 组件使用 CSS 变量来控制颜色，你可以通过覆盖这些变量来自定义主题：
 
 ```css
@@ -165,6 +164,7 @@ function AdvancedChat() {
 ```
 
 ### 样式组件
+
 所有组件都遵循 shadcn/ui 的设计规范，确保视觉一致性。
 
 ## 🛠️ 开发

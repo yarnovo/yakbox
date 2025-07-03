@@ -65,6 +65,7 @@ npm run release
 ### 版本升级路径
 
 预发布版本遵循以下升级路径：
+
 ```
 alpha → beta → rc → production
 ```
@@ -102,6 +103,7 @@ alpha → beta → rc → production
 ### 使用示例
 
 #### 发布 Alpha 版本
+
 ```bash
 # 从 1.0.0 → 1.1.0-alpha.0
 npm run release
@@ -109,6 +111,7 @@ npm run release
 ```
 
 #### Alpha 升级到 Beta
+
 ```bash
 # 从 1.1.0-alpha.2 → 1.1.0-beta.0
 npm run release
@@ -116,6 +119,7 @@ npm run release
 ```
 
 #### Beta 升级到 RC
+
 ```bash
 # 从 1.1.0-beta.3 → 1.1.0-rc.0
 npm run release
@@ -123,6 +127,7 @@ npm run release
 ```
 
 #### RC 发布为正式版
+
 ```bash
 # 从 1.1.0-rc.1 → 1.1.0
 npm run release

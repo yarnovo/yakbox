@@ -16,7 +16,6 @@
   3. 生成 "Automation" 类型的 token
   4. 复制 token 值
 
-
 ## 自动提供的 Secrets
 
 以下 Secrets 由 GitHub 自动提供，无需手动配置：
@@ -24,7 +23,7 @@
 ### GITHUB_TOKEN
 
 - **用途**: 创建 GitHub Release、上传构建产物
-- **使用位置**: 
+- **使用位置**:
   - `.github/workflows/release.yml` - 第 300 行（创建 Release）
 - **说明**: GitHub Actions 运行时自动注入
 
@@ -85,6 +84,7 @@ git push origin v0.0.1-test
 ```
 Error: Input required and not supplied: xxx
 ```
+
 解决：检查对应的 Secret 是否已添加
 
 ### NPM 发布权限错误
@@ -92,5 +92,5 @@ Error: Input required and not supplied: xxx
 ```
 npm ERR! 403 Forbidden
 ```
-解决：确认 NPM_TOKEN 是 "Automation" 类型
 
+解决：确认 NPM_TOKEN 是 "Automation" 类型

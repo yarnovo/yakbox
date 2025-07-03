@@ -1,0 +1,35 @@
+echo "🔍 Running pre-commit checks..."
+
+# 运行格式检查
+echo "🎨 Running format check..."
+npm run format:check
+if [ $? -ne 0 ]; then
+  echo "❌ Format check failed! Please run 'npm run format' to fix formatting issues."
+  exit 1
+fi
+
+# 运行 lint 检查
+echo "📋 Running lint..."
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ Lint check failed! Please fix the errors before committing."
+  exit 1
+fi
+
+# 运行类型检查
+echo "🔷 Running type check..."
+npm run typecheck
+if [ $? -ne 0 ]; then
+  echo "❌ Type check failed! Please fix the errors before committing."
+  exit 1
+fi
+
+# 运行测试
+echo "🧪 Running tests..."
+npm test
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed! Please fix the failing tests before committing."
+  exit 1
+fi
+
+echo "✅ All pre-commit checks passed!"

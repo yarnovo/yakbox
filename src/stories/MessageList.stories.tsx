@@ -164,24 +164,22 @@ interface TestMessageListProps {
   exposeRef?: (ref: React.RefObject<MessageListMethods | null>) => void;
 }
 
-const TestMessageList = ({ onSend = fn(), onRetry = fn(), exposeRef, ...props }: TestMessageListProps) => {
+const TestMessageList = ({
+  onSend = fn(),
+  onRetry = fn(),
+  exposeRef,
+  ...props
+}: TestMessageListProps) => {
   const messageListRef = useRef<MessageListMethods>(null);
-  
+
   // 通过 prop 回调暴露 ref，而不是挂载到 window
   useEffect(() => {
     if (exposeRef) {
       exposeRef(messageListRef);
     }
   }, [exposeRef]);
-  
-  return (
-    <MessageList
-      ref={messageListRef}
-      onSend={onSend}
-      onRetry={onRetry}
-      {...props}
-    />
-  );
+
+  return <MessageList ref={messageListRef} onSend={onSend} onRetry={onRetry} {...props} />;
 };
 
 // 创建一个用于存储 ref 的容器
@@ -200,74 +198,76 @@ export const Interactive: Story = {
     currentUserId: 'user-1',
   },
   render: (args) => (
-    <TestMessageList 
-      {...args} 
-      exposeRef={(ref) => { testMessageListRef = ref; }}
+    <TestMessageList
+      {...args}
+      exposeRef={(ref) => {
+        testMessageListRef = ref;
+      }}
     />
   ),
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    
+
     // 等待组件渲染和 ref 设置
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     // 使用闭包中的 ref
     const messageListRef = testMessageListRef;
     if (!messageListRef?.current) {
       throw new Error('MessageList ref not available');
     }
-    
+
     // 接收第一条消息
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     messageListRef.current.receive({
       user: {
         id: 'assistant-1',
         name: 'Assistant',
         avatar: 'https://i.pravatar.cc/30?u=assistant',
       },
-      message: '你好！欢迎使用聊天窗口组件。'
+      message: '你好！欢迎使用聊天窗口组件。',
     });
-    
+
     // 验证消息出现
     const welcomeMessage = await canvas.findByText('你好！欢迎使用聊天窗口组件。');
     expect(welcomeMessage).toBeInTheDocument();
-    
+
     // 发送一条消息
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     messageListRef.current.send('谢谢！这个组件看起来很不错。');
-    
+
     // 验证发送的消息出现
     const sentMessage = await canvas.findByText('谢谢！这个组件看起来很不错。');
     expect(sentMessage).toBeInTheDocument();
-    
+
     // 验证 onSend 回调被调用
     expect(args.onSend).toHaveBeenCalled();
-    
+
     // 接收回复消息
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     messageListRef.current.receive({
       user: {
         id: 'assistant-1',
         name: 'Assistant',
         avatar: 'https://i.pravatar.cc/30?u=assistant',
       },
-      message: '是的，它支持流畅的滚动和消息状态管理。'
+      message: '是的，它支持流畅的滚动和消息状态管理。',
     });
-    
+
     // 验证回复消息出现
     const replyMessage = await canvas.findByText('是的，它支持流畅的滚动和消息状态管理。');
     expect(replyMessage).toBeInTheDocument();
-    
+
     // 发送一条会失败的消息
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     const id4 = messageListRef.current.send('这条消息会发送失败');
-    
+
     // 标记消息为失败
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     messageListRef.current.update(id4, { failed: true });
-    
+
     // 验证失败消息显示重试按钮
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const retryButton = await canvas.findByTitle('重新发送');
     expect(retryButton).toBeInTheDocument();
   },
@@ -279,55 +279,57 @@ export const WithDifferentUser: Story = {
     currentUserId: 'user-2',
   },
   render: (args) => (
-    <TestMessageList 
-      {...args} 
-      exposeRef={(ref) => { testMessageListRef = ref; }}
+    <TestMessageList
+      {...args}
+      exposeRef={(ref) => {
+        testMessageListRef = ref;
+      }}
     />
   ),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // 等待组件渲染
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     // 获取 messageListRef
     const messageListRef = testMessageListRef;
     if (!messageListRef?.current) {
       throw new Error('MessageList ref not available');
     }
-    
+
     // 从 user-2 视角接收消息
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     messageListRef.current.receive({
       user: {
         id: 'assistant-1',
         name: 'Assistant',
         avatar: 'https://i.pravatar.cc/30?u=assistant',
       },
-      message: '你好！欢迎使用聊天窗口组件。'
+      message: '你好！欢迎使用聊天窗口组件。',
     });
-    
+
     // 从 user-2 视角发送消息（应该显示在右侧）
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     messageListRef.current.send('谢谢！这个组件看起来很不错。');
-    
+
     // 从其他用户接收消息（应该显示在左侧）
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     messageListRef.current.receive({
       user: {
         id: 'user-1',
         name: 'User 1',
         avatar: 'https://i.pravatar.cc/30?u=user1',
       },
-      message: '是的，它支持流畅的滚动和消息状态管理。'
+      message: '是的，它支持流畅的滚动和消息状态管理。',
     });
-    
+
     // 验证所有消息都出现了
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const message1 = await canvas.findByText('你好！欢迎使用聊天窗口组件。');
     const message2 = await canvas.findByText('谢谢！这个组件看起来很不错。');
     const message3 = await canvas.findByText('是的，它支持流畅的滚动和消息状态管理。');
-    
+
     expect(message1).toBeInTheDocument();
     expect(message2).toBeInTheDocument();
     expect(message3).toBeInTheDocument();
@@ -340,23 +342,25 @@ export const WithFailedMessages: Story = {
     currentUserId: 'user-1',
   },
   render: (args) => (
-    <TestMessageList 
-      {...args} 
-      exposeRef={(ref) => { testMessageListRef = ref; }}
+    <TestMessageList
+      {...args}
+      exposeRef={(ref) => {
+        testMessageListRef = ref;
+      }}
     />
   ),
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
-    
+
     // 等待组件渲染
-    await new Promise(resolve => setTimeout(resolve, 100));
-    
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
     // 获取 messageListRef
     const messageListRef = testMessageListRef;
     if (!messageListRef?.current) {
       throw new Error('MessageList ref not available');
     }
-    
+
     // 添加一些成功的消息
     messageListRef.current.receive({
       user: {
@@ -364,44 +368,44 @@ export const WithFailedMessages: Story = {
         name: 'John',
         avatar: 'https://i.pravatar.cc/30?u=john',
       },
-      message: '这是一条正常的消息'
+      message: '这是一条正常的消息',
     });
-    
+
     // 添加一条失败的消息
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const failedId = messageListRef.current.send('这条消息发送失败了');
-    
+
     // 标记为失败
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     messageListRef.current.update(failedId, { failed: true });
-    
+
     // 再添加一条正常消息
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     messageListRef.current.receive({
       user: {
         id: 'user-2',
         name: 'John',
         avatar: 'https://i.pravatar.cc/30?u=john',
       },
-      message: '后续的消息正常显示'
+      message: '后续的消息正常显示',
     });
-    
+
     // 验证失败消息的重试按钮
     const retryButton = await canvas.findByTitle('重新发送');
     expect(retryButton).toBeInTheDocument();
-    
+
     // 点击重试按钮
     await userEvent.click(retryButton);
-    
+
     // 验证 onRetry 回调被调用
     expect(args.onRetry).toHaveBeenCalledWith(failedId);
-    
+
     // 模拟重试成功
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     messageListRef.current.update(failedId, { failed: false });
-    
+
     // 验证重试按钮消失
-    await new Promise(resolve => setTimeout(resolve, 500));
+    await new Promise((resolve) => setTimeout(resolve, 500));
     const retryButtons = canvas.queryAllByTitle('重新发送');
     expect(retryButtons).toHaveLength(0);
   },

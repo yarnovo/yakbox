@@ -150,7 +150,8 @@ export const OtherMessage: Story = {
 export const LongMessage: Story = {
   name: '长消息',
   args: {
-    message: '这是一条非常长的消息，用于测试消息气泡的换行效果。当消息内容超过一定长度时，应该能够自动换行，并且保持良好的可读性。消息气泡的最大宽度应该被限制在容器的70%以内。',
+    message:
+      '这是一条非常长的消息，用于测试消息气泡的换行效果。当消息内容超过一定长度时，应该能够自动换行，并且保持良好的可读性。消息气泡的最大宽度应该被限制在容器的70%以内。',
     isOwn: true,
     userAvatar: 'https://i.pravatar.cc/30?u=user3',
     timestamp: Date.now(),

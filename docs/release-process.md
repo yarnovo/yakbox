@@ -11,23 +11,27 @@ npm run release
 ## 发布类型
 
 ### 1. 正式版本 (Production)
+
 - 稳定版本，供生产环境使用
 - 版本格式：`v1.0.0`
 - NPM 标签：`latest`
 
 ### 2. Alpha 版本
+
 - 内部测试版本，功能可能不完整
 - 版本格式：`v1.0.0-alpha.0`
 - NPM 标签：`alpha`
 - 适用场景：新功能的早期开发阶段
 
 ### 3. Beta 版本
+
 - 公开测试版本，功能基本完整
 - 版本格式：`v1.0.0-beta.0`
 - NPM 标签：`beta`
 - 适用场景：功能完成但需要更多测试
 
 ### 4. RC 版本 (Release Candidate)
+
 - 候选发布版本，即将成为正式版
 - 版本格式：`v1.0.0-rc.0`
 - NPM 标签：`rc`
@@ -36,6 +40,7 @@ npm run release
 ## 版本号迭代规则
 
 ### 正式版本迭代
+
 - **Major (主版本号)**: 重大更新，可能包含不兼容的更改
   - `1.2.3` → `2.0.0`
 - **Minor (次版本号)**: 新功能，向后兼容
@@ -46,16 +51,19 @@ npm run release
 ### 预发布版本迭代
 
 #### 同类型递增
+
 - **Alpha → Alpha**: `1.0.0-alpha.0` → `1.0.0-alpha.1`
 - **Beta → Beta**: `1.0.0-beta.0` → `1.0.0-beta.1`
 - **RC → RC**: `1.0.0-rc.0` → `1.0.0-rc.1`
 
 #### 升级路径
+
 - **Alpha → Beta**: `1.0.0-alpha.3` → `1.0.0-beta.0`
 - **Beta → RC**: `1.0.0-beta.2` → `1.0.0-rc.0`
 - **RC → 正式版**: `1.0.0-rc.1` → `1.0.0`
 
 #### 版本升级顺序
+
 ```
 alpha → beta → rc → production
 ```
@@ -173,26 +181,31 @@ $ npm run release
 ## 安装不同版本
 
 ### 安装最新正式版
+
 ```bash
 npm install @course-gen/chat-window
 ```
 
 ### 安装最新 Alpha 版
+
 ```bash
 npm install @course-gen/chat-window@alpha
 ```
 
 ### 安装最新 Beta 版
+
 ```bash
 npm install @course-gen/chat-window@beta
 ```
 
 ### 安装最新 RC 版
+
 ```bash
 npm install @course-gen/chat-window@rc
 ```
 
 ### 安装特定版本
+
 ```bash
 npm install @course-gen/chat-window@1.0.0
 npm install @course-gen/chat-window@1.1.0-beta.0
@@ -212,10 +225,11 @@ npm install @course-gen/chat-window@1.1.0-beta.0
 
 3. **回滚操作**
    如果发布失败，可以删除标签重新发布：
+
    ```bash
    # 删除本地标签
    git tag -d v1.0.1
-   
+
    # 删除远程标签
    git push origin :refs/tags/v1.0.1
    ```
@@ -223,14 +237,18 @@ npm install @course-gen/chat-window@1.1.0-beta.0
 ## 常见问题
 
 ### Q: 发布过程中断了怎么办？
+
 A: 检查当前状态，如果标签已创建但未推送，可以手动推送：
+
 ```bash
 git push origin main
 git push origin v1.0.1
 ```
 
 ### Q: 如何查看发布进度？
+
 A: 访问 GitHub Actions 页面查看工作流状态
 
 ### Q: Beta 版本会影响正式版用户吗？
+
 A: 不会。Beta 版本使用独立的 NPM 标签，正式版用户不会自动更新到 Beta 版本

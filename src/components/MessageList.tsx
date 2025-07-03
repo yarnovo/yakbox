@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { VirtuosoMessageList, VirtuosoMessageListLicense } from '@virtuoso.dev/message-list';
-import type { VirtuosoMessageListProps, VirtuosoMessageListMethods } from '@virtuoso.dev/message-list';
+import type {
+  VirtuosoMessageListProps,
+  VirtuosoMessageListMethods,
+} from '@virtuoso.dev/message-list';
 import { v4 as uuidv4 } from 'uuid';
 import MessageBubble from './MessageBubble';
 
@@ -23,11 +26,11 @@ interface MessageListContext {
   onRetry?: (messageId: string) => void;
 }
 
-type VirtuosoProps = VirtuosoMessageListProps<ChatMessage, MessageListContext>
+type VirtuosoProps = VirtuosoMessageListProps<ChatMessage, MessageListContext>;
 
 const ItemContent: VirtuosoProps['ItemContent'] = ({ data: message, context }) => {
   const isOwn = context.currentUserId === message.user.id;
-  
+
   return (
     <MessageBubble
       message={message.message}
@@ -42,9 +45,7 @@ const ItemContent: VirtuosoProps['ItemContent'] = ({ data: message, context }) =
 };
 
 const EmptyPlaceholder: VirtuosoProps['EmptyPlaceholder'] = () => (
-  <div className="flex items-center justify-center h-full text-gray-500">
-    暂无消息
-  </div>
+  <div className="flex items-center justify-center h-full text-gray-500">暂无消息</div>
 );
 
 const Header: VirtuosoProps['Header'] = () => {
@@ -71,7 +72,7 @@ const MessageList = React.forwardRef<MessageListMethods, MessageListProps>(
     React.useImperativeHandle(ref, () => ({
       send: (messageText: string) => {
         const messageId = uuidv4();
-        
+
         const newMessage: ChatMessage = {
           id: messageId,
           user: {

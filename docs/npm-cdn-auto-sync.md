@@ -3,6 +3,7 @@
 ## 工作原理
 
 ### 1. 配置 package.json
+
 ```json
 {
   "name": "@course-gen/chat-window",
@@ -12,11 +13,13 @@
 ```
 
 ### 2. 发布到 npm
+
 ```bash
 npm publish
 ```
 
 ### 3. 自动可用！
+
 发布后几分钟内，自动可以通过 jsDelivr CDN 访问：
 
 - **jsDelivr**: `https://cdn.jsdelivr.net/npm/@course-gen/chat-window`
@@ -24,6 +27,7 @@ npm publish
 ## 就是这么简单！
 
 **无需额外操作**：
+
 - ✅ 不需要单独上传到 CDN
 - ✅ 不需要额外配置
 - ✅ 版本自动同步
@@ -59,6 +63,7 @@ npm publish
 ## 总结
 
 是的，就是这么简单：
+
 1. 在 package.json 添加 `jsdelivr` 字段
 2. `npm publish`
 3. 自动同步到全球 CDN！
