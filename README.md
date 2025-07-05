@@ -167,41 +167,75 @@ function AdvancedChat() {
 
 所有组件都遵循 shadcn/ui 的设计规范，确保视觉一致性。
 
-## 🛠️ 开发
+## 📏 最佳实践
 
-### 环境准备
+### 组件尺寸设置
 
-```bash
-# 克隆仓库
-git clone https://github.com/your-org/chat-window.git
-cd chat-window
+#### Q: 如何让 ChatWindow 组件撑满父容器？
 
-# 安装依赖
-npm install
+ChatWindow 组件默认会自适应父容器的尺寸。要实现撑满父容器的效果，需要确保：
 
-# 启动开发服务器
-npm run dev
+1. **父容器必须有明确的尺寸**
 
-# 启动 Storybook
-npm run storybook
+```tsx
+// 方式1：使用固定高度
+<div style={{ height: '600px', width: '100%' }}>
+  <ChatWindow />
+</div>
+
+// 方式2：使用 vh/vw 单位
+<div style={{ height: '100vh', width: '100vw' }}>
+  <ChatWindow />
+</div>
+
+// 方式3：使用 flex 布局
+<div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+  <header>头部内容</header>
+  <div style={{ flex: 1, overflow: 'hidden' }}>
+    <ChatWindow />
+  </div>
+</div>
 ```
 
-### 脚本命令
+2. **父容器为空（高度为 0）的处理**
 
-- `npm run dev` - 启动开发服务器
-- `npm run build` - 构建生产版本
-- `npm run lint` - 运行代码检查
-- `npm run typecheck` - 运行类型检查
-- `npm test` - 运行测试
-- `npm run storybook` - 启动 Storybook 文档
+如果父容器没有内容导致高度为 0，ChatWindow 将无法显示。解决方案：
+
+```tsx
+// 确保父容器有最小高度
+<div style={{ minHeight: '400px', height: '100%' }}>
+  <ChatWindow />
+</div>
+```
+
+3. **在复杂布局中使用**
+
+```tsx
+// Grid 布局示例
+<div
+  style={{
+    display: 'grid',
+    gridTemplateRows: '60px 1fr 60px',
+    height: '100vh',
+  }}
+>
+  <header>顶部导航</header>
+  <main style={{ overflow: 'hidden' }}>
+    <ChatWindow />
+  </main>
+  <footer>底部信息</footer>
+</div>
+```
+
+#### 注意事项
+
+- ChatWindow 内部使用虚拟滚动，需要父容器有确定的高度才能正常工作
+- 避免在没有高度约束的容器中使用，否则可能导致滚动异常
+- 建议在父容器上设置 `overflow: hidden` 防止出现双重滚动条
 
 ## 📄 许可证
 
 MIT © Course Gen
-
-## 🤝 贡献
-
-欢迎贡献代码！请查看 [贡献指南](CONTRIBUTING.md) 了解详情。
 
 ## 🐛 问题反馈
 

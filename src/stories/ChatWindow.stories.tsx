@@ -22,6 +22,7 @@ ChatWindow 是一个完整的聊天窗口组件，集成了消息列表和输入
 - **消息管理**：内部集成了 MessageList 组件，提供消息的发送、接收和状态管理功能
 - **用户交互**：提供友好的输入界面，支持键盘快捷键（Enter 发送消息）
 - **样式美观**：使用 Tailwind CSS 提供现代化的界面设计，支持响应式布局
+- **自适应尺寸**：组件高度和宽度自适应父容器，可以轻松撑满各种布局
 
 ## 基本用法
 
@@ -136,7 +137,9 @@ function ChatApp() {
 
 - 组件需要在支持 Tailwind CSS 的项目中使用
 - MessageList 基于商业许可的 @virtuoso.dev/message-list，生产环境使用需要购买许可证
-- 组件高度固定为 600px，可根据需要调整或改为弹性高度
+- **组件尺寸自适应**：组件高度和宽度都是 100%，需要父容器提供确定的尺寸
+- **父容器要求**：父容器必须有明确的高度（如 height: 600px 或 height: 100vh）
+- **防止溢出**：建议在父容器上设置 overflow: hidden 避免双重滚动条
         `,
       },
     },
@@ -174,6 +177,13 @@ export const Default: Story = {
     title: '聊天窗口',
     placeholder: '输入消息...',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
 
@@ -207,6 +217,13 @@ export const CustomTitle: Story = {
     title: '客服支持',
     placeholder: '请描述您的问题...',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const EnglishVersion: Story = {
@@ -216,6 +233,13 @@ export const EnglishVersion: Story = {
     placeholder: 'Type your message here...',
     currentUserId: 'user-en',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -249,6 +273,13 @@ export const WithLongTitle: Story = {
     title: '这是一个非常长的标题用于测试标题栏的显示效果',
     placeholder: '输入消息...',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 const InteractiveChatWindow = () => {
@@ -267,6 +298,13 @@ const InteractiveChatWindow = () => {
 export const Interactive: Story = {
   name: '交互式窗口',
   render: () => <InteractiveChatWindow />,
+  decorators: [
+    (Story) => (
+      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 const AdvancedChatWindow = () => {
@@ -340,7 +378,7 @@ const AdvancedChatWindow = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 h-full flex flex-col">
       <div className="flex gap-2">
         <button
           onClick={handleReceiveAndUpdate}
@@ -355,14 +393,16 @@ const AdvancedChatWindow = () => {
           模拟打字效果
         </button>
       </div>
-      <ChatWindow
-        ref={messageListRef}
-        title="高级聊天功能演示"
-        placeholder="试试发送消息或点击上方按钮..."
-        onSendMessage={(message) => {
-          console.log('发送的消息:', message);
-        }}
-      />
+      <div className="flex-1 overflow-hidden">
+        <ChatWindow
+          ref={messageListRef}
+          title="高级聊天功能演示"
+          placeholder="试试发送消息或点击上方按钮..."
+          onSendMessage={(message) => {
+            console.log('发送的消息:', message);
+          }}
+        />
+      </div>
       {receivedMessages.length > 0 && (
         <div className="text-sm text-gray-600">已接收的消息 ID: {receivedMessages.join(', ')}</div>
       )}
@@ -373,6 +413,13 @@ const AdvancedChatWindow = () => {
 export const AdvancedFeatures: Story = {
   name: '高级功能',
   render: () => <AdvancedChatWindow />,
+  decorators: [
+    (Story) => (
+      <div style={{ height: '700px', width: '100%', padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     docs: {
       description: {
@@ -442,5 +489,189 @@ messageListRef.current.update(messageId, {
       '您好！我是客服代表，很高兴为您服务。请问有什么可以帮助您的吗？'
     );
     expect(completedMessage).toBeInTheDocument();
+  },
+};
+
+// 撑满父容器的示例组件
+const FullHeightChatWindow = () => {
+  return (
+    <div
+      style={{
+        height: '500px',
+        width: '100%',
+        border: '2px dashed #999',
+        padding: '10px',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <div
+        style={{
+          marginBottom: '10px',
+          padding: '10px',
+          backgroundColor: '#f0f0f0',
+          borderRadius: '4px',
+        }}
+      >
+        父容器高度: 500px (带虚线边框)
+      </div>
+      <div style={{ flex: 1, overflow: 'hidden' }}>
+        <ChatWindow
+          title="撑满父容器的聊天窗口"
+          placeholder="这个聊天窗口会自动撑满父容器..."
+          onSendMessage={(message) => {
+            console.log('发送的消息:', message);
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const FullHeight: Story = {
+  name: '撑满父容器',
+  render: () => <FullHeightChatWindow />,
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        story: `
+这个示例展示了如何让 ChatWindow 组件撑满父容器的高度和宽度。
+
+## 关键要点：
+
+1. **父容器必须有明确的高度**
+   - 使用固定高度：\`height: '500px'\`
+   - 或使用视口单位：\`height: '100vh'\`
+   - 或在 flex 布局中使用 \`flex: 1\`
+
+2. **使用 Flex 布局**
+   \`\`\`css
+   display: flex;
+   flex-direction: column;
+   \`\`\`
+
+3. **包装 ChatWindow 的容器设置**
+   \`\`\`css
+   flex: 1;
+   overflow: hidden;
+   \`\`\`
+
+## 其他布局示例：
+
+### 视口高度布局
+\`\`\`tsx
+<div style={{ height: '100vh', width: '100vw' }}>
+  <ChatWindow />
+</div>
+\`\`\`
+
+### Grid 布局
+\`\`\`tsx
+<div style={{
+  display: 'grid',
+  gridTemplateRows: '60px 1fr 60px',
+  height: '100vh'
+}}>
+  <header>顶部导航</header>
+  <main style={{ overflow: 'hidden' }}>
+    <ChatWindow />
+  </main>
+  <footer>底部信息</footer>
+</div>
+\`\`\`
+        `,
+      },
+    },
+  },
+};
+
+// 视口高度示例组件
+const ViewportHeightChatWindow = () => {
+  return (
+    <div
+      style={{
+        height: '100vh',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#f5f5f5',
+      }}
+    >
+      <header
+        style={{
+          height: '60px',
+          backgroundColor: '#333',
+          color: 'white',
+          display: 'flex',
+          alignItems: 'center',
+          padding: '0 20px',
+          flexShrink: 0,
+        }}
+      >
+        <h1 style={{ margin: 0, fontSize: '20px' }}>应用头部</h1>
+      </header>
+      <main
+        style={{
+          flex: 1,
+          overflow: 'hidden',
+          padding: '20px',
+          display: 'flex',
+          gap: '20px',
+        }}
+      >
+        <aside
+          style={{
+            width: '200px',
+            backgroundColor: 'white',
+            borderRadius: '8px',
+            padding: '20px',
+            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          }}
+        >
+          <h3 style={{ margin: '0 0 10px 0' }}>侧边栏</h3>
+          <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>
+            这是一个典型的应用布局，ChatWindow 在主内容区域撑满剩余空间。
+          </p>
+        </aside>
+        <div style={{ flex: 1, overflow: 'hidden' }}>
+          <ChatWindow
+            title="全屏应用中的聊天窗口"
+            placeholder="输入消息..."
+            onSendMessage={(message) => {
+              console.log('发送的消息:', message);
+            }}
+          />
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export const ViewportHeight: Story = {
+  name: '视口高度布局',
+  render: () => <ViewportHeightChatWindow />,
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story: `
+这个示例展示了在全屏应用中如何使用 ChatWindow 组件。
+
+## 布局特点：
+
+1. **使用 100vh 高度**：整个应用占满视口高度
+2. **Flex 布局**：头部固定高度，主内容区域自适应
+3. **侧边栏布局**：典型的三栏布局，ChatWindow 在主内容区域
+4. **响应式设计**：组件会自动适应可用空间
+
+## 注意事项：
+
+- 确保父容器设置 \`overflow: hidden\` 避免出现双重滚动条
+- 在移动端可能需要考虑虚拟键盘对视口高度的影响
+- 可以根据需要调整间距和样式
+        `,
+      },
+    },
   },
 };

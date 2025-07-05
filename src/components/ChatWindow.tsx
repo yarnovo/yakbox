@@ -86,14 +86,14 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
     }, []);
 
     return (
-      <div className="flex flex-col h-[600px] w-full max-w-2xl bg-background rounded-lg border shadow-sm overflow-hidden">
+      <div className="flex flex-col h-full w-full bg-background rounded-lg border shadow-sm overflow-hidden">
         {/* Header */}
-        <div className="px-6 py-4 border-b bg-muted/50">
+        <div className="px-6 py-4 border-b bg-muted/50 flex-shrink-0">
           <h3 className="text-lg font-semibold">{title}</h3>
         </div>
 
         {/* Messages Container */}
-        <div className="flex-1 overflow-hidden bg-background">
+        <div className="flex-1 min-h-0 overflow-hidden bg-background">
           <MessageList
             ref={messageListRef}
             currentUserId={currentUserId}
@@ -104,7 +104,7 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
         </div>
 
         {/* Input Container */}
-        <div className="border-t px-4 py-4">
+        <div className="border-t px-4 py-4 flex-shrink-0">
           <div className="flex items-center gap-2">
             <input
               type="text"

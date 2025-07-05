@@ -28,7 +28,7 @@
     "lint-staged": "lint-staged",
     "prepare": "husky",
     "check": "npm run lint && npm run typecheck && npm run test",
-    "check:hook": "node scripts/check-hook.js"
+    "check-report": "node scripts/check-report.js"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",

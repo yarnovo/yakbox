@@ -143,13 +143,6 @@ interface ChatMessage {
     onSend: fn(),
     onRetry: fn(),
   },
-  decorators: [
-    (Story) => (
-      <div style={{ height: '500px', width: '100%', backgroundColor: '#f3f4f6' }}>
-        <Story />
-      </div>
-    ),
-  ],
 } satisfies Meta<typeof MessageList>;
 
 export default meta;
@@ -190,6 +183,13 @@ export const Default: Story = {
   args: {
     currentUserId: 'user-1',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '100vh', width: '100%' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export const Interactive: Story = {
@@ -197,6 +197,13 @@ export const Interactive: Story = {
   args: {
     currentUserId: 'user-1',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '100vh', width: '100%' }}>
+        <Story />
+      </div>
+    ),
+  ],
   render: (args) => (
     <TestMessageList
       {...args}
@@ -278,6 +285,13 @@ export const WithDifferentUser: Story = {
   args: {
     currentUserId: 'user-2',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '100vh', width: '100%' }}>
+        <Story />
+      </div>
+    ),
+  ],
   render: (args) => (
     <TestMessageList
       {...args}
@@ -341,6 +355,13 @@ export const WithFailedMessages: Story = {
   args: {
     currentUserId: 'user-1',
   },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '100vh', width: '100%' }}>
+        <Story />
+      </div>
+    ),
+  ],
   render: (args) => (
     <TestMessageList
       {...args}
