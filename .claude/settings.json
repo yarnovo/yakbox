@@ -1,5 +1,15 @@
 {
   "hooks": {
-    "Stop": []
+    "PreToolUse": [
+      {
+        "matcher": "mcp__yakbox__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /home/yarnb/.claude/scripts/block-mcp-tool.js yakbox"
+          }
+        ]
+      }
+    ]
   }
 }
