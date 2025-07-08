@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from 'react';
-import { Send } from 'lucide-react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { ArrowUp } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 
@@ -8,6 +8,7 @@ export interface MessageInputProps {
   onSend?: (message: string) => void;
   disabled?: boolean;
   className?: string;
+  maxHeight?: number;
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
@@ -15,8 +16,30 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   onSend,
   disabled = false,
   className,
+  maxHeight = 200,
 }) => {
   const [inputValue, setInputValue] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [textareaHeight, setTextareaHeight] = useState(0);
+
+  // 自动调整高度的函数
+  const adjustHeight = useCallback(() => {
+    if (textareaRef.current) {
+      const textarea = textareaRef.current;
+      // 重置高度，让 scrollHeight 重新计算
+      textarea.style.height = 'auto';
+      const scrollHeight = textarea.scrollHeight;
+      // 限制最大高度
+      const newHeight = Math.min(scrollHeight, maxHeight);
+      textarea.style.height = `${newHeight}px`;
+      setTextareaHeight(newHeight);
+    }
+  }, [maxHeight]);
+
+  // 监听内容变化，自动调整高度
+  useEffect(() => {
+    adjustHeight();
+  }, [inputValue, adjustHeight]);
 
   const handleSend = useCallback(() => {
     if (inputValue.trim() && onSend) {
@@ -34,21 +57,24 @@ export const MessageInput: React.FC<MessageInputProps> = ({
 
   return (
     <div className={cn('flex flex-col bg-background border rounded-lg overflow-hidden', className)}>
-      {/* 上方区域：响应式输入框 */}
+      {/* 上方区域：自适应高度输入框 */}
       <div className="flex-1 min-h-0">
         <textarea
+          ref={textareaRef}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
           disabled={disabled}
           className={cn(
-            'w-full h-full resize-none border-none outline-none p-3',
+            'w-full resize-none border-none outline-none p-3 min-h-[100px]',
             'bg-transparent text-sm',
             'placeholder:text-muted-foreground',
-            'disabled:cursor-not-allowed disabled:opacity-50'
+            'disabled:cursor-not-allowed disabled:opacity-50',
+            textareaHeight >= maxHeight && 'overflow-y-auto'
           )}
           rows={1}
+          style={{ height: 'auto' }}
         />
       </div>
 
@@ -62,9 +88,9 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           onClick={handleSend}
           disabled={disabled || !inputValue.trim()}
           size="sm"
-          className="rounded-md"
+          className="rounded-full w-8 h-8 p-0"
         >
-          <Send className="h-4 w-4" />
+          <ArrowUp className="h-4 w-4" />
         </Button>
       </div>
     </div>
