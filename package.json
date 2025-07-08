@@ -1,6 +1,6 @@
 {
   "name": "yakbox",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -41,7 +41,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "@ai-app-base/bump-version-js": "^0.1.1",
+    "bumpster": "^0.1.2",
     "@chromatic-com/storybook": "^4.0.1",
     "@eslint/js": "^9.29.0",
     "@ngneat/falso": "^8.0.1",

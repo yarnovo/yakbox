@@ -21,6 +21,7 @@
 - **测试**: Vitest 3.2.4 + Playwright 1.53.1
 - **文档**: Storybook 9.0.14
 - **Git 工作流**: Husky 9.1.7 + lint-staged 16.1.2
+- **版本管理**: bumpster 0.1.2 (语义化版本验证工具)
 
 ### 主要依赖
 
@@ -101,11 +102,30 @@ yakbox/
 
 ## 项目变更记录
 
-### 2025-01-08
+### 2025-01-08 (第一次更新)
 
 - **包名变更**: 从 @course-gen/chat-window 改为 yakbox
 - **目录重构**:
   - 创建 references 文件夹，用于存放内部参考文档
   - 保留 docs 文件夹作为对外文档目录
 
-<!-- 最后更新时间: 2025-01-08T05:24:02.895Z -->
+### 2025-01-08 (第二次更新)
+
+- **Git 远程仓库变更**:
+  - 从 `git@github.com:ai-app-base/chat-window.git` 改为 `git@github.com:yarnovo/yakbox.git`
+- **版本重置**: 版本号重置为 0.0.0，清理所有历史 git tags
+- **依赖更新**:
+  - 移除 `@ai-app-base/bump-version-js`
+  - 添加 `bumpster@^0.1.2` 作为版本验证工具
+- **CI/CD 更新**:
+  - 更新 GitHub Actions 工作流中的包名引用
+  - 更新版本验证命令为使用 bumpster
+
+## 项目发布信息
+
+- **NPM 包名**: yakbox
+- **Git 仓库**: https://github.com/yarnovo/yakbox
+- **当前版本**: 0.0.0
+- **发布方式**: 通过 GitHub tag 触发自动发布到 NPM
+
+<!-- 最后更新时间: 2025-01-08T07:54:52.170Z -->

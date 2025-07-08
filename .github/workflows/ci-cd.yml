@@ -91,7 +91,7 @@ jobs:
           name: dist
           path: dist/
 
-      - name: Validate tag format with bump-version-js
+      - name: Validate tag format with bumpster
         id: validate_tag
         run: |
           TAG_VERSION="${{ github.ref_name }}"
@@ -99,8 +99,8 @@ jobs:
 
           echo "📦 Validating version: $VERSION"
 
-          # 使用 bump-version-js 验证版本号
-          if npx bump-version-js validate "$VERSION"; then
+          # 使用 bumpster 验证版本号
+          if npx bumpster validate "$VERSION"; then
             echo "✅ Version format is valid"
           else
             echo "❌ Invalid version format"
@@ -149,7 +149,7 @@ jobs:
         run: |
           echo "⏳ Waiting for NPM to update..."
           sleep 30
-          npm view @course-gen/chat-window@${{ steps.validate_tag.outputs.version }} version
+          npm view yakbox@${{ steps.validate_tag.outputs.version }} version
           echo "✅ Package published to NPM"
 
       - name: Create Release Notes
@@ -167,20 +167,20 @@ jobs:
           fi
 
           cat > release-notes.md << EOF
-          ## Chat Window v${{ steps.validate_tag.outputs.version }}${PRERELEASE_LABEL}
+          ## Yakbox v${{ steps.validate_tag.outputs.version }}${PRERELEASE_LABEL}
 
           ### 📦 Installation
 
           **NPM:**
           \`\`\`bash
-          npm install @course-gen/chat-window@${{ steps.validate_tag.outputs.version }}
+          npm install yakbox@${{ steps.validate_tag.outputs.version }}
           \`\`\`
 
           ### 📊 Bundle Size
           - ESM: ~8.1KB (gzipped: ~2.8KB)
 
           ### 🔗 Links
-          - [NPM Package](https://www.npmjs.com/package/@course-gen/chat-window)
+          - [NPM Package](https://www.npmjs.com/package/yakbox)
           - [Documentation](https://github.com/${{ github.repository }}#readme)
 
           ### 📄 Assets
@@ -202,5 +202,5 @@ jobs:
           echo "## 🎉 Release v${{ steps.validate_tag.outputs.version }} Complete!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Published to:" >> $GITHUB_STEP_SUMMARY
-          echo "- ✅ NPM: https://www.npmjs.com/package/@course-gen/chat-window/v/${{ steps.validate_tag.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ NPM: https://www.npmjs.com/package/yakbox/v/${{ steps.validate_tag.outputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "- ✅ GitHub Release: ${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY

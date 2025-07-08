@@ -67,7 +67,7 @@ graph LR
 **执行步骤**：
 
 ```yaml
-- 验证标签格式（使用 bump-version-js）
+- 验证标签格式（使用 bumpster）
 - 检查 package.json 版本匹配
 - 发布到 NPM
 - 创建 GitHub Release
@@ -120,7 +120,7 @@ graph LR
 
 ### 版本标签验证
 
-使用 `bump-version-js` 验证版本格式：
+使用 `bumpster` 验证版本格式：
 
 - 必须符合 SemVer 规范
 - 自动识别预发布版本类型
