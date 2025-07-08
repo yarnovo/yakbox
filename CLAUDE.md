@@ -140,7 +140,7 @@ yakbox/
 
 - **NPM 包名**: yakbox
 - **Git 仓库**: https://github.com/yarnovo/yakbox
-- **当前版本**: 0.0.0
+- **当前版本**: 0.1.0-dev.0
 - **Storybook 文档**: https://yarnovo.github.io/yakbox/
 
 ### 发布流程
@@ -154,6 +154,19 @@ yakbox/
    - 版本标签触发自动部署
    - 支持手动触发更新
    - 需要配置 License Key Secret
+   - **注意**: GitHub Pages 环境默认有保护规则，需要在仓库设置中允许标签部署
+
+### GitHub Pages 环境保护问题
+
+**问题**: 标签触发部署时出现 "Tag is not allowed to deploy to github-pages" 错误
+
+**原因**: GitHub Pages 环境默认配置了保护规则，不允许通过标签触发部署
+
+**解决方案**:
+
+1. 进入仓库 Settings → Environments → github-pages
+2. 在 "Deployment branches and tags" 中添加标签规则 `v*`
+3. 或修改 workflow 让标签触发时不使用受保护的环境
 
 ## 项目特点
 
@@ -165,4 +178,4 @@ yakbox/
 - 自动化 CI/CD 流程
 - 完善的文档和示例
 
-<!-- 最后更新时间: 2025-01-08T08:45:00.000Z -->
+<!-- 最后更新时间: 2025-01-08T09:16:00.000Z -->
