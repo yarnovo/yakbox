@@ -289,6 +289,7 @@ const InteractiveChatWindow = () => {
     <ChatWindow
       title="交互式聊天窗口"
       placeholder="输入消息并查看控制台..."
+      licenseKey={getVirtuosoLicenseKey()}
       onSendMessage={(message) => {
         console.log('发送的消息:', message);
         alert(`消息已发送: ${message.message}`);
@@ -400,6 +401,7 @@ const AdvancedChatWindow = () => {
           ref={messageListRef}
           title="高级聊天功能演示"
           placeholder="试试发送消息或点击上方按钮..."
+          licenseKey={getVirtuosoLicenseKey()}
           onSendMessage={(message) => {
             console.log('发送的消息:', message);
           }}
@@ -521,6 +523,7 @@ const FullHeightChatWindow = () => {
         <ChatWindow
           title="撑满父容器的聊天窗口"
           placeholder="这个聊天窗口会自动撑满父容器..."
+          licenseKey={getVirtuosoLicenseKey()}
           onSendMessage={(message) => {
             console.log('发送的消息:', message);
           }}
@@ -640,6 +643,7 @@ const ViewportHeightChatWindow = () => {
           <ChatWindow
             title="全屏应用中的聊天窗口"
             placeholder="输入消息..."
+            licenseKey={getVirtuosoLicenseKey()}
             onSendMessage={(message) => {
               console.log('发送的消息:', message);
             }}
