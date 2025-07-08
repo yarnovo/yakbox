@@ -305,4 +305,27 @@ Storybook 文档更新：
 - 更新 API 文档说明
 - 添加使用示例代码
 
-<!-- 最后更新时间: 2025-07-09T01:24:06+08:00 -->
+### MessageBubble 组件长文本换行问题修复
+
+**问题**: MessageBubble 组件在显示长文本时不会自动换行，导致气泡宽度被撑爆
+**解决时间**: 2025-07-09
+
+**修复内容**:
+
+1. **气泡容器优化**: 在气泡容器中添加 `inline-block max-w-full` 类，确保容器不会被内容撑爆
+2. **文本换行增强**: 在 `<p>` 标签中添加 `whitespace-pre-wrap` 类，支持换行符和自动换行
+
+**技术细节**:
+
+- 位置：`src/components/MessageBubble.tsx:37`
+- 原样式：`px-4 py-2 rounded-lg relative`
+- 新样式：`px-4 py-2 rounded-lg relative inline-block max-w-full`
+- 文本样式：`text-sm break-words whitespace-pre-wrap`
+
+**解决效果**:
+
+- 长文本会正确换行，不会撑爆气泡宽度
+- 支持用户输入的换行符显示
+- 保持气泡样式的完整性
+
+<!-- 最后更新时间: 2025-07-09T02:16:34+08:00 -->

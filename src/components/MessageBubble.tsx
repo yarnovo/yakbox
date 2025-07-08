@@ -34,7 +34,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       <div className={cn('flex flex-col gap-1 max-w-[70%]', isOwn ? 'items-end' : 'items-start')}>
         <div
           className={cn(
-            'px-4 py-2 rounded-lg relative',
+            'px-4 py-2 rounded-lg relative inline-block max-w-full',
             isOwn
               ? 'bg-primary text-primary-foreground rounded-br-none'
               : 'bg-muted rounded-bl-none'
@@ -53,7 +53,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </Button>
             </div>
           )}
-          <p className="text-sm break-words">{message}</p>
+          <p className="text-sm break-words whitespace-pre-wrap">{message}</p>
         </div>
         {timestamp && (
           <span className="text-xs text-muted-foreground">

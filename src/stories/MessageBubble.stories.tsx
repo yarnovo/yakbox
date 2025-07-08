@@ -158,6 +158,28 @@ export const LongMessage: Story = {
   },
 };
 
+export const VeryLongMessage: Story = {
+  name: '超长消息测试',
+  args: {
+    message:
+      '这是一条超级长的消息，用来测试消息气泡在处理极长文本时的换行表现。在这种情况下，消息内容可能包含很多字符，比如一段完整的文字说明、技术文档片段、或者用户粘贴的大段文本内容。我们需要确保无论文本多长，都能正确换行显示，不会撑爆气泡容器的宽度，同时保持良好的视觉效果和可读性。这种测试对于验证组件的鲁棒性非常重要。',
+    isOwn: false,
+    userName: '测试用户',
+    userAvatar: 'https://i.pravatar.cc/30?u=longtest',
+    timestamp: Date.now(),
+  },
+};
+
+export const MessageWithLineBreaks: Story = {
+  name: '带换行符的消息',
+  args: {
+    message: '这是第一行\n这是第二行\n这是第三行\n\n这是空行后的内容',
+    isOwn: true,
+    userAvatar: 'https://i.pravatar.cc/30?u=linebreak',
+    timestamp: Date.now(),
+  },
+};
+
 export const FailedMessage: Story = {
   name: '失败的消息',
   args: {
