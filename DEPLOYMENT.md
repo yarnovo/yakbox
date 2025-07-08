@@ -12,6 +12,7 @@
 - [CDN 部署](#cdn-部署)
 - [监控与回滚](#监控与回滚)
 - [故障排查](#故障排查)
+- [Storybook 部署](#storybook-部署)
 
 ## 🚀 部署概览
 
@@ -375,9 +376,80 @@ git push origin main --tags
    - 使用 `npm audit`
    - 配置 Dependabot
 
+## 📚 Storybook 部署
+
+### 概述
+
+Storybook 文档会自动部署到 GitHub Pages，提供在线的组件文档和演示。
+
+### 自动部署触发
+
+1. **推送到 main 分支时** - 自动触发构建和部署
+2. **手动触发** - 通过 GitHub Actions 页面手动运行工作流
+
+### GitHub Pages 设置
+
+#### 1. 启用 GitHub Pages
+
+1. 访问仓库设置：`Settings` → `Pages`
+2. 在 `Source` 部分选择：`GitHub Actions`
+3. 保存设置
+
+#### 2. 验证工作流权限
+
+1. 访问 `Settings` → `Actions` → `General`
+2. 在 `Workflow permissions` 部分
+3. 选择 `Read and write permissions`
+4. 勾选 `Allow GitHub Actions to create and approve pull requests`
+
+### Storybook 工作流
+
+`.github/workflows/storybook-deploy.yml` 包含：
+
+- **Build Job**：构建 Storybook 静态文件
+- **Deploy Job**：部署到 GitHub Pages
+
+### 访问地址
+
+部署成功后，可以通过以下地址访问：
+
+```
+https://yarnovo.github.io/yakbox/
+```
+
+### 本地测试
+
+```bash
+# 构建 Storybook
+npm run build-storybook
+
+# 本地预览
+npx http-server storybook-static
+```
+
+### 手动触发部署
+
+1. 访问 Actions 页面
+2. 选择 `Deploy Storybook to GitHub Pages`
+3. 点击 `Run workflow`
+4. 选择 `main` 分支并运行
+
+### Storybook 部署故障排查
+
+1. **权限错误**
+   - 检查 Actions 权限设置
+   - 确保 Pages 从 Actions 部署
+
+2. **404 错误**
+   - 等待部署完成（约 2-5 分钟）
+   - 检查 URL 正确性
+
+3. **构建失败**
+   - 查看 Actions 日志
+   - 确保依赖正确安装
+
 ## 📞 支持渠道
 
 - GitHub Issues：报告问题
 - GitHub Discussions：技术讨论
 - NPM Support：包发布问题
-- 邮件：deploy@course-gen.com

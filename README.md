@@ -2,6 +2,12 @@
 
 一个现代化、高性能的 React 聊天窗口组件，基于虚拟滚动技术和 shadcn/ui 设计系统，提供流畅的聊天体验。
 
+[![Storybook](https://github.com/yarnovo/yakbox/actions/workflows/storybook-deploy.yml/badge.svg)](https://github.com/yarnovo/yakbox/actions/workflows/storybook-deploy.yml)
+[![npm version](https://img.shields.io/npm/v/yakbox.svg)](https://www.npmjs.com/package/yakbox)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+📚 **[在线文档 (Storybook)](https://yarnovo.github.io/yakbox/)**
+
 ## 🌟 特性
 
 - 🚀 **高性能虚拟滚动** - 基于 @virtuoso.dev/message-list，可处理海量消息
