@@ -57,13 +57,13 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
           'flex flex-col h-full w-full bg-background rounded-lg border shadow-sm overflow-hidden',
         header: 'px-6 py-4 border-b bg-muted/50 flex-shrink-0',
         messagesContainer: 'flex-1 min-h-0 overflow-hidden bg-background',
-        inputContainer: 'p-4 flex-shrink-0',
+        inputContainer: 'px-4 pb-4 pt-0 flex-shrink-0',
       },
       borderless: {
         container: 'flex flex-col h-full w-full bg-background overflow-hidden',
         header: 'px-6 py-4 border-b bg-muted/50 flex-shrink-0',
         messagesContainer: 'flex-1 min-h-0 overflow-hidden bg-background',
-        inputContainer: 'p-4 flex-shrink-0',
+        inputContainer: 'px-4 pb-4 pt-0 flex-shrink-0',
       },
     };
 

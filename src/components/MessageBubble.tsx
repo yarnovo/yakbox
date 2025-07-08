@@ -23,7 +23,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   onRetry,
 }) => {
   return (
-    <div className={cn('flex gap-3 pb-3', isOwn && 'flex-row-reverse')}>
+    <div className={cn('flex gap-3 pb-3 px-2', isOwn && 'flex-row-reverse')}>
       {userAvatar && (
         <img
           src={userAvatar}
