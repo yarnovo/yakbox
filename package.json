@@ -15,7 +15,7 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5274",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
@@ -23,7 +23,7 @@
     "test": "vitest run",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6106",
     "build-storybook": "storybook build",
     "lint-staged": "lint-staged",
     "prepare": "husky",
