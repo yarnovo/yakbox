@@ -56,7 +56,12 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   };
 
   return (
-    <div className={cn('flex flex-col bg-background border rounded-lg overflow-hidden', className)}>
+    <div
+      className={cn(
+        'flex flex-col bg-background border rounded-lg overflow-hidden shadow-sm',
+        className
+      )}
+    >
       {/* 上方区域：自适应高度输入框 */}
       <div className="flex-1 min-h-0">
         <textarea
