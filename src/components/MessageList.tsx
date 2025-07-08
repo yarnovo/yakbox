@@ -61,12 +61,13 @@ export interface MessageListMethods {
 export interface MessageListProps {
   currentUserId: string;
   licenseKey?: string;
+  initialMessages?: ChatMessage[];
   onSend?: (message: ChatMessage) => void;
   onRetry?: (messageId: string) => void;
 }
 
 const MessageList = React.forwardRef<MessageListMethods, MessageListProps>(
-  ({ currentUserId, licenseKey = '', onSend, onRetry }, ref) => {
+  ({ currentUserId, licenseKey = '', initialMessages = [], onSend, onRetry }, ref) => {
     const messageListRef = React.useRef<VirtuosoMessageListMethods<ChatMessage>>(null);
 
     React.useImperativeHandle(ref, () => ({
@@ -127,7 +128,7 @@ const MessageList = React.forwardRef<MessageListMethods, MessageListProps>(
       <VirtuosoMessageListLicense licenseKey={licenseKey}>
         <VirtuosoMessageList<ChatMessage, MessageListContext>
           context={{ currentUserId, onRetry }}
-          initialData={[]}
+          initialData={initialMessages}
           shortSizeAlign="bottom-smooth"
           initialLocation={{ index: 'LAST', align: 'end' }}
           EmptyPlaceholder={EmptyPlaceholder}

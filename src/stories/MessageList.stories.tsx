@@ -71,6 +71,18 @@ function App() {
     <MessageList
       ref={messageListRef}
       currentUserId="user-1"
+      initialMessages={[
+        {
+          id: '1',
+          user: {
+            id: 'assistant-1',
+            name: 'Assistant',
+            avatar: 'https://i.pravatar.cc/30?u=assistant',
+          },
+          message: '你好！欢迎使用聊天窗口组件。',
+          timestamp: Date.now() - 60000,
+        },
+      ]}
       onSend={(message) => {
         console.log('Message sent:', message);
         // 发送到服务器
@@ -87,6 +99,7 @@ function App() {
 
 - **currentUserId** (string): 当前用户的ID，用于区分消息是自己发送的还是他人发送的
 - **licenseKey** (string, 可选): VirtuosoMessageList 的许可证密钥
+- **initialMessages** (ChatMessage[], 可选): 初始化时显示的消息列表，用于加载历史消息
 - **onSend** (function, 可选): 消息发送时的回调函数，接收发送的消息对象作为参数
 - **onRetry** (function, 可选): 重试发送消息的回调函数，接收消息ID作为参数
 
@@ -139,6 +152,10 @@ interface ChatMessage {
       control: 'text',
       description: 'VirtuosoMessageList 许可证密钥',
     },
+    initialMessages: {
+      control: 'object',
+      description: '初始化时显示的消息列表',
+    },
   },
   args: {
     onSend: fn(),
@@ -154,6 +171,7 @@ type Story = StoryObj<typeof meta>;
 interface TestMessageListProps {
   currentUserId: string;
   licenseKey?: string;
+  initialMessages?: ChatMessage[];
   onSend?: (message: ChatMessage) => void;
   onRetry?: (messageId: string) => void;
   exposeRef?: (ref: React.RefObject<MessageListMethods | null>) => void;
@@ -349,6 +367,92 @@ export const WithDifferentUser: Story = {
     expect(message1).toBeInTheDocument();
     expect(message2).toBeInTheDocument();
     expect(message3).toBeInTheDocument();
+  },
+};
+
+export const WithInitialMessages: Story = {
+  name: '带有初始消息',
+  args: {
+    currentUserId: 'user-1',
+    initialMessages: [
+      {
+        id: '1',
+        user: {
+          id: 'assistant-1',
+          name: 'Assistant',
+          avatar: 'https://i.pravatar.cc/30?u=assistant',
+        },
+        message: '你好！欢迎使用聊天窗口组件。',
+        timestamp: Date.now() - 60000,
+      },
+      {
+        id: '2',
+        user: {
+          id: 'user-1',
+          name: 'Current User',
+          avatar: 'https://i.pravatar.cc/30?u=user1',
+        },
+        message: '谢谢！这个组件看起来很不错。',
+        timestamp: Date.now() - 30000,
+      },
+      {
+        id: '3',
+        user: {
+          id: 'assistant-1',
+          name: 'Assistant',
+          avatar: 'https://i.pravatar.cc/30?u=assistant',
+        },
+        message: '是的，它支持流畅的滚动和消息状态管理。',
+        timestamp: Date.now() - 10000,
+      },
+    ],
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '100vh', width: '100%' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: (args) => (
+    <TestMessageList
+      {...args}
+      exposeRef={(ref) => {
+        testMessageListRef = ref;
+      }}
+    />
+  ),
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+
+    // 等待组件渲染
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    // 验证初始消息显示
+    const message1 = await canvas.findByText('你好！欢迎使用聊天窗口组件。');
+    const message2 = await canvas.findByText('谢谢！这个组件看起来很不错。');
+    const message3 = await canvas.findByText('是的，它支持流畅的滚动和消息状态管理。');
+
+    expect(message1).toBeInTheDocument();
+    expect(message2).toBeInTheDocument();
+    expect(message3).toBeInTheDocument();
+
+    // 获取 messageListRef
+    const messageListRef = testMessageListRef;
+    if (!messageListRef?.current) {
+      throw new Error('MessageList ref not available');
+    }
+
+    // 添加新消息
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    messageListRef.current.send('这是一条新消息');
+
+    // 验证新消息出现
+    const newMessage = await canvas.findByText('这是一条新消息');
+    expect(newMessage).toBeInTheDocument();
+
+    // 验证 onSend 回调被调用
+    expect(args.onSend).toHaveBeenCalled();
   },
 };
 

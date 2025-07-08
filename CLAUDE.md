@@ -214,4 +214,33 @@ yakbox/
 - 原样式：`h-full` 导致占满容器高度
 - 新样式：`py-16` 提供合适的垂直间距
 
-<!-- 最后更新时间: 2025-01-08T11:02:45.000Z -->
+### MessageList 组件 initialMessages 参数
+
+**添加时间**: 2025-07-08
+
+新增功能：
+
+1. **initialMessages 参数**: 为 MessageList 组件添加了 `initialMessages?: ChatMessage[]` 参数
+2. **参数透传**: 参数正确透传到内部 VirtuosoMessageList 组件的 `initialData` 属性
+3. **默认值处理**: 设置默认值为空数组，确保兼容性
+
+技术细节：
+
+- 位置：`src/components/MessageList.tsx:64`
+- 接口定义：`initialMessages?: ChatMessage[]`
+- 透传实现：`initialData={initialMessages}`
+- 默认值：`initialMessages = []`
+
+用途：
+
+- 加载历史消息
+- 显示预设对话内容
+- 支持从服务器获取消息列表后初始化组件
+
+Storybook 文档更新：
+
+- 新增 "带有初始消息" 故事演示
+- 更新 API 文档说明
+- 添加使用示例代码
+
+<!-- 最后更新时间: 2025-07-08T14:10:00.000Z -->
