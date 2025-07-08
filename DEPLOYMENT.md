@@ -30,12 +30,16 @@ graph LR
     F --> G[NPM 发布]
     G --> H[GitHub Release]
     H --> I[CDN 同步]
+    D --> J[Storybook 部署]
 ```
 
 ### 触发条件
 
 - **持续集成（CI）**：推送到 main 分支或提交 PR
 - **持续部署（CD）**：推送以 `v` 开头的标签（如 `v1.0.0`）
+  - NPM 包发布
+  - GitHub Release 创建
+  - Storybook 自动部署
 
 ## 🔧 GitHub Actions 工作流
 
@@ -136,6 +140,11 @@ graph LR
 1. **NPM_TOKEN**
    - 获取方式：npm.com → Access Tokens → Generate New Token
    - 权限要求：Publish
+   - 设置路径：Settings → Secrets → Actions
+
+2. **VITE_VIRTUOSO_LICENSE_KEY**
+   - 用途：Storybook 部署时的 Virtuoso License Key
+   - 获取方式：https://virtuoso.dev
    - 设置路径：Settings → Secrets → Actions
 
 ### 权限配置
@@ -384,7 +393,7 @@ Storybook 文档会自动部署到 GitHub Pages，提供在线的组件文档和
 
 ### 自动部署触发
 
-1. **推送到 main 分支时** - 自动触发构建和部署
+1. **推送版本标签时** - 推送 `v*` 标签时自动触发（例如 `v1.0.0`）
 2. **手动触发** - 通过 GitHub Actions 页面手动运行工作流
 
 ### GitHub Pages 设置

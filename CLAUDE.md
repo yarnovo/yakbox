@@ -121,11 +121,73 @@ yakbox/
   - 更新 GitHub Actions 工作流中的包名引用
   - 更新版本验证命令为使用 bumpster
 
+### 2025-01-08 (第三次更新)
+
+- **Storybook 部署配置**:
+  - 新增 `.github/workflows/storybook-deploy.yml` 工作流
+  - 配置自动部署到 GitHub Pages
+  - 在推送到 main 分支时自动触发部署
+  - 支持手动触发部署
+- **文档更新**:
+  - 在 README 中添加 Storybook 徽章和在线文档链接
+  - 将 Storybook 部署文档整合到 DEPLOYMENT.md 中
+
+### 2025-01-08 (第四次更新)
+
+- **License Key 管理方案**:
+  - 创建 `src/config/license.ts` 管理 License Key 配置
+  - 支持三层配置策略：本地开发(.env.local)、Storybook 部署(GitHub Secrets)、生产使用(组件 props)
+  - 新增 `.env.example` 作为环境变量模板
+  - 更新 `.gitignore` 排除敏感配置文件
+- **GitHub Actions 更新**:
+  - 在 Storybook 构建步骤添加 `VITE_VIRTUOSO_LICENSE_KEY` 环境变量注入
+  - 新增 GitHub Secret 配置要求
+- **Storybook Stories 更新**:
+  - 修改 ChatWindow 和 MessageList 的 stories 文件，自动从环境变量读取 License Key
+  - 使用 `getVirtuosoLicenseKey()` 函数统一管理
+- **文档新增**:
+  - 创建 `docs/LICENSE_KEY_SETUP.md` 详细说明配置方法
+  - 更新 `DEPLOYMENT.md` 添加 License Key 相关的 Secret 配置说明
+
 ## 项目发布信息
 
 - **NPM 包名**: yakbox
 - **Git 仓库**: https://github.com/yarnovo/yakbox
 - **当前版本**: 0.0.0
 - **发布方式**: 通过 GitHub tag 触发自动发布到 NPM
+- **Storybook 文档**: https://yarnovo.github.io/yakbox/
 
-<!-- 最后更新时间: 2025-01-08T07:54:52.170Z -->
+## 部署说明
+
+### NPM 发布
+
+- 通过创建版本标签（如 `v1.0.0`）触发自动发布
+- 支持正式版和预发布版（alpha、beta、rc）
+
+### Storybook 部署
+
+- 推送版本标签时自动部署到 GitHub Pages（例如 `v1.0.0`）
+- 支持手动触发部署
+- 需要在仓库设置中启用 GitHub Pages，Source 选择 "GitHub Actions"
+- 部署地址：https://yarnovo.github.io/yakbox/
+- 需要配置 `VITE_VIRTUOSO_LICENSE_KEY` Secret 用于生产环境
+
+## License Key 配置
+
+### 概述
+
+项目使用 @virtuoso.dev/message-list 作为虚拟滚动引擎，生产环境需要 License Key。
+
+### 配置策略
+
+1. **本地开发**: 不需要 License Key
+2. **Storybook 部署**: 使用 GitHub Secret `VITE_VIRTUOSO_LICENSE_KEY`
+3. **生产环境**: 通过组件 props 传入 `licenseKey`
+
+### 相关文件
+
+- `.storybook/license.ts` - Storybook 专用 License Key 配置
+- `.env.example` - 环境变量示例
+- `docs/license-key-setup.md` - 详细配置指南
+
+<!-- 最后更新时间: 2025-01-08T08:36:15.789Z -->

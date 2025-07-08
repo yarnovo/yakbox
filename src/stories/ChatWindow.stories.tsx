@@ -3,6 +3,7 @@ import { fn, userEvent, within, expect } from 'storybook/test';
 import { useRef, useState } from 'react';
 import { ChatWindow } from '../components/ChatWindow';
 import type { MessageListMethods } from '../components/MessageList';
+import { getVirtuosoLicenseKey } from '../../.storybook/license';
 
 const meta = {
   title: 'Components/ChatWindow',
@@ -165,6 +166,7 @@ function ChatApp() {
   },
   args: {
     onSendMessage: fn(),
+    licenseKey: getVirtuosoLicenseKey(),
   },
 } satisfies Meta<typeof ChatWindow>;
 

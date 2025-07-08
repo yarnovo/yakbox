@@ -3,6 +3,7 @@ import { fn, userEvent, within, expect } from 'storybook/test';
 import { useRef, useEffect } from 'react';
 import MessageList from '../components/MessageList';
 import type { MessageListMethods, ChatMessage } from '../components/MessageList';
+import { getVirtuosoLicenseKey } from '../../.storybook/license';
 
 const meta = {
   title: 'Components/MessageList',
@@ -142,6 +143,7 @@ interface ChatMessage {
   args: {
     onSend: fn(),
     onRetry: fn(),
+    licenseKey: getVirtuosoLicenseKey(),
   },
 } satisfies Meta<typeof MessageList>;
 

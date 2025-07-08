@@ -1,9 +1,10 @@
 name: Deploy Storybook to GitHub Pages
 
 on:
-  # 在主分支推送时触发
+  # 在推送版本标签时触发
   push:
-    branches: [main]
+    tags:
+      - 'v*' # 匹配所有以 v 开头的标签
   # 允许手动触发
   workflow_dispatch:
 
@@ -38,6 +39,8 @@ jobs:
 
       - name: Build Storybook
         run: npm run build-storybook
+        env:
+          VITE_VIRTUOSO_LICENSE_KEY: ${{ secrets.VITE_VIRTUOSO_LICENSE_KEY }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -65,4 +68,9 @@ jobs:
           echo "🔗 ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📦 Package: yakbox" >> $GITHUB_STEP_SUMMARY
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "🏷️ Version: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "🌿 Trigger: Manual deployment" >> $GITHUB_STEP_SUMMARY
+          fi
           echo "🕐 Deployed at: $(date)" >> $GITHUB_STEP_SUMMARY
