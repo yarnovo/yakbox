@@ -32,16 +32,8 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
 
     const handleSend = useCallback(() => {
       if (inputValue.trim() && messageListRef.current) {
-        const messageId = messageListRef.current.send(inputValue);
+        messageListRef.current.send(inputValue);
         setInputValue('');
-
-        // 模拟消息发送（用于演示）
-        setTimeout(() => {
-          // 模拟 20% 的失败率
-          if (Math.random() > 0.8) {
-            messageListRef.current?.update(messageId, { failed: true });
-          }
-        }, 1000);
       }
     }, [inputValue]);
 
@@ -55,33 +47,13 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
     const handleMessageSent = useCallback(
       (message: ChatMessage) => {
         onSendMessage?.(message);
-
-        // 模拟接收回复（用于演示）
-        if (!message.message.includes('失败测试')) {
-          setTimeout(() => {
-            if (messageListRef.current) {
-              messageListRef.current.receive({
-                user: {
-                  id: 'assistant-1',
-                  name: 'Assistant',
-                  avatar: 'https://i.pravatar.cc/30?u=assistant',
-                },
-                message: `收到消息: "${message.message}"`,
-              });
-            }
-          }, 1500);
-        }
       },
       [onSendMessage]
     );
 
     const handleRetry = useCallback((messageId: string) => {
       if (messageListRef.current) {
-        // 更新消息状态为成功
         messageListRef.current.update(messageId, { failed: false });
-
-        // 这里应该重新发送消息到服务器
-        console.log('重试发送消息:', messageId);
       }
     }, []);
 

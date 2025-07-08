@@ -261,11 +261,6 @@ export const EnglishVersion: Story = {
     await new Promise((resolve) => setTimeout(resolve, 500));
     const message = await canvas.findByText('Hello, I need help!');
     expect(message).toBeInTheDocument();
-
-    // 等待模拟回复
-    await new Promise((resolve) => setTimeout(resolve, 1600));
-    const reply = await canvas.findByText(/收到消息.*Hello, I need help!/);
-    expect(reply).toBeInTheDocument();
   },
 };
 
