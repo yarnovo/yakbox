@@ -89,7 +89,7 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
 
         {/* Input Container */}
         <div className={currentTheme.inputContainer}>
-          <MessageInput placeholder={placeholder} onSend={handleSend} maxHeight={150} />
+          <MessageInput placeholder={placeholder} onSend={handleSend} maxHeight={300} />
         </div>
       </div>
     );
