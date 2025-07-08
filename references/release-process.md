@@ -183,32 +183,32 @@ $ npm run release
 ### 安装最新正式版
 
 ```bash
-npm install @course-gen/chat-window
+npm install yakbox
 ```
 
 ### 安装最新 Alpha 版
 
 ```bash
-npm install @course-gen/chat-window@alpha
+npm install yakbox@alpha
 ```
 
 ### 安装最新 Beta 版
 
 ```bash
-npm install @course-gen/chat-window@beta
+npm install yakbox@beta
 ```
 
 ### 安装最新 RC 版
 
 ```bash
-npm install @course-gen/chat-window@rc
+npm install yakbox@rc
 ```
 
 ### 安装特定版本
 
 ```bash
-npm install @course-gen/chat-window@1.0.0
-npm install @course-gen/chat-window@1.1.0-beta.0
+npm install yakbox@1.0.0
+npm install yakbox@1.1.0-beta.0
 ```
 
 ## 注意事项

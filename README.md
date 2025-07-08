@@ -1,4 +1,4 @@
-# @course-gen/chat-window
+# yakbox
 
 一个现代化、高性能的 React 聊天窗口组件，基于虚拟滚动技术和 shadcn/ui 设计系统，提供流畅的聊天体验。
 
@@ -19,13 +19,13 @@
 
 ```bash
 # npm
-npm install @course-gen/chat-window
+npm install yakbox
 
 # yarn
-yarn add @course-gen/chat-window
+yarn add yakbox
 
 # pnpm
-pnpm add @course-gen/chat-window
+pnpm add yakbox
 ```
 
 ## 🚀 快速开始
@@ -33,8 +33,8 @@ pnpm add @course-gen/chat-window
 ### 基本使用
 
 ```tsx
-import { ChatWindow } from '@course-gen/chat-window';
-import type { ChatMessage } from '@course-gen/chat-window';
+import { ChatWindow } from 'yakbox';
+import type { ChatMessage } from 'yakbox';
 
 function App() {
   const handleSendMessage = (message: ChatMessage) => {
@@ -97,7 +97,7 @@ interface MessageListMethods {
 
 ```tsx
 import { useRef } from 'react';
-import { ChatWindow, MessageListMethods } from '@course-gen/chat-window';
+import { ChatWindow, MessageListMethods } from 'yakbox';
 
 function AdvancedChat() {
   const messageListRef = useRef<MessageListMethods>(null);

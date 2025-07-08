@@ -6,7 +6,7 @@
 
 ```json
 {
-  "name": "@course-gen/chat-window",
+  "name": "yakbox",
   "version": "1.0.0",
   "jsdelivr": "./dist/chat-window.umd.js"
 }
@@ -22,7 +22,7 @@ npm publish
 
 发布后几分钟内，自动可以通过 jsDelivr CDN 访问：
 
-- **jsDelivr**: `https://cdn.jsdelivr.net/npm/@course-gen/chat-window`
+- **jsDelivr**: `https://cdn.jsdelivr.net/npm/yakbox`
 
 ## 就是这么简单！
 
@@ -45,13 +45,13 @@ npm publish
 
 ```html
 <!-- 最新版本 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox"></script>
 
 <!-- 指定版本（自动可用） -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox@1.0.0"></script>
 
 <!-- 版本范围（jsDelivr 特有） -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@^1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox@^1.0.0"></script>
 ```
 
 ## 注意事项

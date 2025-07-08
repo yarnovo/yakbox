@@ -1,6 +1,6 @@
 # 部署指南
 
-本文档详细说明 @course-gen/chat-window 的自动化部署流程，所有部署都通过 GitHub Actions 自动完成。
+本文档详细说明 yakbox 的自动化部署流程，所有部署都通过 GitHub Actions 自动完成。
 
 ## 📋 目录
 
@@ -156,7 +156,7 @@ permissions:
 
 ```json
 {
-  "name": "@course-gen/chat-window",
+  "name": "yakbox",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -182,7 +182,7 @@ permissions:
 发布后自动验证：
 
 ```bash
-npm view @course-gen/chat-window@[version] version
+npm view yakbox@[version] version
 ```
 
 ## 🌐 CDN 部署
@@ -195,13 +195,13 @@ NPM 包发布后，jsDelivr 会自动同步：
 
 ```
 # 最新版本
-https://cdn.jsdelivr.net/npm/@course-gen/chat-window
+https://cdn.jsdelivr.net/npm/yakbox
 
 # 指定版本
-https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0
+https://cdn.jsdelivr.net/npm/yakbox@1.0.0
 
 # 具体文件
-https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/index.js
+https://cdn.jsdelivr.net/npm/yakbox@1.0.0/dist/index.js
 ```
 
 ### CDN 配置
@@ -218,7 +218,7 @@ https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/index.js
 ### 缓存刷新
 
 - jsDelivr 通常在 NPM 发布后 10 分钟内同步
-- 强制刷新：访问 `https://purge.jsdelivr.net/npm/@course-gen/chat-window`
+- 强制刷新：访问 `https://purge.jsdelivr.net/npm/yakbox`
 
 ## 📊 监控与回滚
 
@@ -233,18 +233,18 @@ https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/index.js
 
    ```bash
    # 查看包信息
-   npm info @course-gen/chat-window
+   npm info yakbox
 
    # 查看所有版本
-   npm view @course-gen/chat-window versions --json
+   npm view yakbox versions --json
 
    # 查看特定版本
-   npm view @course-gen/chat-window@1.0.0
+   npm view yakbox@1.0.0
    ```
 
 3. **下载量统计**
-   - NPM：https://www.npmjs.com/package/@course-gen/chat-window
-   - jsDelivr：https://www.jsdelivr.com/package/npm/@course-gen/chat-window/stats
+   - NPM：https://www.npmjs.com/package/yakbox
+   - jsDelivr：https://www.jsdelivr.com/package/npm/yakbox/stats
 
 ### 回滚策略
 
@@ -253,14 +253,14 @@ https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/index.js
 **弃用有问题的版本**：
 
 ```bash
-npm deprecate @course-gen/chat-window@1.0.1 "This version has critical bugs"
+npm deprecate yakbox@1.0.1 "This version has critical bugs"
 ```
 
 **推荐旧版本**：
 
 ```bash
 # 更新 latest 标签指向
-npm dist-tag add @course-gen/chat-window@1.0.0 latest
+npm dist-tag add yakbox@1.0.0 latest
 ```
 
 #### 2. 紧急修复流程

@@ -56,8 +56,8 @@ git push origin --tags
 
 1. 在 GitHub 仓库的 "Actions" 页面查看工作流运行状态
 2. 成功后可以访问：
-   - NPM: `https://www.npmjs.com/package/@course-gen/chat-window`
-   - jsDelivr CDN: `https://cdn.jsdelivr.net/npm/@course-gen/chat-window`
+   - NPM: `https://www.npmjs.com/package/yakbox`
+   - jsDelivr CDN: `https://cdn.jsdelivr.net/npm/yakbox`
 
 ## CDN 使用方式
 
@@ -67,13 +67,13 @@ git push origin --tags
 
 ```html
 <!-- 最新版本 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox"></script>
 
 <!-- 指定版本 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox@1.0.0"></script>
 
 <!-- 具体文件路径 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/chat-window.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox@1.0.0/dist/chat-window.umd.js"></script>
 ```
 
 ## 故障排查

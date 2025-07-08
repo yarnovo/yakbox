@@ -16,7 +16,7 @@
 <!-- 直接在 HTML 中使用 -->
 <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/chat-window.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox@1.0.0/dist/chat-window.umd.js"></script>
 
 <script>
   // 直接使用全局变量
@@ -43,7 +43,7 @@
 ```html
 <!-- 使用 ES Modules -->
 <script type="module">
-  import { ChatWindow } from 'https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0/dist/chat-window.es.js';
+  import { ChatWindow } from 'https://cdn.jsdelivr.net/npm/yakbox@1.0.0/dist/chat-window.es.js';
   // 使用现代 JavaScript
 </script>
 ```

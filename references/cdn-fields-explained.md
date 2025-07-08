@@ -15,12 +15,12 @@
 ### jsdelivr 字段
 
 - **作用**：告诉 jsDelivr CDN 服务默认提供哪个文件
-- **访问方式**：`https://cdn.jsdelivr.net/npm/@course-gen/chat-window`
+- **访问方式**：`https://cdn.jsdelivr.net/npm/yakbox`
 - **特点**：
   - 全球 CDN，中国可访问
   - 自动压缩和优化
-  - 支持版本锁定：`https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0`
-  - 支持版本范围：`https://cdn.jsdelivr.net/npm/@course-gen/chat-window@^1.0.0`
+  - 支持版本锁定：`https://cdn.jsdelivr.net/npm/yakbox@1.0.0`
+  - 支持版本范围：`https://cdn.jsdelivr.net/npm/yakbox@^1.0.0`
 
 ## 为什么都指向 UMD 文件？
 
@@ -38,13 +38,13 @@ UMD 格式正好满足这些需求。
 
 ```html
 <!-- 最新版本 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox"></script>
 
 <!-- 指定版本 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox@1.0.0"></script>
 
 <!-- 访问其他文件 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window/dist/chat-window.es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox/dist/chat-window.es.js"></script>
 ```
 
 ## jsDelivr 优势

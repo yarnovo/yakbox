@@ -26,7 +26,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- 引入 Chat Window 组件 -->
-    <script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@latest/dist/chat-window.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/yakbox@latest/dist/chat-window.umd.js"></script>
   </head>
   <body>
     <div id="app"></div>

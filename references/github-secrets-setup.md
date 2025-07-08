@@ -74,7 +74,7 @@ git push origin v0.0.1-test
    - 限制 token 权限到最小必需
 
 2. **NPM 包名**:
-   - 确保包名 `@course-gen/chat-window` 未被占用
+   - 确保包名 `yakbox` 未被占用
    - 包名已配置为组织范围内的包
 
 ## 故障排查

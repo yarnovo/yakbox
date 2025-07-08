@@ -6,10 +6,10 @@
 
 ```html
 <!-- 自动获取 package.json 中 jsdelivr 字段指定的文件 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox"></script>
 
 <!-- 指定版本 -->
-<script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window@1.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/yakbox@1.0.0"></script>
 ```
 
 ## 完整使用示例
@@ -24,7 +24,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Chat Window 组件 -->
-    <script src="https://cdn.jsdelivr.net/npm/@course-gen/chat-window"></script>
+    <script src="https://cdn.jsdelivr.net/npm/yakbox"></script>
   </head>
   <body>
     <div id="app"></div>
@@ -47,12 +47,12 @@
 ## TypeScript 项目使用
 
 ```bash
-npm install @course-gen/chat-window
+npm install yakbox
 ```
 
 ```typescript
-import { ChatWindow } from '@course-gen/chat-window';
-import type { ChatMessage, ChatWindowProps } from '@course-gen/chat-window';
+import { ChatWindow } from 'yakbox';
+import type { ChatMessage, ChatWindowProps } from 'yakbox';
 
 // TypeScript 类型自动可用
 const props: ChatWindowProps = {

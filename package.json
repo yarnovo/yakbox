@@ -1,5 +1,5 @@
 {
-  "name": "@course-gen/chat-window",
+  "name": "yakbox",
   "version": "0.1.0",
   "type": "module",
   "main": "./dist/index.js",
