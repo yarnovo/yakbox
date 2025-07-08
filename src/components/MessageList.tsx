@@ -45,7 +45,7 @@ const ItemContent: VirtuosoProps['ItemContent'] = ({ data: message, context }) =
 };
 
 const EmptyPlaceholder: VirtuosoProps['EmptyPlaceholder'] = () => (
-  <div className="flex items-center justify-center h-full text-gray-500">暂无消息</div>
+  <div className="flex items-center justify-center py-16 text-gray-500">暂无消息</div>
 );
 
 const Header: VirtuosoProps['Header'] = () => {
