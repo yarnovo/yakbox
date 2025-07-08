@@ -9,7 +9,7 @@ const meta = {
   title: 'Components/MessageList',
   component: MessageList,
   parameters: {
-    layout: 'fullscreen',
+    layout: 'centered',
     docs: {
       description: {
         component: `
@@ -24,6 +24,20 @@ MessageList 是一个高性能的消息列表组件，专为聊天应用设计�
 - **自动滚动控制**：智能处理新消息到达时的滚动行为
 - **消息区分显示**：根据发送者身份区分显示不同样式的消息气泡
 - **失败重试机制**：支持消息发送失败后的重试功能
+
+## 组件尺寸使用方式
+
+**尺寸特点**：
+- **高度**：使用 \`h-full\` (100%)，需要父容器提供确定的高度
+- **宽度**：自适应内容宽度，不会自动撑满父容器宽度
+
+**父容器要求**：
+- 必须有明确的高度（如 \`height: 600px\` 或 \`height: 100vh\`）
+- 如需控制宽度，应在父容器中设置 \`width\` 或使用 flex 布局
+
+**与 ChatWindow 的差异**：
+- **ChatWindow**：\`h-full w-full\` - 高度和宽度都是 100%
+- **MessageList**：\`h-full\` - 仅高度是 100%，宽度自适应
 
 ## 基本用法
 
@@ -205,7 +219,7 @@ export const Default: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div style={{ height: '600px', width: '400px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -219,7 +233,7 @@ export const Interactive: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div style={{ height: '600px', width: '400px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -307,7 +321,7 @@ export const WithDifferentUser: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div style={{ height: '600px', width: '400px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -409,7 +423,7 @@ export const WithInitialMessages: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div style={{ height: '600px', width: '400px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -463,7 +477,7 @@ export const WithFailedMessages: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '100vh', width: '100%' }}>
+      <div style={{ height: '600px', width: '400px', padding: '20px' }}>
         <Story />
       </div>
     ),

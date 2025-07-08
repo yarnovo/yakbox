@@ -98,6 +98,7 @@ function ChatApp() {
 | **onSendMessage** | function | - | 消息发送时的回调函数，接收 ChatMessage 对象 |
 | **currentUserId** | string | "user-1" | 当前用户的ID |
 | **licenseKey** | string | "" | VirtuosoMessageList 的许可证密钥 |
+| **theme** | 'default' | 'borderless' | "default" | 聊天窗口的主题样式 |
 
 ### 回调函数
 
@@ -113,18 +114,50 @@ function ChatApp() {
 
 ## 特性说明
 
-### 模拟消息交互
-
-组件内置了消息交互的模拟功能，便于开发和测试：
-
-1. **自动回复**：发送消息后会在 1 秒后收到模拟回复
-2. **发送状态**：消息会显示"发送中"状态，0.5 秒后更新为已发送
-3. **消息气泡**：自己发送的消息显示在右侧（蓝色），接收的消息显示在左侧（灰色）
-
 ### 键盘快捷键
 
 - **Enter**: 发送消息
 - **Shift + Enter**: 换行（当前版本输入框为单行，此功能预留）
+
+## 主题系统
+
+ChatWindow 组件支持两种主题样式，通过 \`theme\` 属性进行控制：
+
+### 默认主题 (default)
+
+这是组件的默认主题，具有完整的视觉边界：
+
+\`\`\`tsx
+<ChatWindow theme="default" title="默认主题" />
+\`\`\`
+
+**特点**：
+- 有边框 (\`border\`)
+- 圆角 (\`rounded-lg\`)  
+- 阴影 (\`shadow-sm\`)
+- 适合独立使用
+- 具有明确的视觉边界
+
+### 无边框主题 (borderless)
+
+简洁的主题样式，适合嵌入到其他布局中：
+
+\`\`\`tsx
+<ChatWindow theme="borderless" title="无边框主题" />
+\`\`\`
+
+**特点**：
+- 无外边框
+- 无圆角
+- 无阴影
+- 保留头部和输入区域的分割线
+- 适合嵌入到其他组件中
+
+### 主题选择建议
+
+- **独立使用**：选择 \`default\` 主题，具有明确的视觉边界
+- **嵌入使用**：选择 \`borderless\` 主题，与周围布局更好融合
+- **自定义边框**：使用 \`borderless\` 主题并在父容器中添加自定义样式
 
 ## 样式定制
 
@@ -162,6 +195,11 @@ function ChatApp() {
     licenseKey: {
       control: 'text',
       description: 'VirtuosoMessageList 许可证密钥',
+    },
+    theme: {
+      control: 'select',
+      options: ['default', 'borderless'],
+      description: '聊天窗口主题样式',
     },
   },
   args: {
@@ -671,6 +709,149 @@ export const ViewportHeight: Story = {
 - 确保父容器设置 \`overflow: hidden\` 避免出现双重滚动条
 - 在移动端可能需要考虑虚拟键盘对视口高度的影响
 - 可以根据需要调整间距和样式
+        `,
+      },
+    },
+  },
+};
+
+export const BorderlessTheme: Story = {
+  name: '无边框主题',
+  args: {
+    title: '无边框聊天窗口',
+    placeholder: '输入消息...',
+    theme: 'borderless',
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  parameters: {
+    docs: {
+      description: {
+        story: `
+这个示例展示了无边框主题的聊天窗口：
+
+## 主题特点：
+
+1. **无外边框**：移除了组件的外边框、圆角和阴影
+2. **保留分割线**：头部和输入区域仍保留分割线（border-b 和 border-t）
+3. **简洁设计**：适用于需要融入更大布局的场景
+4. **完整功能**：所有交互功能与默认主题完全相同
+
+## 适用场景：
+
+- 嵌入到其他组件中
+- 需要自定义外部边框的场景
+- 简洁风格的设计需求
+- 与其他组件组合使用
+
+## 主题对比：
+
+- **默认主题**: 有边框、圆角、阴影 - 适合独立使用
+- **无边框主题**: 无边框、无圆角、无阴影 - 适合嵌入使用
+        `,
+      },
+    },
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+
+    // 等待组件渲染
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // 查找输入框和发送按钮
+    const input = canvas.getByPlaceholderText('输入消息...');
+    const sendButton = canvas.getByRole('button');
+
+    // 测试输入和发送消息
+    await userEvent.type(input, '测试无边框主题');
+    await userEvent.click(sendButton);
+
+    // 验证输入框已清空
+    expect(input).toHaveValue('');
+
+    // 验证 onSendMessage 被调用
+    expect(args.onSendMessage).toHaveBeenCalled();
+
+    // 等待消息出现在列表中
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const message = await canvas.findByText('测试无边框主题');
+    expect(message).toBeInTheDocument();
+  },
+};
+
+export const ThemeComparison: Story = {
+  name: '主题对比',
+  render: () => (
+    <div style={{ display: 'flex', gap: '20px', height: '600px' }}>
+      <div style={{ flex: 1 }}>
+        <h3 style={{ margin: '0 0 10px 0', textAlign: 'center' }}>默认主题</h3>
+        <ChatWindow
+          title="默认主题"
+          placeholder="输入消息..."
+          theme="default"
+          licenseKey={getVirtuosoLicenseKey()}
+          onSendMessage={(message) => {
+            console.log('默认主题消息:', message);
+          }}
+        />
+      </div>
+      <div style={{ flex: 1 }}>
+        <h3 style={{ margin: '0 0 10px 0', textAlign: 'center' }}>无边框主题</h3>
+        <ChatWindow
+          title="无边框主题"
+          placeholder="输入消息..."
+          theme="borderless"
+          licenseKey={getVirtuosoLicenseKey()}
+          onSendMessage={(message) => {
+            console.log('无边框主题消息:', message);
+          }}
+        />
+      </div>
+    </div>
+  ),
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      description: {
+        story: `
+这个示例并排展示了两种主题的差异：
+
+## 视觉对比：
+
+1. **默认主题（左侧）**：
+   - 有边框、圆角、阴影
+   - 适合作为独立组件使用
+   - 具有明确的视觉边界
+
+2. **无边框主题（右侧）**：
+   - 无边框、无圆角、无阴影
+   - 适合嵌入到其他布局中
+   - 简洁的视觉效果
+
+## 功能特点：
+
+- 两种主题功能完全相同
+- 都保留了头部和输入区域的分割线
+- 可以根据设计需求选择合适的主题
+- 支持所有相同的 Props 和回调函数
+
+## 使用建议：
+
+- **独立使用**：选择默认主题
+- **嵌入使用**：选择无边框主题
+- **自定义边框**：使用无边框主题并在父容器中添加样式
         `,
       },
     },

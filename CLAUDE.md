@@ -180,6 +180,68 @@ yakbox/
 
 ## 重要实现细节
 
+### ChatWindow 主题系统
+
+**发现时间**: 2025-07-09
+
+**功能**: 为 ChatWindow 组件增加主题系统，支持默认主题和无边框主题
+
+**实现方案**:
+
+1. **类型定义**:
+   - 新增 `ChatWindowTheme` 类型：`'default' | 'borderless'`
+   - 在 `ChatWindowProps` 中添加 `theme?: ChatWindowTheme` 参数
+   - 默认值为 `'default'`
+
+2. **主题样式**:
+   - **默认主题**: `rounded-lg border shadow-sm` - 有边框、圆角、阴影
+   - **无边框主题**: 移除外边框、圆角、阴影，保留内部分割线
+   - 头部和输入区域的分割线在两种主题中都保留
+
+3. **使用场景**:
+   - **默认主题**: 适合独立使用，具有明确的视觉边界
+   - **无边框主题**: 适合嵌入到其他布局中，与周围环境融合
+
+4. **Storybook 支持**:
+   - 添加主题选择控件
+   - 新增"无边框主题"和"主题对比"故事
+   - 完整的文档说明和使用示例
+
+**技术细节**:
+
+- 组件位置：`src/components/ChatWindow.tsx:65-78`
+- 主题样式通过 `themeStyles` 对象管理
+- 支持所有原有功能，仅改变视觉样式
+- 向后兼容，不影响现有使用
+
+### 组件尺寸使用方式差异
+
+**发现时间**: 2025-07-09
+
+**问题**: 用户反映 MessageList 组件在 Storybook 中显示宽度很窄，需要澄清组件尺寸使用方式
+
+**解决方案**:
+
+1. **组件尺寸分析**:
+   - **ChatWindow**: 使用 `h-full w-full` - 高度和宽度都是 100%，需要父容器提供确定尺寸
+   - **MessageList**: 使用 `h-full` - 仅高度是 100%，宽度自适应内容
+
+2. **文档更新**:
+   - 在 MessageList.stories.tsx 中添加"组件尺寸使用方式"说明
+   - 明确父容器要求和布局建议
+   - 对比 ChatWindow 和 MessageList 的差异
+
+3. **Storybook 样式调整**:
+   - 布局从 `fullscreen` 改为 `centered`
+   - 容器尺寸从 `100vh × 100%` 改为 `600px × 400px`
+   - 添加 `padding: 20px` 留出空间
+
+**技术细节**:
+
+- ChatWindow 位置：`src/components/ChatWindow.tsx:61` - `h-full w-full`
+- MessageList 位置：`src/components/MessageList.tsx:137` - `h-full`
+- 原因：MessageList 没有设置宽度类，导致宽度自适应内容
+
 ### ChatWindow 组件纯净化
 
 **问题**: 组件导出后包含 demo 逻辑，会自动模拟消息发送和接收
@@ -243,4 +305,4 @@ Storybook 文档更新：
 - 更新 API 文档说明
 - 添加使用示例代码
 
-<!-- 最后更新时间: 2025-07-08T14:10:00.000Z -->
+<!-- 最后更新时间: 2025-07-09T01:24:06+08:00 -->

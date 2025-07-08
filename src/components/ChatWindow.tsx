@@ -5,12 +5,15 @@ import { Send } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 
+export type ChatWindowTheme = 'default' | 'borderless';
+
 export interface ChatWindowProps {
   title?: string;
   placeholder?: string;
   onSendMessage?: (message: ChatMessage) => void;
   currentUserId?: string;
   licenseKey?: string;
+  theme?: ChatWindowTheme;
 }
 
 export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
@@ -21,6 +24,7 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
       onSendMessage,
       currentUserId = 'user-1',
       licenseKey = '',
+      theme = 'default',
     },
     ref
   ) => {
@@ -37,7 +41,7 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
       }
     }, [inputValue]);
 
-    const handleKeyPress = (e: React.KeyboardEvent) => {
+    const handleKeyDown = (e: React.KeyboardEvent) => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         handleSend();
@@ -57,15 +61,34 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
       }
     }, []);
 
+    // 主题样式定义
+    const themeStyles = {
+      default: {
+        container:
+          'flex flex-col h-full w-full bg-background rounded-lg border shadow-sm overflow-hidden',
+        header: 'px-6 py-4 border-b bg-muted/50 flex-shrink-0',
+        messagesContainer: 'flex-1 min-h-0 overflow-hidden bg-background',
+        inputContainer: 'border-t px-4 py-4 flex-shrink-0',
+      },
+      borderless: {
+        container: 'flex flex-col h-full w-full bg-background overflow-hidden',
+        header: 'px-6 py-4 border-b bg-muted/50 flex-shrink-0',
+        messagesContainer: 'flex-1 min-h-0 overflow-hidden bg-background',
+        inputContainer: 'border-t px-4 py-4 flex-shrink-0',
+      },
+    };
+
+    const currentTheme = themeStyles[theme];
+
     return (
-      <div className="flex flex-col h-full w-full bg-background rounded-lg border shadow-sm overflow-hidden">
+      <div className={currentTheme.container}>
         {/* Header */}
-        <div className="px-6 py-4 border-b bg-muted/50 flex-shrink-0">
+        <div className={currentTheme.header}>
           <h3 className="text-lg font-semibold">{title}</h3>
         </div>
 
         {/* Messages Container */}
-        <div className="flex-1 min-h-0 overflow-hidden bg-background">
+        <div className={currentTheme.messagesContainer}>
           <MessageList
             ref={messageListRef}
             currentUserId={currentUserId}
@@ -76,13 +99,13 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
         </div>
 
         {/* Input Container */}
-        <div className="border-t px-4 py-4 flex-shrink-0">
+        <div className={currentTheme.inputContainer}>
           <div className="flex items-center gap-2">
             <input
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyDown}
               placeholder={placeholder}
               className={cn(
                 'flex-1 px-4 py-2 text-sm rounded-lg border bg-background',
