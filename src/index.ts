@@ -12,4 +12,7 @@ export type {
 export { default as MessageBubble } from './components/MessageBubble';
 export type { MessageBubbleProps } from './components/MessageBubble';
 
+export { MessageInput } from './components/MessageInput';
+export type { MessageInputProps } from './components/MessageInput';
+
 // Icons are now provided by lucide-react
