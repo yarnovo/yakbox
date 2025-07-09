@@ -42,5 +42,12 @@
 - 开发服务器端口：5274
 - Storybook 端口：6106
 
-<!-- 最后更新时间: 2025-07-09T20:14:00+08:00 -->
-<!-- 更新说明: 添加技术架构说明，强调 Tailwind CSS 配置要求 -->
+## 代码质量工具
+
+- ESLint 集成 Prettier 进行代码格式化
+- 使用 eslint-config-prettier 和 eslint-plugin-prettier
+- lint-staged 仅运行 eslint --fix，Prettier 通过 ESLint 规则自动执行
+- 配置位置：eslint.config.js（Flat Config 格式）
+
+<!-- 最后更新时间: 2025-07-09T20:25:00+08:00 -->
+<!-- 更新说明: 添加代码质量工具配置，记录 ESLint 和 Prettier 集成方式 -->
