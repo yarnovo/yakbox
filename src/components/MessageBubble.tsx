@@ -2,7 +2,6 @@ import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
-import EnhancedMarkdownRenderer from './EnhancedMarkdownRenderer';
 
 export interface MessageBubbleProps {
   message: string;
@@ -52,9 +51,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </Button>
             </div>
           )}
-          <div className={cn('text-sm break-words', !isOwn && 'px-0')}>
-            <EnhancedMarkdownRenderer content={message} />
-          </div>
+          <div className={cn('text-sm break-words', !isOwn && 'px-0')}>{message}</div>
         </div>
         {timestamp && (
           <span className="text-xs text-muted-foreground">
