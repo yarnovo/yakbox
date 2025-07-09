@@ -371,6 +371,63 @@ Storybook 文档更新：
 - 默认最大高度为 200px
 - ChatWindow 中设置为 150px
 
+### ChatWindow 初始消息功能实现
+
+**添加时间**: 2025-07-09
+
+**功能描述**: 为 ChatWindow 组件增加初始消息加载能力，支持展示历史对话记录
+
+**实现方案**:
+
+1. **API 设计**:
+   - ChatWindowProps 新增 `initialMessages?: ChatMessage[]` 参数
+   - 参数透传到内部 MessageList 组件的 `initialMessages` 属性
+   - 保持向后兼容，参数为可选
+
+2. **使用方式**:
+
+   ```tsx
+   // 定义初始消息（如从数据库加载）
+   const initialMessages: ChatMessage[] = [
+     {
+       id: '1',
+       user: { id: 'assistant-1', name: 'AI Assistant', avatar: '🤖' },
+       message: '您好！有什么可以帮助您的吗？',
+       timestamp: Date.now() - 300000,
+     },
+     // ... 更多历史消息
+   ];
+
+   // 使用组件
+   <ChatWindow initialMessages={initialMessages} onSendMessage={handleSendMessage} />;
+   ```
+
+3. **流式回复集成**:
+   - 使用 `ref.current.receive()` 接收新消息，返回消息 ID
+   - 使用 `ref.current.update(messageId, { message: content })` 更新消息
+   - 通过 `setInterval` 实现逐字更新效果
+
+**技术细节**:
+
+- ChatWindow 接口定义：`src/components/ChatWindow.tsx:15`
+- 参数透传实现：`src/components/ChatWindow.tsx:87`
+- 示例应用：`src/App.tsx` - 展示流式回复实现
+- Storybook 故事：`WithInitialMessages` - 完整功能演示
+
+**应用场景**:
+
+- **会话恢复**: 用户重新打开聊天窗口时加载之前的对话
+- **客服系统**: 展示历史工单和对话记录
+- **AI 对话**: 保持上下文连续性
+- **演示场景**: 预设对话内容进行功能展示
+
+**最佳实践**:
+
+- 初始消息应包含完整的 ChatMessage 结构
+- 虚拟滚动会自动定位到最新消息
+- 结合 ref 方法可实现复杂的消息更新逻辑
+- 适合与后端 API 集成实现持久化
+
 ### MessageInput 发送按钮 UI 优化
 
 **优化时间**: 2025-07-09
@@ -421,4 +478,4 @@ Storybook 文档更新：
 - 输入长文本时有充足的扩展空间
 - 阴影效果让输入框在界面中更突出
 
-<!-- 最后更新时间: 2025-07-09T02:16:34+08:00 -->
+<!-- 最后更新时间: 2025-07-09T14:17:00+08:00 -->

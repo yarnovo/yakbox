@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within, expect } from 'storybook/test';
 import { useRef, useState } from 'react';
 import { ChatWindow } from './ChatWindow';
-import type { MessageListMethods } from './MessageList';
+import type { MessageListMethods, ChatMessage } from './MessageList';
 import { getVirtuosoLicenseKey } from '../../.storybook/license';
 
 const meta = {
@@ -99,6 +99,7 @@ function ChatApp() {
 | **currentUserId** | string | "user-1" | 当前用户的ID |
 | **licenseKey** | string | "" | VirtuosoMessageList 的许可证密钥 |
 | **theme** | 'default' | 'borderless' | "default" | 聊天窗口的主题样式 |
+| **initialMessages** | ChatMessage[] | - | 初始消息列表，用于展示历史对话 |
 
 ### 回调函数
 
@@ -201,6 +202,10 @@ ChatWindow 组件支持两种主题样式，通过 \`theme\` 属性进行控制�
       options: ['default', 'borderless'],
       description: '聊天窗口主题样式',
     },
+    initialMessages: {
+      control: 'object',
+      description: '初始消息列表',
+    },
   },
   args: {
     onSendMessage: fn(),
@@ -219,7 +224,7 @@ export const Default: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+      <div style={{ height: '600px', width: '500px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -259,7 +264,7 @@ export const CustomTitle: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+      <div style={{ height: '600px', width: '500px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -275,7 +280,7 @@ export const EnglishVersion: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+      <div style={{ height: '600px', width: '500px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -310,7 +315,7 @@ export const WithLongTitle: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+      <div style={{ height: '600px', width: '500px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -336,7 +341,7 @@ export const Interactive: Story = {
   render: () => <InteractiveChatWindow />,
   decorators: [
     (Story) => (
-      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+      <div style={{ height: '600px', width: '500px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -452,7 +457,7 @@ export const AdvancedFeatures: Story = {
   render: () => <AdvancedChatWindow />,
   decorators: [
     (Story) => (
-      <div style={{ height: '700px', width: '100%', padding: '20px' }}>
+      <div style={{ height: '700px', width: '500px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -724,7 +729,7 @@ export const BorderlessTheme: Story = {
   },
   decorators: [
     (Story) => (
-      <div style={{ height: '600px', width: '100%', padding: '20px' }}>
+      <div style={{ height: '600px', width: '500px', padding: '20px' }}>
         <Story />
       </div>
     ),
@@ -855,5 +860,204 @@ export const ThemeComparison: Story = {
         `,
       },
     },
+  },
+};
+
+// 带有初始消息的示例组件
+const ChatWithInitialMessages = () => {
+  // 初始消息列表
+  const initialMessages: ChatMessage[] = [
+    {
+      id: '1',
+      user: {
+        id: 'assistant-1',
+        name: 'AI Assistant',
+        avatar: '🤖',
+      },
+      message: '您好！欢迎使用 AI 智能助手。我可以帮助您解答各种问题。',
+      timestamp: Date.now() - 3600000, // 1小时前
+    },
+    {
+      id: '2',
+      user: {
+        id: 'user-1',
+        name: '用户',
+        avatar: 'https://i.pravatar.cc/30?u=user-1',
+      },
+      message: '你好！我想了解一下天气预报功能。',
+      timestamp: Date.now() - 3000000, // 50分钟前
+    },
+    {
+      id: '3',
+      user: {
+        id: 'assistant-1',
+        name: 'AI Assistant',
+        avatar: '🤖',
+      },
+      message:
+        '当然可以！我可以为您提供以下天气服务：\n\n1. 查询当前天气\n2. 未来7天天气预报\n3. 天气预警信息\n4. 空气质量指数\n\n请问您想查询哪个城市的天气呢？',
+      timestamp: Date.now() - 2400000, // 40分钟前
+    },
+    {
+      id: '4',
+      user: {
+        id: 'user-1',
+        name: '用户',
+        avatar: 'https://i.pravatar.cc/30?u=user-1',
+      },
+      message: '我想查询北京的天气。',
+      timestamp: Date.now() - 1800000, // 30分钟前
+    },
+    {
+      id: '5',
+      user: {
+        id: 'assistant-1',
+        name: 'AI Assistant',
+        avatar: '🤖',
+      },
+      message:
+        '北京今日天气：\n\n🌤 晴天\n🌡️ 温度：18°C ~ 28°C\n💨 风力：微风 2级\n💧 湿度：45%\n🌈 空气质量：良好 (AQI: 75)\n\n建议：天气晴朗，适合外出活动。紫外线较强，请注意防晒。',
+      timestamp: Date.now() - 1200000, // 20分钟前
+    },
+  ];
+
+  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+  const chatWindowRef = useRef<MessageListMethods>(null);
+
+  const handleSendMessage = (message: ChatMessage) => {
+    // 添加用户消息到状态
+    setMessages((prev) => [...prev, message]);
+
+    // 模拟 AI 回复
+    setTimeout(() => {
+      const aiReply: ChatMessage = {
+        id: Date.now().toString(),
+        user: {
+          id: 'assistant-1',
+          name: 'AI Assistant',
+          avatar: '🤖',
+        },
+        message: '收到您的消息！我正在处理您的请求...',
+        timestamp: Date.now(),
+      };
+
+      if (chatWindowRef.current) {
+        chatWindowRef.current.receive({
+          user: aiReply.user,
+          message: aiReply.message,
+        });
+      }
+    }, 1000);
+  };
+
+  return (
+    <ChatWindow
+      ref={chatWindowRef}
+      title="带有历史对话的聊天窗口"
+      placeholder="继续对话..."
+      initialMessages={messages}
+      currentUserId="user-1"
+      licenseKey={getVirtuosoLicenseKey()}
+      onSendMessage={handleSendMessage}
+    />
+  );
+};
+
+export const WithInitialMessages: Story = {
+  name: '带有初始消息',
+  render: () => <ChatWithInitialMessages />,
+  decorators: [
+    (Story) => (
+      <div style={{ height: '600px', width: '500px', padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  parameters: {
+    docs: {
+      description: {
+        story: `
+这个示例展示了如何使用 \`initialMessages\` 属性加载历史对话记录。
+
+## 功能特点：
+
+1. **历史消息展示**：组件加载时显示预设的对话历史
+2. **不同时间戳**：消息显示不同的时间，模拟真实对话场景
+3. **多用户对话**：展示用户和 AI 助手之间的对话
+4. **继续对话**：用户可以在历史对话基础上继续交流
+
+## 使用场景：
+
+- **恢复会话**：用户重新打开聊天窗口时加载之前的对话
+- **客服系统**：显示历史工单记录
+- **AI 对话**：展示之前的问答历史
+- **教学演示**：预设对话内容进行功能展示
+
+## 代码示例：
+
+\`\`\`tsx
+const initialMessages: ChatMessage[] = [
+  {
+    id: '1',
+    user: {
+      id: 'assistant-1',
+      name: 'AI Assistant',
+      avatar: '🤖',
+    },
+    message: '您好！欢迎使用 AI 智能助手。',
+    timestamp: Date.now() - 3600000,
+  },
+  // ... 更多历史消息
+];
+
+<ChatWindow
+  initialMessages={initialMessages}
+  currentUserId="user-1"
+  onSendMessage={handleSendMessage}
+/>
+\`\`\`
+
+## 注意事项：
+
+- 初始消息会在组件首次渲染时加载
+- 消息列表会自动滚动到最底部（最新消息）
+- 支持与 MessageList 组件的所有交互功能
+- 可以结合 ref 方法动态添加更多消息
+        `,
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 等待组件渲染
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // 验证可见的历史消息显示（虚拟滚动会自动滚动到最底部）
+    const weatherQuery = await canvas.findByText('我想查询北京的天气。');
+    expect(weatherQuery).toBeInTheDocument();
+
+    const weatherInfo = await canvas.findByText(/北京今日天气/);
+    expect(weatherInfo).toBeInTheDocument();
+
+    // 测试发送新消息
+    const input = canvas.getByPlaceholderText('继续对话...');
+    const sendButton = canvas.getByRole('button');
+
+    await userEvent.type(input, '还有其他功能吗？');
+    await userEvent.click(sendButton);
+
+    // 验证新消息发送
+    expect(input).toHaveValue('');
+
+    // 等待新消息出现
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const newMessage = await canvas.findByText('还有其他功能吗？');
+    expect(newMessage).toBeInTheDocument();
+
+    // 等待 AI 回复
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const aiReply = await canvas.findByText('收到您的消息！我正在处理您的请求...');
+    expect(aiReply).toBeInTheDocument();
   },
 };
