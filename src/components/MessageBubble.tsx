@@ -2,6 +2,7 @@ import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
+import EnhancedMarkdownRenderer from './EnhancedMarkdownRenderer';
 
 export interface MessageBubbleProps {
   message: string;
@@ -24,7 +25,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
 }) => {
   return (
     <div className={cn('flex gap-3 pb-3 pl-4 pr-2', isOwn && 'flex-row-reverse')}>
-      {userAvatar && (
+      {userAvatar && isOwn && (
         <img
           src={userAvatar}
           alt={userName || 'User'}
@@ -34,10 +35,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
       <div className={cn('flex flex-col gap-1 max-w-[70%]', isOwn ? 'items-end' : 'items-start')}>
         <div
           className={cn(
-            'px-4 py-2 rounded-lg relative inline-block max-w-full',
-            isOwn
-              ? 'bg-primary text-primary-foreground rounded-br-none'
-              : 'bg-muted rounded-bl-none'
+            'relative inline-block max-w-full',
+            isOwn ? 'px-4 py-2 rounded-lg bg-primary text-primary-foreground rounded-br-none' : ''
           )}
         >
           {failed && (
@@ -53,7 +52,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </Button>
             </div>
           )}
-          <p className="text-sm break-words whitespace-pre-wrap">{message}</p>
+          <div className={cn('text-sm break-words', !isOwn && 'px-0')}>
+            <EnhancedMarkdownRenderer content={message} />
+          </div>
         </div>
         {timestamp && (
           <span className="text-xs text-muted-foreground">
@@ -63,7 +64,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
             })}
           </span>
         )}
-        {failed && <span className="text-xs text-destructive">发送失败</span>}
       </div>
     </div>
   );

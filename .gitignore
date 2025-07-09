@@ -29,3 +29,5 @@ dist-ssr
 storybook-static
 
 .claude_memory_cache.json
+
+.todo/

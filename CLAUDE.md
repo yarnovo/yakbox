@@ -1,481 +1,411 @@
 # yakbox 项目记忆
 
-## 项目基本信息
+## 一、项目概览
 
-**项目名称**: yakbox  
-**类型**: React 聊天窗口组件库  
-**定位**: 现代化、高性能的专业级聊天组件
+### 项目定位与愿景
 
-## 技术栈
+**yakbox** 是一个专业级的 React 聊天组件库，旨在为开发者提供高性能、可定制的聊天界面解决方案。项目的核心理念是"专业、高效、易用"，通过现代化的技术架构和精心设计的 API，让开发者能够快速构建出生产级别的聊天应用。
 
-### 核心技术
+### 核心价值主张
 
-- **框架**: React 19.1.0 + TypeScript 5.8.3
-- **构建工具**: Vite 7.0.0 + Rollup
-- **样式**: Tailwind CSS 4.1.11 + shadcn/ui 设计系统
-- **模块格式**: ESM (ES Module)
+1. **开箱即用的完整方案**
+   - 提供从消息展示到输入交互的完整组件体系
+   - 内置虚拟滚动、主题系统等高级特性
+   - 无需从零开始构建复杂的聊天界面
 
-### 开发工具链
+2. **性能优先的架构设计**
+   - 基于 @virtuoso.dev/message-list 的专业虚拟滚动
+   - 支持百万级消息的流畅渲染
+   - 优化的重渲染策略和内存管理
 
-- **代码质量**: ESLint 9.29.0 + Prettier 3.6.2
-- **测试**: Vitest 3.2.4 + Playwright 1.53.1
-- **文档**: Storybook 9.0.14
-- **Git 工作流**: Husky 9.1.7 + lint-staged 16.1.2
-- **版本管理**: bumpster 0.1.2 (语义化版本验证工具)
+3. **灵活的定制能力**
+   - 主题系统支持视觉风格定制
+   - 组件 API 设计支持行为定制
+   - TypeScript 完整类型支持
 
-### 主要依赖
+4. **企业级品质保证**
+   - 完善的测试覆盖（单元测试、集成测试、视觉测试）
+   - 详细的文档和示例（Storybook）
+   - 规范的发布流程和版本管理
 
-- **虚拟滚动**: @virtuoso.dev/message-list 1.12.3
-- **UI 组件**: @radix-ui/react-slot 1.2.3
-- **图标**: lucide-react 0.525.0
-- **样式工具**: class-variance-authority + clsx + tailwind-merge
-- **工具库**: uuid 11.1.0
+### 目标用户群体
 
-## 项目结构
+- **企业应用开发者**: 需要在企业系统中集成聊天功能
+- **AI 产品开发者**: 构建对话式 AI 界面，如 ChatGPT 类应用
+- **客服系统开发者**: 在线客服、工单系统等实时通讯场景
+- **社交应用开发者**: 即时通讯、社区讨论等社交功能
+
+### 技术生态定位
+
+yakbox 在 React 生态中的定位是填补专业聊天组件的空白。不同于简单的 UI 组件库，yakbox 专注于聊天这一垂直领域，提供深度优化的解决方案。项目与现代前端工具链深度集成，支持 SSR、微前端等高级架构模式。
+
+## 二、架构设计
+
+### 整体架构理念
+
+项目采用**分层组件化架构**，遵循以下核心设计原则：
+
+1. **单一职责原则**: 每个组件专注于特定功能域
+2. **组合优于继承**: 通过组件组合构建复杂功能
+3. **控制反转**: 通过 props、ref 和回调将控制权交给使用者
+4. **渐进式增强**: 从基础功能到高级特性的平滑过渡
+
+### 组件架构体系
 
 ```
-yakbox/
-├── src/                          # 源代码目录
-│   ├── components/              # 组件目录
-│   │   ├── ChatWindow.tsx       # 主聊天窗口组件
-│   │   ├── MessageBubble.tsx    # 消息气泡组件
-│   │   ├── MessageList.tsx      # 消息列表组件
-│   │   └── ui/                  # UI 基础组件
-│   ├── stories/                 # Storybook 故事文件
-│   ├── lib/                     # 工具函数
-│   ├── index.ts                 # 导出入口
-│   └── main.tsx                 # 开发时入口
-├── docs/                        # 对外文档目录
-├── references/                  # 内部参考文档目录
-├── dist/                        # 构建输出目录
-├── scripts/                     # 脚本文件
-├── .storybook/                  # Storybook 配置
-│   └── license.ts               # License Key 配置
-├── .github/                     # GitHub 配置
-│   └── workflows/               # GitHub Actions 工作流
-│       ├── ci-cd.yml            # CI/CD 流程
-│       └── storybook-deploy.yml # Storybook 部署
-├── public/                      # 静态资源
-└── workers/                     # Web Workers
+yakbox 组件架构
+│
+├── 容器层 (Container Layer)
+│   └── ChatWindow
+│       ├── 职责：整体布局、状态协调、主题应用
+│       ├── 特性：主题系统、响应式布局、API 聚合
+│       └── 设计：高内聚低耦合，易于扩展
+│
+├── 功能层 (Feature Layer)
+│   ├── MessageList
+│   │   ├── 职责：消息列表管理、虚拟滚动
+│   │   ├── 特性：百万级消息支持、动态高度处理
+│   │   └── 设计：性能优先、内存优化
+│   │
+│   └── MessageInput
+│       ├── 职责：消息输入、发送控制
+│       ├── 特性：自适应高度、快捷键支持
+│       └── 设计：可访问性、用户体验优先
+│
+└── 展示层 (Presentation Layer)
+    ├── MessageBubble
+    │   ├── 职责：单条消息展示
+    │   ├── 特性：状态管理、样式定制
+    │   └── 设计：纯展示组件、无副作用
+    │
+    └── UI Components (shadcn/ui)
+        └── 提供一致的设计语言和基础组件
 ```
 
-## 核心功能模块
+### 数据流与状态管理
 
-### 1. 聊天组件
+#### 数据流设计原则
 
-- **ChatWindow**: 主聊天窗口组件，提供完整的聊天界面
-- **MessageList**: 基于虚拟滚动的消息列表组件，支持海量消息处理
-- **MessageBubble**: 消息气泡组件，支持不同状态（发送中、失败、成功）
+1. **单向数据流**
+   - Props 向下传递静态配置和初始状态
+   - Events 向上传递用户交互和状态变更
+   - Refs 提供命令式 API 补充声明式不足
 
-### 2. 设计系统
+2. **状态最小化**
+   - 组件仅维护必要的内部状态
+   - 优先使用派生状态而非冗余存储
+   - 支持完全受控和非受控两种模式
 
-- **shadcn/ui 设计系统**: 提供一致的视觉体验
-- **Tailwind CSS**: 实用优先的样式框架
-- **响应式设计**: 自适应各种屏幕尺寸
+3. **性能优化策略**
+   - 使用 React.memo 和 useMemo 优化重渲染
+   - 虚拟滚动只渲染可见区域
+   - 批量更新和防抖处理
 
-## 特色功能
+#### 核心数据模型
 
-1. **高性能虚拟滚动**: 使用 @virtuoso.dev/message-list 处理海量消息
-2. **实时消息状态**: 支持发送、接收、重试等状态管理
-3. **主题定制**: 基于 CSS 变量的主题系统
-4. **可访问性**: 支持 a11y 标准
-5. **组件化设计**: 可独立使用各个组件
+```typescript
+// 用户模型 - 消息发送者信息
+interface ChatUser {
+  id: string; // 唯一标识
+  name: string; // 显示名称
+  avatar: string; // 头像 URL
+}
 
-## 开发规范
+// 消息模型 - 单条消息的完整信息
+interface ChatMessage {
+  id: string; // 消息唯一标识
+  user: ChatUser; // 发送者信息
+  message: string; // 消息内容
+  timestamp: number; // 时间戳
+  failed?: boolean; // 发送失败标记
+}
 
-### 检查命令
+// 组件方法接口 - 命令式 API
+interface MessageListMethods {
+  send: (message: string) => string; // 发送消息
+  receive: (message: Partial<ChatMessage>) => string; // 接收消息
+  update: (id: string, updates: Partial<ChatMessage>) => void; // 更新消息
+}
+```
 
-- `npm run check-report`: 运行完整的检查报告（lint + 类型检查 + 测试）
-- `npm run lint`: 代码格式检查
-- `npm run typecheck`: TypeScript 类型检查
-- `npm run build`: 构建生产版本
-- `npm run storybook`: 启动 Storybook 开发服务器
-- `npm run build-storybook`: 构建 Storybook 静态文件
+### 关键技术决策与权衡
 
-### 开发流程
+#### 1. 虚拟滚动技术选型
 
-1. 使用 Storybook 进行组件开发和文档编写
-2. 通过 Husky + lint-staged 确保代码质量
-3. 使用 Vitest 进行单元测试
-4. 使用 Playwright 进行浏览器测试
+**决策**: 选择 @virtuoso.dev/message-list 作为虚拟滚动引擎
 
-## CI/CD 配置
+**原因**:
 
-### GitHub Actions 工作流
+- 专为聊天场景优化，支持反向滚动和自动滚动到底部
+- 处理动态高度内容的能力优秀
+- API 设计简洁，集成成本低
 
-1. **ci-cd.yml**
-   - 质量检查：所有推送和 PR 触发
-   - NPM 发布：版本标签触发（v\*）
-   - 使用 bumpster 验证版本格式
+**权衡**:
 
-2. **storybook-deploy.yml**
-   - 版本标签触发自动部署
-   - 支持手动触发部署
-   - 部署到 GitHub Pages
+- 需要商业许可证（生产环境）
+- 增加了依赖复杂度
+- 但性能提升和功能完整性值得这些成本
 
-### 必需的 GitHub Secrets
+#### 2. 样式系统架构
 
-- **NPM_TOKEN**: NPM 发布权限
-- **VITE_VIRTUOSO_LICENSE_KEY**: Storybook 部署用 License Key
+**决策**: Tailwind CSS + CSS Variables 混合方案
 
-## License Key 配置
+**原因**:
 
-### 概述
+- Tailwind 提供快速开发能力和一致性
+- CSS Variables 支持运行时主题切换
+- 零运行时开销的样式方案
 
-项目使用 @virtuoso.dev/message-list 作为虚拟滚动引擎，生产环境需要 License Key。
+**权衡**:
 
-### 配置策略
+- 需要使用者项目支持 Tailwind
+- 样式覆盖需要了解内部实现
+- 但获得了极高的性能和灵活性
 
-1. **本地开发**: 不需要 License Key
-2. **Storybook 部署**: 使用 GitHub Secret `VITE_VIRTUOSO_LICENSE_KEY`
-3. **生产环境**: 通过组件 props 传入 `licenseKey`
+#### 3. 组件 API 设计哲学
 
-### 相关文件
+**决策**: 声明式为主，命令式为辅
 
-- `.storybook/license.ts` - Storybook 专用 License Key 配置
-- `.env.example` - 环境变量示例
-- `docs/license-key-setup.md` - 详细配置指南
+**原因**:
 
-## 项目发布信息
+- 声明式 API 符合 React 理念，易于理解
+- 命令式 API (通过 ref) 处理特殊场景
+- 平衡了易用性和灵活性
 
-- **NPM 包名**: yakbox
-- **Git 仓库**: https://github.com/yarnovo/yakbox
-- **当前版本**: 0.1.0-dev.0
-- **Storybook 文档**: https://yarnovo.github.io/yakbox/
+**实现**:
 
-### 发布流程
+- Props 处理 90% 的常规场景
+- Ref methods 处理消息更新等特殊需求
+- 回调函数连接组件与外部逻辑
 
-1. **NPM 发布**
-   - 创建版本标签触发自动发布
-   - 支持正式版和预发布版（alpha、beta、rc）
-   - 使用 bumpster 验证版本号
+## 三、核心功能实现
 
-2. **Storybook 部署**
-   - 版本标签触发自动部署
-   - 支持手动触发更新
-   - 需要配置 License Key Secret
-   - **注意**: GitHub Pages 环境默认有保护规则，需要在仓库设置中允许标签部署
+### 主题系统设计
 
-### GitHub Pages 环境保护问题
+主题系统是 yakbox 的一个重要特性，体现了组件的专业性和灵活性。
 
-**问题**: 标签触发部署时出现 "Tag is not allowed to deploy to github-pages" 错误
+#### 设计理念
 
-**原因**: GitHub Pages 环境默认配置了保护规则，不允许通过标签触发部署
+1. **场景适配**: 不同使用场景需要不同的视觉呈现
+2. **最小侵入**: 主题切换不影响功能逻辑
+3. **扩展友好**: 易于添加新主题
 
-**解决方案**:
+#### 实现方案
 
-1. 进入仓库 Settings → Environments → github-pages
-2. 在 "Deployment branches and tags" 中添加标签规则 `v*`
-3. 或修改 workflow 让标签触发时不使用受保护的环境
+```typescript
+// 主题类型定义
+type ChatWindowTheme = 'default' | 'borderless';
 
-## 项目特点
+// 主题样式映射
+const themeStyles = {
+  default: {
+    container: 'rounded-lg border shadow-sm',
+    // ... 其他样式
+  },
+  borderless: {
+    container: '', // 无边框样式
+    // ... 其他样式
+  },
+};
+```
 
-- 专业级聊天组件库
-- 现代前端开发最佳实践
-- 完整的类型定义和文档
-- 高性能虚拟滚动技术
-- 企业级应用适用
-- 自动化 CI/CD 流程
-- 完善的文档和示例
+#### 使用场景
 
-## 重要实现细节
+- **默认主题**: 独立使用，如弹出式聊天窗口
+- **无边框主题**: 嵌入式使用，如集成到现有页面布局
 
-### ChatWindow 主题系统
+### 虚拟滚动性能优化
 
-**发现时间**: 2025-07-09
+虚拟滚动是处理大量消息的关键技术，yakbox 的实现考虑了多个性能因素。
 
-**功能**: 为 ChatWindow 组件增加主题系统，支持默认主题和无边框主题
+#### 核心优化策略
 
-**实现方案**:
+1. **只渲染可见区域**: 通过 Intersection Observer 监控可见性
+2. **缓冲区设计**: 上下各保留一定数量的离屏元素
+3. **高度缓存**: 缓存已测量的元素高度，避免重复计算
+4. **批量更新**: 收集多个更新操作，一次性执行
 
-1. **类型定义**:
-   - 新增 `ChatWindowTheme` 类型：`'default' | 'borderless'`
-   - 在 `ChatWindowProps` 中添加 `theme?: ChatWindowTheme` 参数
-   - 默认值为 `'default'`
+#### 特殊场景处理
 
-2. **主题样式**:
-   - **默认主题**: `rounded-lg border shadow-sm` - 有边框、圆角、阴影
-   - **无边框主题**: 移除外边框、圆角、阴影，保留内部分割线
-   - 头部和输入区域的分割线在两种主题中都保留
+- **图片加载**: 预估高度，加载后更新
+- **动态内容**: 支持内容变化后的高度调整
+- **滚动恢复**: 保持滚动位置的稳定性
 
-3. **使用场景**:
-   - **默认主题**: 适合独立使用，具有明确的视觉边界
-   - **无边框主题**: 适合嵌入到其他布局中，与周围环境融合
+### 消息状态管理
 
-4. **Storybook 支持**:
-   - 添加主题选择控件
-   - 新增"无边框主题"和"主题对比"故事
-   - 完整的文档说明和使用示例
+消息状态管理体现了组件的健壮性和用户体验考虑。
 
-**技术细节**:
+#### 状态生命周期
 
-- 组件位置：`src/components/ChatWindow.tsx:65-78`
-- 主题样式通过 `themeStyles` 对象管理
-- 支持所有原有功能，仅改变视觉样式
-- 向后兼容，不影响现有使用
+```
+创建 → 发送中 → 已发送 → (已读)
+         ↓
+      发送失败 → 重试
+```
 
-### 组件尺寸使用方式差异
+#### 实现细节
 
-**发现时间**: 2025-07-09
+1. **乐观更新**: 立即显示用户消息，后台处理发送
+2. **失败处理**: 清晰的失败提示和重试机制
+3. **状态持久化**: 支持外部状态管理集成
 
-**问题**: 用户反映 MessageList 组件在 Storybook 中显示宽度很窄，需要澄清组件尺寸使用方式
+### 自适应输入组件
 
-**解决方案**:
+MessageInput 组件展示了对用户体验的深度思考。
 
-1. **组件尺寸分析**:
-   - **ChatWindow**: 使用 `h-full w-full` - 高度和宽度都是 100%，需要父容器提供确定尺寸
-   - **MessageList**: 使用 `h-full` - 仅高度是 100%，宽度自适应内容
+#### 核心特性
 
-2. **文档更新**:
-   - 在 MessageList.stories.tsx 中添加"组件尺寸使用方式"说明
-   - 明确父容器要求和布局建议
-   - 对比 ChatWindow 和 MessageList 的差异
+1. **高度自适应**: 根据内容自动调整高度
+2. **最大高度限制**: 防止输入框过度扩张
+3. **平滑过渡**: 高度变化使用动画过渡
 
-3. **Storybook 样式调整**:
-   - 布局从 `fullscreen` 改为 `centered`
-   - 容器尺寸从 `100vh × 100%` 改为 `600px × 400px`
-   - 添加 `padding: 20px` 留出空间
+#### 技术实现
 
-**技术细节**:
+```typescript
+const adjustHeight = () => {
+  const textarea = textareaRef.current;
+  if (textarea) {
+    textarea.style.height = 'auto';
+    const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+    textarea.style.height = `${newHeight}px`;
+  }
+};
+```
 
-- ChatWindow 位置：`src/components/ChatWindow.tsx:61` - `h-full w-full`
-- MessageList 位置：`src/components/MessageList.tsx:137` - `h-full`
-- 原因：MessageList 没有设置宽度类，导致宽度自适应内容
+## 四、开发实践与工程化
 
-### ChatWindow 组件纯净化
+### 开发流程标准化
 
-**问题**: 组件导出后包含 demo 逻辑，会自动模拟消息发送和接收
-**解决时间**: 2025-01-08
+1. **组件开发流程**
+   - Storybook 驱动开发：先写故事，后写组件
+   - 类型优先：先定义接口，后实现逻辑
+   - 测试覆盖：单元测试 + 集成测试 + 视觉测试
 
-已移除的 demo 代码：
+2. **代码质量保证**
+   - ESLint + Prettier 统一代码风格
+   - Husky + lint-staged 自动化检查
+   - TypeScript 严格模式确保类型安全
 
-1. **模拟发送失败**: 移除了随机 20% 失败率的模拟逻辑
-2. **自动回复**: 移除了发送消息后自动生成回复的逻辑
-3. **硬编码日志**: 移除了 console.log 调试信息
+3. **文档规范**
+   - 组件必须有完整的 Props 文档
+   - 复杂功能需要使用示例
+   - API 变更需要迁移指南
 
-现在 ChatWindow 是纯净的生产组件：
+### CI/CD 与发布策略
 
-- 通过 `onSendMessage` 回调处理消息发送
-- 不含任何模拟或 demo 逻辑
-- 完全由使用者控制消息流程
+#### 自动化流程
 
-### 空状态滚动条优化
+1. **持续集成**
+   - 所有 PR 触发：lint、类型检查、测试
+   - 覆盖率报告自动生成
+   - 性能基准测试（计划中）
 
-**问题**: 没有消息时显示"暂无消息"但出现不必要的滚动条
-**解决时间**: 2025-01-08
+2. **自动发布**
+   - 版本标签触发 NPM 发布
+   - 语义化版本严格校验
+   - 自动生成 CHANGELOG（计划中）
 
-修复内容：
+3. **文档部署**
+   - Storybook 自动部署到 GitHub Pages
+   - 版本化文档支持（计划中）
 
-- 移除 EmptyPlaceholder 中的 `h-full` 类
-- 改用 `py-16` 进行垂直填充
-- 避免空状态下组件占满全高度导致滚动条
+#### 版本管理策略
 
-技术细节：
+- **正式版**: 1.0.0, 1.1.0 等
+- **预发布版**: 1.0.0-alpha.1, 1.0.0-beta.1
+- **开发版**: 0.1.0-dev.0（当前阶段）
 
-- 位置：`src/components/MessageList.tsx:48`
-- 原样式：`h-full` 导致占满容器高度
-- 新样式：`py-16` 提供合适的垂直间距
+### 性能监控与优化
 
-### MessageList 组件 initialMessages 参数
+1. **关键指标**
+   - 首次渲染时间 (FCP)
+   - 滚动帧率 (FPS)
+   - 内存使用趋势
 
-**添加时间**: 2025-07-08
+2. **优化手段**
+   - 组件懒加载
+   - 代码分割
+   - 资源预加载
 
-新增功能：
+## 五、知识沉淀与最佳实践
 
-1. **initialMessages 参数**: 为 MessageList 组件添加了 `initialMessages?: ChatMessage[]` 参数
-2. **参数透传**: 参数正确透传到内部 VirtuosoMessageList 组件的 `initialData` 属性
-3. **默认值处理**: 设置默认值为空数组，确保兼容性
+### 组件设计模式
 
-技术细节：
+1. **复合组件模式**: ChatWindow 作为容器组合子组件
+2. **受控组件模式**: 支持完全受控的消息管理
+3. **Ref 转发模式**: 暴露内部方法给外部使用
 
-- 位置：`src/components/MessageList.tsx:64`
-- 接口定义：`initialMessages?: ChatMessage[]`
-- 透传实现：`initialData={initialMessages}`
-- 默认值：`initialMessages = []`
+### 性能优化经验
 
-用途：
+1. **虚拟滚动调优**
+   - 合适的缓冲区大小：可见区域的 2-3 倍
+   - 防抖滚动事件：避免频繁重算
+   - 批量 DOM 操作：减少重排重绘
 
-- 加载历史消息
-- 显示预设对话内容
-- 支持从服务器获取消息列表后初始化组件
+2. **React 优化技巧**
+   - 合理使用 memo 和 useMemo
+   - 避免内联函数和对象
+   - 状态下沉，减少不必要的重渲染
 
-Storybook 文档更新：
+### 可访问性实践
 
-- 新增 "带有初始消息" 故事演示
-- 更新 API 文档说明
-- 添加使用示例代码
+1. **键盘导航**: 支持 Tab 键和方向键
+2. **屏幕阅读器**: 正确的 ARIA 标签
+3. **颜色对比度**: 符合 WCAG 2.1 标准
 
-### MessageBubble 组件长文本换行问题修复
+## 六、未来规划与愿景
 
-**问题**: MessageBubble 组件在显示长文本时不会自动换行，导致气泡宽度被撑爆
-**解决时间**: 2025-07-09
+### 短期目标（3-6 个月）
 
-**修复内容**:
+1. **功能完善**
+   - 消息搜索功能
+   - 表情包支持
+   - 文件上传能力
 
-1. **气泡容器优化**: 在气泡容器中添加 `inline-block max-w-full` 类，确保容器不会被内容撑爆
-2. **文本换行增强**: 在 `<p>` 标签中添加 `whitespace-pre-wrap` 类，支持换行符和自动换行
+2. **性能提升**
+   - Web Worker 渲染（实验性）
+   - 增量渲染优化
+   - 内存使用优化
 
-**技术细节**:
+3. **生态建设**
+   - 官方示例项目
+   - 第三方集成指南
+   - 社区插件机制
 
-- 位置：`src/components/MessageBubble.tsx:37`
-- 原样式：`px-4 py-2 rounded-lg relative`
-- 新样式：`px-4 py-2 rounded-lg relative inline-block max-w-full`
-- 文本样式：`text-sm break-words whitespace-pre-wrap`
+### 长期愿景（1-2 年）
 
-**解决效果**:
+1. **跨框架支持**
+   - Vue 版本
+   - Web Components 版本
+   - React Native 版本
 
-- 长文本会正确换行，不会撑爆气泡宽度
-- 支持用户输入的换行符显示
-- 保持气泡样式的完整性
+2. **AI 能力集成**
+   - 智能回复建议
+   - 情感分析
+   - 多语言翻译
 
-**Storybook 测试用例**:
+3. **企业级特性**
+   - 端到端加密
+   - 消息审计
+   - 合规性支持
 
-- 新增"超长消息测试"故事，验证极长文本换行
-- 新增"带换行符的消息"故事，验证换行符显示
+## 七、项目文化与价值观
 
-### ChatWindow 和 MessageInput 组件自适应高度优化
+### 核心价值观
 
-**问题**: ChatWindow 底部输入区域高度固定，无法根据用户输入内容自动调整
-**解决时间**: 2025-07-09
+1. **用户至上**: 每个决策都从用户角度出发
+2. **追求卓越**: 不满足于"能用"，追求"好用"
+3. **开放协作**: 欢迎社区贡献，共同成长
+4. **持续学习**: 保持对新技术的敏感度
 
-**优化内容**:
+### 设计哲学
 
-1. **MessageInput 组件自适应高度**:
-   - 添加 `maxHeight` 属性，支持自定义最大高度限制
-   - 使用 `useRef` 和 `useEffect` 监听内容变化
-   - 自动调整 textarea 高度，超过最大高度时显示滚动条
-   - 设置 `min-h-[40px]` 保证最小高度
+1. **简约而不简单**: API 简洁，功能强大
+2. **渐进式复杂度**: 简单场景简单用，复杂场景有方案
+3. **最小惊讶原则**: 行为符合直觉和预期
 
-2. **ChatWindow 组件布局优化**:
-   - 移除 MessageInput 的固定高度限制（`h-24`）
-   - 设置 `maxHeight={150}` 作为合理的最大高度
-   - 底部输入区域现在会根据内容自动调整
+---
 
-**技术细节**:
+_此记忆文档持续演进，记录项目的成长历程和知识沉淀_
 
-- MessageInput 位置：`src/components/MessageInput.tsx:25-37`
-- ChatWindow 位置：`src/components/ChatWindow.tsx:92`
-- 关键函数：`adjustHeight()` - 自动调整高度逻辑
-- 样式变更：移除固定高度，添加最小高度和滚动条控制
-
-**使用效果**:
-
-- 用户输入少量文字时，输入框保持最小高度
-- 用户输入多行文字时，输入框高度自动增长
-- 达到最大高度后，输入框内显示滚动条
-- 整个聊天窗口底部区域随输入框高度变化
-
-**API 更新**:
-
-- MessageInput 新增 `maxHeight?: number` 属性
-- 默认最大高度为 200px
-- ChatWindow 中设置为 150px
-
-### ChatWindow 初始消息功能实现
-
-**添加时间**: 2025-07-09
-
-**功能描述**: 为 ChatWindow 组件增加初始消息加载能力，支持展示历史对话记录
-
-**实现方案**:
-
-1. **API 设计**:
-   - ChatWindowProps 新增 `initialMessages?: ChatMessage[]` 参数
-   - 参数透传到内部 MessageList 组件的 `initialMessages` 属性
-   - 保持向后兼容，参数为可选
-
-2. **使用方式**:
-
-   ```tsx
-   // 定义初始消息（如从数据库加载）
-   const initialMessages: ChatMessage[] = [
-     {
-       id: '1',
-       user: { id: 'assistant-1', name: 'AI Assistant', avatar: '🤖' },
-       message: '您好！有什么可以帮助您的吗？',
-       timestamp: Date.now() - 300000,
-     },
-     // ... 更多历史消息
-   ];
-
-   // 使用组件
-   <ChatWindow initialMessages={initialMessages} onSendMessage={handleSendMessage} />;
-   ```
-
-3. **流式回复集成**:
-   - 使用 `ref.current.receive()` 接收新消息，返回消息 ID
-   - 使用 `ref.current.update(messageId, { message: content })` 更新消息
-   - 通过 `setInterval` 实现逐字更新效果
-
-**技术细节**:
-
-- ChatWindow 接口定义：`src/components/ChatWindow.tsx:15`
-- 参数透传实现：`src/components/ChatWindow.tsx:87`
-- 示例应用：`src/App.tsx` - 展示流式回复实现
-- Storybook 故事：`WithInitialMessages` - 完整功能演示
-
-**应用场景**:
-
-- **会话恢复**: 用户重新打开聊天窗口时加载之前的对话
-- **客服系统**: 展示历史工单和对话记录
-- **AI 对话**: 保持上下文连续性
-- **演示场景**: 预设对话内容进行功能展示
-
-**最佳实践**:
-
-- 初始消息应包含完整的 ChatMessage 结构
-- 虚拟滚动会自动定位到最新消息
-- 结合 ref 方法可实现复杂的消息更新逻辑
-- 适合与后端 API 集成实现持久化
-
-### MessageInput 发送按钮 UI 优化
-
-**优化时间**: 2025-07-09
-
-**优化内容**:
-
-1. **按钮形状调整**: 从方形改为圆形
-2. **图标更换**: 从 `Send` 图标改为 `ArrowUp` 向上箭头图标
-
-**技术细节**:
-
-- 位置：`src/components/MessageInput.tsx:87-94`
-- 图标导入：`import { ArrowUp } from 'lucide-react'`
-- 样式变更：`rounded-full w-8 h-8 p-0`（圆形、固定尺寸、无内边距）
-- 图标尺寸：`h-4 w-4`
-
-**设计理念**:
-
-- 更符合现代聊天应用的设计风格
-- 圆形按钮提供更好的视觉体验
-- 向上箭头暗示"发送"或"提交"动作
-
-### MessageInput 组件细节优化
-
-**优化时间**: 2025-07-09
-
-**优化内容**:
-
-1. **初始高度调整**: 将最小高度从 40px 调整为 100px
-2. **最大高度配置**: ChatWindow 中设置为 300px，提供更大的增长空间
-3. **阴影效果**: 添加 `shadow-sm` 类，增强视觉层次感
-
-**关键配置**:
-
-- **最小高度**: `min-h-[100px]` - 提供更舒适的初始输入空间
-- **最大高度**: `maxHeight={300}` - 在 ChatWindow 中配置，允许更多行文本
-- **阴影样式**: `shadow-sm` - 轻微阴影，增强立体感
-
-**高度控制逻辑**:
-
-- MessageInput 默认 maxHeight = 200px
-- ChatWindow 传入 maxHeight = 300px（实际生效值）
-- 最小高度 100px → 最大高度 300px，增长空间 200px
-
-**视觉效果**:
-
-- 输入框有更大的初始可视区域
-- 输入长文本时有充足的扩展空间
-- 阴影效果让输入框在界面中更突出
-
-<!-- 最后更新时间: 2025-07-09T14:17:00+08:00 -->
+<!-- 最后检查时间: 2025-07-09T14:30:00+08:00 -->
