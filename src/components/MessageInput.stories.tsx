@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within, expect } from 'storybook/test';
-import { MessageInput } from '../components/MessageInput';
+import { MessageInput } from './MessageInput';
 
 const meta = {
   title: 'Components/MessageInput',
