@@ -1,7 +1,7 @@
 import React, { useRef, useCallback } from 'react';
-import MessageList from './MessageList';
-import type { MessageListMethods, ChatMessage } from './MessageList';
-import { MessageInput } from './MessageInput';
+import MessageList from './message-list';
+import type { MessageListMethods, ChatMessage } from './message-list';
+import { MessageInput } from './message-input';
 
 export type ChatWindowTheme = 'default' | 'borderless';
 

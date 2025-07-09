@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import MessageBubble from './MessageBubble';
+import MessageBubble from '../components/message-bubble';
 
 const meta = {
   title: 'Components/MessageBubble',

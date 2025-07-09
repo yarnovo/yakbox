@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, userEvent, within, expect } from 'storybook/test';
 import { useRef, useState } from 'react';
-import { ChatWindow } from './ChatWindow';
-import type { MessageListMethods, ChatMessage } from './MessageList';
+import { ChatWindow } from '../components/chat-window';
+import type { MessageListMethods, ChatMessage } from '../components/message-list';
 import { getVirtuosoLicenseKey } from '../../.storybook/license';
 
 const meta = {

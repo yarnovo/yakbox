@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { ChatWindow } from './components/ChatWindow';
-import type { ChatMessage, MessageListMethods } from './components/MessageList';
+import { ChatWindow } from './components/chat-window';
+import type { ChatMessage, MessageListMethods } from './components/message-list';
 
 // 模拟从数据库拉取的初始消息
 const initialMessages: ChatMessage[] = [

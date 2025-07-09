@@ -5,7 +5,7 @@ import type {
   VirtuosoMessageListMethods,
 } from '@virtuoso.dev/message-list';
 import { v4 as uuidv4 } from 'uuid';
-import MessageBubble from './MessageBubble';
+import MessageBubble from './message-bubble';
 
 export interface ChatUser {
   id: string;

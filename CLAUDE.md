@@ -49,5 +49,13 @@
 - lint-staged 仅运行 eslint --fix，Prettier 通过 ESLint 规则自动执行
 - 配置位置：eslint.config.js（Flat Config 格式）
 
-<!-- 最后更新时间: 2025-07-09T20:25:00+08:00 -->
-<!-- 更新说明: 添加代码质量工具配置，记录 ESLint 和 Prettier 集成方式 -->
+## 文件命名规范
+
+- 所有组件文件使用小写中划线格式（kebab-case）
+  - 示例：`chat-window.tsx`, `message-list.tsx`
+- Storybook 故事文件也使用小写中划线格式
+  - 示例：`chat-window.stories.tsx`
+- 故事文件统一存放在 `src/stories/` 目录下
+
+<!-- 最后更新时间: 2025-07-09T21:35:00+08:00 -->
+<!-- 更新说明: 添加文件命名规范，所有组件和故事文件使用小写中划线格式 -->

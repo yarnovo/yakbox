@@ -1,18 +1,18 @@
-export { ChatWindow } from './components/ChatWindow';
-export type { ChatWindowProps } from './components/ChatWindow';
+export { ChatWindow } from './components/chat-window';
+export type { ChatWindowProps } from './components/chat-window';
 
-export { default as MessageList } from './components/MessageList';
+export { default as MessageList } from './components/message-list';
 export type {
   MessageListMethods,
   MessageListProps,
   ChatMessage,
   ChatUser,
-} from './components/MessageList';
+} from './components/message-list';
 
-export { default as MessageBubble } from './components/MessageBubble';
-export type { MessageBubbleProps } from './components/MessageBubble';
+export { default as MessageBubble } from './components/message-bubble';
+export type { MessageBubbleProps } from './components/message-bubble';
 
-export { MessageInput } from './components/MessageInput';
-export type { MessageInputProps } from './components/MessageInput';
+export { MessageInput } from './components/message-input';
+export type { MessageInputProps } from './components/message-input';
 
 // Icons are now provided by lucide-react
