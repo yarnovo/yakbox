@@ -27,7 +27,8 @@
     "build-storybook": "storybook build",
     "lint-staged": "lint-staged",
     "prepare": "husky",
-    "check": "npm run lint && npm run typecheck && npm run test"
+    "check": "npm run lint && npm run typecheck && npm run test",
+    "postversion": "node scripts/update-changelog.js && git add CHANGELOG.md"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
