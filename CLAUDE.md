@@ -29,6 +29,16 @@
 - 组件样式依赖宿主项目的 shadcn/ui 主题变量
 - 需要在宿主项目配置 Tailwind 以提取组件样式
 
+## 组件功能
+
+### 自定义消息内容渲染
+
+- ChatWindow 组件支持 `renderMessageContent` 属性
+- MessageList 组件支持 `renderMessageContent` 属性
+- MessageBubble 组件支持 `renderContent` 属性
+- 可以自定义消息内容的渲染方式，如 Markdown、链接、代码块等
+- 已在 Storybook 中添加相关演示
+
 ## 文档维护
 
 - README.md 需要与代码保持同步
@@ -73,5 +83,5 @@
 - Storybook 配置仅扫描 `src/stories/` 目录
 - 所有文件重命名后需要同步更新相关导入路径
 
-<!-- 最后更新时间: 2025-07-09T21:41:00+08:00 -->
-<!-- 更新说明: 补充版本控制最佳实践和目录结构规范，记录 git mv 的重要性 -->
+<!-- 最后更新时间: 2025-01-13T15:51:00+08:00 -->
+<!-- 更新说明: 新增自定义消息内容渲染功能记录 -->

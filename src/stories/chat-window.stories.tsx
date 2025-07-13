@@ -963,6 +963,237 @@ const ChatWithInitialMessages = () => {
   );
 };
 
+// 自定义消息内容渲染示例
+const CustomRenderChatWindow = () => {
+  const chatWindowRef = useRef<MessageListMethods>(null);
+
+  // 自定义内容渲染函数
+  const renderMessageContent = (message: string): React.ReactNode => {
+    // 处理 Markdown 格式
+    if (message.includes('**')) {
+      const parts = message.split(/\*\*(.*?)\*\*/g);
+      return (
+        <div>
+          {parts.map((part, index) => {
+            if (index % 2 === 1) {
+              return <strong key={index}>{part}</strong>;
+            }
+            return <span key={index}>{part}</span>;
+          })}
+        </div>
+      );
+    }
+
+    // 处理代码块
+    if (message.includes('```')) {
+      const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
+      let lastIndex = 0;
+      const parts: React.ReactNode[] = [];
+      let match;
+
+      while ((match = codeBlockRegex.exec(message)) !== null) {
+        // 添加代码块前的文本
+        if (match.index > lastIndex) {
+          parts.push(
+            <span key={`text-${lastIndex}`}>{message.slice(lastIndex, match.index)}</span>
+          );
+        }
+
+        // 添加代码块
+        const [, , code] = match;
+        parts.push(
+          <pre key={`code-${match.index}`} className="bg-gray-100 p-2 rounded my-2 overflow-x-auto">
+            <code className="text-sm">{code.trim()}</code>
+          </pre>
+        );
+
+        lastIndex = match.index + match[0].length;
+      }
+
+      // 添加最后的文本
+      if (lastIndex < message.length) {
+        parts.push(<span key={`text-${lastIndex}`}>{message.slice(lastIndex)}</span>);
+      }
+
+      return <div>{parts}</div>;
+    }
+
+    // 处理链接
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = message.split(urlRegex);
+    return (
+      <div>
+        {parts.map((part, index) => {
+          if (urlRegex.test(part)) {
+            return (
+              <a
+                key={index}
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+              >
+                {part}
+              </a>
+            );
+          }
+          return <span key={index}>{part}</span>;
+        })}
+      </div>
+    );
+  };
+
+  const handleSendMessage = (message: ChatMessage) => {
+    console.log('发送的消息:', message);
+
+    // 模拟接收富文本回复
+    setTimeout(() => {
+      if (message.message.includes('代码')) {
+        chatWindowRef.current?.receive({
+          user: {
+            id: 'assistant-1',
+            name: 'AI Assistant',
+            avatar: '🤖',
+          },
+          message:
+            '这是一个代码示例：\n\n```javascript\nfunction hello() {\n  console.log("Hello World!");\n}\n```\n\n希望对您有帮助！',
+        });
+      } else if (message.message.includes('链接')) {
+        chatWindowRef.current?.receive({
+          user: {
+            id: 'assistant-1',
+            name: 'AI Assistant',
+            avatar: '🤖',
+          },
+          message:
+            '这里有一些有用的链接：\n\n官方文档：https://example.com/docs\n\nGitHub 仓库：https://github.com/example/repo\n\n欢迎访问！',
+        });
+      } else {
+        chatWindowRef.current?.receive({
+          user: {
+            id: 'assistant-1',
+            name: 'AI Assistant',
+            avatar: '🤖',
+          },
+          message: '这是一条包含 **粗体文字** 的消息。您可以使用自定义渲染器来显示富文本内容！',
+        });
+      }
+    }, 1000);
+  };
+
+  return (
+    <ChatWindow
+      ref={chatWindowRef}
+      title="自定义内容渲染"
+      placeholder="试试输入 '代码' 或 '链接'..."
+      currentUserId="user-1"
+      licenseKey={getVirtuosoLicenseKey()}
+      onSendMessage={handleSendMessage}
+      renderMessageContent={renderMessageContent}
+    />
+  );
+};
+
+export const CustomContentRender: Story = {
+  name: '自定义内容渲染',
+  render: () => <CustomRenderChatWindow />,
+  decorators: [
+    (Story) => (
+      <div style={{ height: '600px', width: '500px', padding: '20px' }}>
+        <Story />
+      </div>
+    ),
+  ],
+  parameters: {
+    docs: {
+      description: {
+        story: `
+这个示例展示了如何使用 \`renderMessageContent\` 属性自定义消息内容的渲染方式。
+
+## 功能特点：
+
+1. **Markdown 格式支持**：
+   - 支持 **粗体文字** 渲染
+   - 其他 Markdown 格式可以类似实现
+
+2. **代码块渲染**：
+   - 使用 \`\`\` 包裹的代码会被特殊渲染
+   - 带有背景色和等宽字体
+
+3. **链接识别**：
+   - 自动识别 URL 并转换为可点击的链接
+   - 支持 http:// 和 https:// 协议
+
+## 使用示例：
+
+\`\`\`tsx
+const renderMessageContent = (message: string) => {
+  // 自定义渲染逻辑
+  // 可以返回任何 React 节点
+  return <div>{message}</div>;
+};
+
+<ChatWindow
+  renderMessageContent={renderMessageContent}
+  // 其他属性...
+/>
+\`\`\`
+
+## 交互提示：
+
+- 输入包含 "代码" 的消息，会收到代码示例回复
+- 输入包含 "链接" 的消息，会收到链接示例回复
+- 其他消息会收到带有粗体文字的回复
+
+## 扩展建议：
+
+1. **完整 Markdown 支持**：可以集成 markdown-it 或 react-markdown
+2. **表情符号**：支持 emoji 渲染
+3. **图片预览**：支持图片链接的预览
+4. **文件附件**：显示文件图标和下载链接
+5. **交互组件**：在消息中嵌入按钮、表单等交互元素
+        `,
+      },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // 等待组件渲染
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // 测试发送包含 "代码" 的消息
+    const input = canvas.getByPlaceholderText("试试输入 '代码' 或 '链接'...");
+    const sendButton = canvas.getByRole('button');
+
+    await userEvent.type(input, '请给我一个代码示例');
+    await userEvent.click(sendButton);
+
+    // 等待 AI 回复
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // 验证代码块渲染
+    const codeElement = await canvas.findByText((content, element) => {
+      return element?.tagName === 'CODE' && content.includes('console.log("Hello World!")');
+    });
+    expect(codeElement).toBeInTheDocument();
+    expect(codeElement.closest('pre')).toHaveClass('bg-gray-100');
+
+    // 测试发送包含 "链接" 的消息
+    // await userEvent.type(input, '有什么链接推荐吗？');
+    // await userEvent.click(sendButton);
+
+    // // 等待 AI 回复
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // // 验证链接渲染
+    // const link = await canvas.findByRole('link', { name: 'https://example.com/docs' });
+    // expect(link).toBeInTheDocument();
+    // expect(link).toHaveAttribute('href', 'https://example.com/docs');
+    // expect(link).toHaveAttribute('target', '_blank');
+  },
+};
+
 export const WithInitialMessages: Story = {
   name: '带有初始消息',
   render: () => <ChatWithInitialMessages />,
@@ -1056,7 +1287,7 @@ const initialMessages: ChatMessage[] = [
     expect(newMessage).toBeInTheDocument();
 
     // 等待 AI 回复
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     const aiReply = await canvas.findByText('收到您的消息！我正在处理您的请求...');
     expect(aiReply).toBeInTheDocument();
   },

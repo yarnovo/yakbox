@@ -2,6 +2,16 @@
 
 所有重要的更改都将记录在此文件中。
 
+## [Unreleased]
+
+### ✨ 新增功能
+
+- **自定义消息内容渲染**
+  - ChatWindow 和 MessageList 组件新增 `renderMessageContent` 属性
+  - MessageBubble 组件新增 `renderContent` 属性
+  - 支持自定义消息内容的渲染方式（如 Markdown、链接、代码块等）
+  - 新增 Storybook 故事演示自定义渲染功能
+
 ## [0.2.0-dev.0] - 开发中
 
 ### 🎯 项目定位调整

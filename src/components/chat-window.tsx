@@ -13,6 +13,7 @@ export interface ChatWindowProps {
   licenseKey?: string;
   theme?: ChatWindowTheme;
   initialMessages?: ChatMessage[];
+  renderMessageContent?: (message: string) => React.ReactNode;
 }
 
 export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
@@ -25,6 +26,7 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
       licenseKey = '',
       theme = 'default',
       initialMessages,
+      renderMessageContent,
     },
     ref
   ) => {
@@ -87,6 +89,7 @@ export const ChatWindow = React.forwardRef<MessageListMethods, ChatWindowProps>(
             initialMessages={initialMessages}
             onSend={handleMessageSent}
             onRetry={handleRetry}
+            renderMessageContent={renderMessageContent}
           />
         </div>
 

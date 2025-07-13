@@ -62,6 +62,53 @@ function App() {
 }
 ```
 
+### 自定义消息内容渲染
+
+```tsx
+import { ChatWindow } from 'yakbox';
+import type { ChatMessage } from 'yakbox';
+
+function App() {
+  // 自定义消息内容渲染函数
+  const renderMessageContent = (message: string): React.ReactNode => {
+    // 将 URL 转换为可点击的链接
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = message.split(urlRegex);
+
+    return (
+      <div>
+        {parts.map((part, index) => {
+          if (urlRegex.test(part)) {
+            return (
+              <a
+                key={index}
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+              >
+                {part}
+              </a>
+            );
+          }
+          return <span key={index}>{part}</span>;
+        })}
+      </div>
+    );
+  };
+
+  return (
+    <ChatWindow
+      title="智能聊天"
+      placeholder="请输入消息..."
+      currentUserId="user-123"
+      onSendMessage={handleSendMessage}
+      renderMessageContent={renderMessageContent}
+    />
+  );
+}
+```
+
 ### 加载历史消息
 
 ```tsx
@@ -109,15 +156,16 @@ function App() {
 
 ### ChatWindow Props
 
-| 属性              | 类型                             | 默认值                | 描述                                          |
-| ----------------- | -------------------------------- | --------------------- | --------------------------------------------- |
-| `title`           | `string`                         | `"Chat Window"`       | 聊天窗口标题                                  |
-| `placeholder`     | `string`                         | `"Type a message..."` | 输入框占位符文本                              |
-| `currentUserId`   | `string`                         | `"user-1"`            | 当前用户 ID，用于区分消息发送方               |
-| `licenseKey`      | `string`                         | `""`                  | @virtuoso.dev/message-list 许可证密钥（可选） |
-| `onSendMessage`   | `(message: ChatMessage) => void` | -                     | 消息发送回调函数                              |
-| `theme`           | `"default" \| "borderless"`      | `"default"`           | 窗口主题样式                                  |
-| `initialMessages` | `ChatMessage[]`                  | -                     | 初始消息列表，用于加载历史对话                |
+| 属性                   | 类型                                   | 默认值                | 描述                                          |
+| ---------------------- | -------------------------------------- | --------------------- | --------------------------------------------- |
+| `title`                | `string`                               | `"Chat Window"`       | 聊天窗口标题                                  |
+| `placeholder`          | `string`                               | `"Type a message..."` | 输入框占位符文本                              |
+| `currentUserId`        | `string`                               | `"user-1"`            | 当前用户 ID，用于区分消息发送方               |
+| `licenseKey`           | `string`                               | `""`                  | @virtuoso.dev/message-list 许可证密钥（可选） |
+| `onSendMessage`        | `(message: ChatMessage) => void`       | -                     | 消息发送回调函数                              |
+| `theme`                | `"default" \| "borderless"`            | `"default"`           | 窗口主题样式                                  |
+| `initialMessages`      | `ChatMessage[]`                        | -                     | 初始消息列表，用于加载历史对话                |
+| `renderMessageContent` | `(message: string) => React.ReactNode` | -                     | 自定义消息内容渲染函数                        |
 
 ### ChatMessage 类型
 

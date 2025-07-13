@@ -11,6 +11,7 @@ export interface MessageBubbleProps {
   timestamp?: number;
   failed?: boolean;
   onRetry?: () => void;
+  renderContent?: (message: string) => React.ReactNode;
 }
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({
@@ -21,6 +22,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
   timestamp,
   failed = false,
   onRetry,
+  renderContent,
 }) => {
   return (
     <div className={cn('flex gap-3 pb-3 pl-4 pr-2', isOwn && 'flex-row-reverse')}>
@@ -51,7 +53,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({
               </Button>
             </div>
           )}
-          <div className={cn('text-sm break-words', !isOwn && 'px-0')}>{message}</div>
+          <div className={cn('text-sm break-words', !isOwn && 'px-0')}>
+            {renderContent ? renderContent(message) : message}
+          </div>
         </div>
         {timestamp && (
           <span className="text-xs text-muted-foreground">

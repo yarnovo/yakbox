@@ -24,6 +24,7 @@ export interface ChatMessage {
 interface MessageListContext {
   currentUserId: string;
   onRetry?: (messageId: string) => void;
+  renderMessageContent?: (message: string) => React.ReactNode;
 }
 
 type VirtuosoProps = VirtuosoMessageListProps<ChatMessage, MessageListContext>;
@@ -40,6 +41,7 @@ const ItemContent: VirtuosoProps['ItemContent'] = ({ data: message, context }) =
       timestamp={message.timestamp}
       failed={message.failed}
       onRetry={() => context.onRetry?.(message.id)}
+      renderContent={context.renderMessageContent}
     />
   );
 };
@@ -64,10 +66,14 @@ export interface MessageListProps {
   initialMessages?: ChatMessage[];
   onSend?: (message: ChatMessage) => void;
   onRetry?: (messageId: string) => void;
+  renderMessageContent?: (message: string) => React.ReactNode;
 }
 
 const MessageList = React.forwardRef<MessageListMethods, MessageListProps>(
-  ({ currentUserId, licenseKey = '', initialMessages = [], onSend, onRetry }, ref) => {
+  (
+    { currentUserId, licenseKey = '', initialMessages = [], onSend, onRetry, renderMessageContent },
+    ref
+  ) => {
     const messageListRef = React.useRef<VirtuosoMessageListMethods<ChatMessage>>(null);
 
     React.useImperativeHandle(ref, () => ({
@@ -127,7 +133,7 @@ const MessageList = React.forwardRef<MessageListMethods, MessageListProps>(
     return (
       <VirtuosoMessageListLicense licenseKey={licenseKey}>
         <VirtuosoMessageList<ChatMessage, MessageListContext>
-          context={{ currentUserId, onRetry }}
+          context={{ currentUserId, onRetry, renderMessageContent }}
           initialData={initialMessages}
           shortSizeAlign="bottom-smooth"
           initialLocation={{ index: 'LAST', align: 'end' }}
