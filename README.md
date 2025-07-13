@@ -6,8 +6,6 @@
 [![npm version](https://img.shields.io/npm/v/yakbox.svg)](https://www.npmjs.com/package/yakbox)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-📚 **[在线文档 (Storybook)](https://yarnovo.github.io/yakbox/)**
-
 ## 🌟 特性
 
 - 🚀 **高性能虚拟滚动** - 基于 @virtuoso.dev/message-list，可处理海量消息
@@ -373,7 +371,7 @@ ChatWindow 组件默认会自适应父容器的尺寸。要实现撑满父容器
 
 ## 🚀 最新更新
 
-查看 [CHANGELOG.md](./CHANGELOG.md) 了解最新的功能更新和改进。
+查看 [CHANGELOG.md](https://github.com/yarnovo/yakbox/blob/main/CHANGELOG.md) 了解最新的功能更新和改进。
 
 ### v0.2.0-dev.0 亮点
 

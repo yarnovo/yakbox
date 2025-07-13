@@ -2,6 +2,14 @@
   "name": "yakbox",
   "version": "0.2.0-dev.1",
   "type": "module",
+  "homepage": "https://github.com/yarnovo/yakbox",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yarnovo/yakbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yarnovo/yakbox/issues"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
