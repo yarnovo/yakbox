@@ -373,13 +373,6 @@ ChatWindow 组件默认会自适应父容器的尺寸。要实现撑满父容器
 
 查看 [CHANGELOG.md](https://github.com/yarnovo/yakbox/blob/main/CHANGELOG.md) 了解最新的功能更新和改进。
 
-### v0.2.0-dev.0 亮点
-
-- ✨ 新增 MessageInput 智能输入组件
-- 📜 支持加载历史消息
-- 🌏 完善本地化支持
-- 💄 优化样式和交互体验
-
 ## 📄 许可证
 
 MIT © Course Gen
